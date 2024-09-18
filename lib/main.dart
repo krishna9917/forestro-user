@@ -1,0 +1,98 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:foreastro/Helper/InAppKeys.dart';
+import 'package:foreastro/Screen/Splash/SplashScreen.dart';
+import 'package:foreastro/controler/bloc_controler.dart';
+import 'package:foreastro/controler/call_histrory_controller.dart';
+import 'package:foreastro/controler/celebrity_controler.dart';
+import 'package:foreastro/controler/chat_history_contaroller.dart';
+import 'package:foreastro/controler/horoscope_controler.dart';
+import 'package:foreastro/controler/horoscope_kundali/chart_image_controler.dart';
+import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
+import 'package:foreastro/controler/listaustro_controler.dart';
+import 'package:foreastro/controler/listof_termination_controler.dart';
+import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/controler/soket_controler.dart';
+import 'package:foreastro/controler/timecalculating_controler.dart';
+import 'package:foreastro/firebase_options.dart';
+import 'package:foreastro/theme/AppTheme.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+
+Future<void> main(List<String> args) async {
+  /////////////////////////// chat function /////////////////////////////
+  await ZIMKit().init(
+      appID: 2007373594,
+      appSign:
+          '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
+  ////////////////////////// Vedio Call //////////////////////////////////
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  Notification();
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {}
+  });
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  if (fcmToken != null) {
+    await prefs.setString('fcm_token', fcmToken);
+  }
+  print(fcmToken);
+  runApp(const InitApp());
+}
+
+Future<void> Notification() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+}
+
+class InitApp extends StatelessWidget {
+  const InitApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterSizer(builder: (context, orientation, screenSize) {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: appTheme,
+        navigatorKey: navigatorKey,
+        home: const SplashScreen(),
+        initialBinding: BindingsBuilder(() {
+          Get.lazyPut<ProfileList>(() => ProfileList());
+          Get.lazyPut<BlocList>(() => BlocList());
+          Get.lazyPut<GetAstrologerProfile>(() => GetAstrologerProfile());
+          Get.lazyPut<SocketController>(() => SocketController());
+          Get.lazyPut<CelibrityList>(() => CelibrityList());
+          Get.lazyPut<SessionController>(() => SessionController());
+          Get.lazyPut<ClientSays>(() => ClientSays());
+          Get.lazyPut<ChatHistory>(() => ChatHistory());
+          Get.lazyPut<CallHistory>(() => CallHistory());
+          Get.lazyPut<HoroscopeControler>(() => HoroscopeControler());
+          Get.lazyPut<CartImageControler>(() => CartImageControler());
+          Get.lazyPut<KundaliController>(() => KundaliController());
+        }),
+        // home: HomePage(),
+      );
+    });
+  }
+}

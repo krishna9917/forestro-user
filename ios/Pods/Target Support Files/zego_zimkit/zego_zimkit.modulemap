@@ -1,0 +1,6 @@
+framework module zego_zimkit {
+  umbrella header "zego_zimkit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module ZIMAudio {
+  umbrella header "ZIMAudio.h"
+
+  export *
+  module * { export * }
+}
