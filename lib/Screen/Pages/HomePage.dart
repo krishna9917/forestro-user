@@ -30,9 +30,7 @@ import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -62,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
-    chatzegocloud();
+
     // print(chatzegocloud());
   }
 
@@ -90,32 +88,6 @@ class _HomePageState extends State<HomePage> {
         .toList();
     _astrologers.clear();
     _astrologers.addAll(filteredAstrologers);
-  }
-
-  chatzegocloud() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user_id = prefs.getString('user_id');
-    if (user_id == null) {
-      print('User ID not found in SharedPreferences');
-      return;
-    }
-
-    var name = 'Unknown User';
-    String profile = profileController.profileDataList.isNotEmpty
-        ? profileController.profileDataList.first.profileImg
-        : '';
-    if (profileController.profileDataList != null &&
-        profileController.profileDataList.isNotEmpty) {
-      name = profileController.profileDataList.first.name ?? 'Unknown User';
-    }
-
-    print("name=======$name $user_id $profile  --   $user_id-user  ");
-
-    await ZIMKit().connectUser(
-      id: "$user_id-user",
-      name: name,
-      avatarUrl: profile,
-    );
   }
 
   String extractVideoId(String url) {
@@ -343,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
