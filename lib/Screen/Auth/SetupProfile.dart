@@ -9,11 +9,13 @@ import 'package:foreastro/Components/PhoneInputBox.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/Utils/validate.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/core/function/pickimage.dart';
+import 'package:foreastro/extensions/build_context.dart';
 import 'package:gap/gap.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:phone_input/phone_input_package.dart';
@@ -123,7 +125,14 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             method: ApiMethod.POST, body: body);
         Response data = await apiRequest.send();
         if (data.statusCode == 201) {
-          navigate.push(routeMe(HomePage()));
+          DateTime eventDate = DateTime(2024, 9, 30);
+          DateTime now = DateTime.now();
+
+          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+            navigate.pushReplacement(routeMe(const HomePage()));
+          } else {
+            context.goTo(ComingSoonAstrologerPage());
+          }
           showToast("Successful Profile Created");
         } else {}
       } else {

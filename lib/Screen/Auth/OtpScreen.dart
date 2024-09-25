@@ -7,6 +7,7 @@ import 'package:foreastro/Components/Widgts/custambutton.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -63,10 +64,18 @@ class _OtpScreenState extends State<OtpScreen> {
 
         localStorage.setString(
             "is_profile_created", isProfileCreated.toString());
+        DateTime eventDate = DateTime(2024, 9, 30);
+        DateTime now = DateTime.now();
 
         if (isProfileCreated) {
           localStorage.setString("token", res.data['data']['token']);
-          navigate.pushReplacement(routeMe(HomePage()));
+          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+            // If the date has passed or is today, navigate to the home page
+            navigate.pushReplacement(routeMe(
+                const HomePage())); // Replace with your actual home page widget
+          } else {
+            navigate.pushReplacement(routeMe(ComingSoonAstrologerPage()));
+          }
         } else {
           localStorage.setString("token", res.data['data']['token']);
           // Navigate to SetupProfileScreen
@@ -181,8 +190,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       animationType: AnimationType.fade,
                       pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
-                        borderRadius:
-                            BorderRadius.circular(20.0), 
+                        borderRadius: BorderRadius.circular(20.0),
                         fieldHeight: 60,
                         fieldWidth: 60,
                         activeFillColor: Colors.white,

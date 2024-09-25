@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -75,7 +77,16 @@ class _SplashScreenState extends State<SplashScreen>
         // context.goTo(HomePage());
       }
       Future.delayed(const Duration(seconds: 3), () {
-        context.goTo(const HomePage());
+        DateTime eventDate = DateTime(2024, 9, 30);
+        DateTime now = DateTime.now();
+
+        if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+          // If the date has passed or is today, navigate to the home page
+          navigate.pushReplacement(routeMe(
+              const HomePage())); // Replace with your actual home page widget
+        } else {
+          context.goTo(ComingSoonAstrologerPage());
+        }
       });
     } else {
       Future.delayed(const Duration(seconds: 3), () {
