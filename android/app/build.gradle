@@ -34,8 +34,8 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = '17' // or '17'
+    targetCompatibility = '17' // or '17'
     }
 
     kotlinOptions{
@@ -59,7 +59,7 @@ android {
         applicationId "com.foreastro.foreastrouserside"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 6
+        versionCode 8
         versionName "1.0.1"
         
     }
