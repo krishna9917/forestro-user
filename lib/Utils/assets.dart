@@ -4,7 +4,7 @@ class Assets {
   static const bgChat = "assets/images/bg_chat.png";
 
   /// Logos
-  static const logoAstroPng = "assets/logo/Foreastro.png";
+  static const logoAstroPng = "assets/astro.png";
   static const logoGoogleSvg = "assets/logo/logo_google.svg";
   static const logoFacebookSvg = "assets/logo/logo_facebook.svg";
 

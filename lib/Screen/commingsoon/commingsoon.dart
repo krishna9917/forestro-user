@@ -12,7 +12,7 @@ class ComingSoonAstrologerPage extends StatefulWidget {
 
 class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
     with SingleTickerProviderStateMixin {
-  DateTime eventDate = DateTime(2024, 9, 30);
+  DateTime eventDate = DateTime(2024, 10, 3);
   late AnimationController _controller; // Animation Controller
   List<String> astrologerImages = [
     'assets/pandit.png',

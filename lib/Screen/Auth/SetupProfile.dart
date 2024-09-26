@@ -125,7 +125,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             method: ApiMethod.POST, body: body);
         Response data = await apiRequest.send();
         if (data.statusCode == 201) {
-          DateTime eventDate = DateTime(2024, 9, 30);
+          DateTime eventDate = DateTime(2024, 10, 3);
           DateTime now = DateTime.now();
 
           if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
