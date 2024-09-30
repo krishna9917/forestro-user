@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,6 +23,23 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
 
   final Rx<List<Data>> _filteredAstrologers = Rx<List<Data>>([]);
+  Timer? _updateTimer;
+  @override
+  void initState() {
+    super.initState();
+
+    // Periodically update the astrologer data every 5 seconds
+    _updateTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
+      astroController.astroData(); // Re-fetch data from the server
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed
+    _updateTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

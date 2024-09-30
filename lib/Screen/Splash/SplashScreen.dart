@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen>
         // context.goTo(HomePage());
       }
       Future.delayed(const Duration(seconds: 3), () {
-        DateTime eventDate = DateTime(2024, 10, 3);
+        DateTime eventDate = DateTime(2024, 9, 27);
         DateTime now = DateTime.now();
 
         if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {

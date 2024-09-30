@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage> {
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
-
     // print(chatzegocloud());
   }
 

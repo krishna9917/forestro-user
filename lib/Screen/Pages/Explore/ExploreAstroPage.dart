@@ -284,6 +284,15 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
     super.initState();
     blocListController.astroData();
     Get.find<GetAstrologerProfile>().astroData();
+    _startOnlineStatusCheck();
+  }
+
+  void _startOnlineStatusCheck() {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
+      // Re-fetch the astrologer data every second to check the online status
+      await blocListController.astroData();
+      setState(() {}); // Trigger UI update
+    });
   }
 
   Future<void> _refresh() async {

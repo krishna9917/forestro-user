@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -142,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
       if (googleUser == null) {
         setState(() {
           _isLoading = false;
@@ -164,12 +167,19 @@ class _LoginScreenState extends State<LoginScreen> {
       String? name = googleUser.displayName;
       print('Email: $email');
       print('Name: $name');
-
-      // SharedPreferences localStorage = await LocalStorage.init();
-      // localStorage.setString('email', email!);
       verifyProfilee(email!, name!);
+    } on FirebaseAuthException catch (e) {
+      showToast("Firebase Auth Error: ${e.message}");
+    } on PlatformException catch (e) {
+      showToast("Platform Error: ${e.message}");
+    } on SocketException catch (e) {
+      showToast("Network Error: Please check your internet connection.");
     } catch (e) {
-      showToast(e.toString());
+      showToast("An error occurred: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
