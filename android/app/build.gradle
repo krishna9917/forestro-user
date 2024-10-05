@@ -59,7 +59,7 @@ android {
         applicationId "com.foreastro.foreastrouserside"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 8
+        versionCode 10
         versionName "1.0.1"
         
     }

@@ -64,7 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
         localStorage.setString(
             "is_profile_created", isProfileCreated.toString());
-        DateTime eventDate = DateTime(2024, 9, 27);
+        DateTime eventDate = DateTime(2024, 10, 3);
         DateTime now = DateTime.now();
 
         if (isProfileCreated) {

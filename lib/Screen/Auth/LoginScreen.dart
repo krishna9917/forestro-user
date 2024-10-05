@@ -15,6 +15,7 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/OtpScreen.dart';
 import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
@@ -233,7 +234,16 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (res.data['is_profile_created'] == true) {
-          navigate.push(routeMe(const HomePage()));
+          DateTime eventDate = DateTime(2024, 10, 3);
+          DateTime now = DateTime.now();
+          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+            // If the date has passed or is today, navigate to the home page
+            navigate.pushReplacement(routeMe(
+                const HomePage())); // Replace with your actual home page widget
+          } else {
+            navigate.pushReplacement(routeMe(ComingSoonAstrologerPage()));
+          }
+          // navigate.push(routeMe(const HomePage()));
         } else {
           navigate.push(routeMe(SetupProfileScreen(
             phone: _phoneNum,
@@ -314,7 +324,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _privacyPolicy() async {
     final Uri url =
-        Uri.parse('https://foreastro.bonwic.cloud/user-privacy-policy');
+        Uri.parse('https://foreastro.com/user-privacy-policy');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

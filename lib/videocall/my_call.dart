@@ -131,6 +131,11 @@ class _MyCallState extends State<MyCall> {
           },
         ),
         config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+          // ..topMenuBar.isVisible = true
+          // ..topMenuBar.buttons = [
+          //   ZegoCallMenuBarButtonName.minimizingButton,
+          //   ZegoCallMenuBarButtonName.showMemberListButton,
+          // ],
           ..layout = ZegoLayout.pictureInPicture(
             isSmallViewDraggable: true,
             switchLargeOrSmallViewByClick: true,
