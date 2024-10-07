@@ -445,7 +445,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                     image: "exp.svg",
                                     label: "Exp :",
                                     desc: Text(
-                                        "${widget.astrologer?.experience} Years"),
+                                        "${widget.astrologer?.experience}"),
                                   ),
                                   InfoTask(
                                     image: "lang.svg",

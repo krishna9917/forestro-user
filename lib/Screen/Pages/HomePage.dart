@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                       if (bannerList.isNotEmpty) {
                         return CarouselSlider(
                           options: CarouselOptions(
-                            height: 200.0,
+                            height: 160.0,
                             viewportFraction: 0.9,
                             autoPlay: true,
                           ),
@@ -401,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container(
-                          height: MediaQuery.of(context).size.height * 0.2,
+                          height: MediaQuery.of(context).size.height * 0.25,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: List.generate(
@@ -489,17 +489,50 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            data.comment ?? 'NA',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            // textAlign: TextAlign.center,
+                                          child: Builder(
+                                            builder: (context) {
+                                              final comment =
+                                                  data.comment ?? 'NA';
+
+                                              final words = comment.split(' ');
+                                              final chunkedText = List.generate(
+                                                (words.length / 7).ceil(),
+                                                (index) => words
+                                                    .skip(index * 7)
+                                                    .take(7)
+                                                    .join(
+                                                        ' '), // Take 10 words for each chunk
+                                              ).join(
+                                                  '\n'); // Join all chunks with a new line
+
+                                              return Text(
+                                                chunkedText,
+                                                maxLines:
+                                                    null, // Remove maxLines constraint to allow multiple lines
+                                                overflow: TextOverflow
+                                                    .visible, // Change overflow to visible to show the new line
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        ),
+                                        )
+
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(5.0),
+                                        //   child: Text(
+                                        //     data.comment ?? 'NA',
+                                        //     maxLines: 2,
+                                        //     overflow: TextOverflow.ellipsis,
+                                        //     style: const TextStyle(
+                                        //       fontSize: 14,
+                                        //       fontWeight: FontWeight.w400,
+                                        //     ),
+                                        //     // textAlign: TextAlign.center,
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),

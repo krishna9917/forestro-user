@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/PhoneInputBox.dart';
+import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/innerpage/contact%20_supportverifiy.dart';
@@ -79,6 +80,13 @@ class _OnlinePujaState extends State<OnlinePuja>
             const Center(
               child: Text("Online Puja",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+            ),
+            const Center(
+              child: Text("Coming Soon",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                      color: AppColor.primary)),
             ),
             const Center(
               child: Padding(

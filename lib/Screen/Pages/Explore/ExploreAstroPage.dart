@@ -503,7 +503,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                             image: "exp.svg",
                                             label: "Exp :",
                                             desc: Text(
-                                                "${astrologer.experience} Years"),
+                                                "${astrologer.experience}"),
                                           ),
                                           const SizedBox(width: 15),
                                           const SizedBox(width: 10),

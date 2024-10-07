@@ -83,6 +83,18 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     super.initState();
   }
 
+  // void onSumbit() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     if (gender == null) {
+  //       showToast("Select Your Gender");
+  //     } else if (sign == null) {
+  //       showToast("Select Your Zodiac Sign");
+  //     } else {
+  //       makeNewAccount();
+  //     }
+  //   }
+  // }
+
   void onSumbit() async {
     if (_formKey.currentState!.validate()) {
       if (gender == null) {
@@ -95,49 +107,109 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     }
   }
 
+  // Future<void> makeNewAccount() async {
+  //   try {
+  //     // Check if profile image is selected
+  //     if (_pickedImage != null && _pickedImage!.path.isNotEmpty) {
+  //       // Upload profile image
+  //       MultipartFile image =
+  //           await addFormFile(_pickedImage!.path, filename: _pickedImage!.path);
+
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       String? user_id = prefs.getString('user_id');
+
+  //       // Construct FormData
+  //       FormData body = FormData.fromMap({
+  //         'name': name.text,
+  //         'email': email.text,
+  //         'mobile_number': _phoneController.text,
+  //         'gender': gender,
+  //         'sign': sign,
+  //         'date_of_birth': _birthDateController.text,
+  //         'birth_time': _birthtimeController.text,
+  //         'city': city.text[0].toUpperCase() + city.text.substring(1),
+  //         'state': state,
+  //         "user_id": user_id,
+  //         "profile_image": image,
+  //       });
+
+  //       ApiRequest apiRequest = ApiRequest("$apiUrl/user-create-profile",
+  //           method: ApiMethod.POST, body: body);
+  //       Response data = await apiRequest.send();
+  //       if (data.statusCode == 201) {
+  //         DateTime eventDate = DateTime(2024, 10, 3);
+  //         DateTime now = DateTime.now();
+
+  //         if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+  //           navigate.pushReplacement(routeMe(const HomePage()));
+  //         } else {
+  //           context.goTo(ComingSoonAstrologerPage());
+  //         }
+  //         showToast("Successful Profile Created");
+  //       } else {}
+  //     } else {
+  //       showToast("Profile pic not uploded");
+  //     }
+  //   } on DioException catch (e) {
+  //     if (widget.email != null) {
+  //       showToast(
+  //           "This mobile number is already registered. Please try a different mobile number. ");
+  //     } else {
+  //       showToast(
+  //           "This email ID is already registered. Please try a different email ID.");
+  //     }
+
+  //     // showToast(e.message.toString());
+  //   } catch (e) {
+  //     showToast("An unexpected error occurred. Please try again later.");
+  //   } finally {
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //   }
+  // }
+
   Future<void> makeNewAccount() async {
     try {
-      // Check if profile image is selected
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? user_id = prefs.getString('user_id');
+
+      MultipartFile? image;
       if (_pickedImage != null && _pickedImage!.path.isNotEmpty) {
-        // Upload profile image
-        MultipartFile image =
+        image =
             await addFormFile(_pickedImage!.path, filename: _pickedImage!.path);
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? user_id = prefs.getString('user_id');
-
-        // Construct FormData
-        FormData body = FormData.fromMap({
-          'name': name.text,
-          'email': email.text,
-          'mobile_number': _phoneController.text,
-          'gender': gender,
-          'sign': sign,
-          'date_of_birth': _birthDateController.text,
-          'birth_time': _birthtimeController.text,
-          'city': city.text[0].toUpperCase() + city.text.substring(1),
-          'state': state,
-          "user_id": user_id,
-          "profile_image": image,
-        });
-
-        ApiRequest apiRequest = ApiRequest("$apiUrl/user-create-profile",
-            method: ApiMethod.POST, body: body);
-        Response data = await apiRequest.send();
-        if (data.statusCode == 201) {
-          DateTime eventDate = DateTime(2024, 10, 3);
-          DateTime now = DateTime.now();
-
-          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-            navigate.pushReplacement(routeMe(const HomePage()));
-          } else {
-            context.goTo(ComingSoonAstrologerPage());
-          }
-          showToast("Successful Profile Created");
-        } else {}
-      } else {
-        showToast("Profile pic not uploded");
       }
+
+      // Construct FormData
+      FormData body = FormData.fromMap({
+        'name': name.text,
+        'email': email.text,
+        'mobile_number': _phoneController.text,
+        'gender': gender,
+        'sign': sign,
+        'date_of_birth': _birthDateController.text,
+        'birth_time': _birthtimeController.text,
+        'city': city.text[0].toUpperCase() + city.text.substring(1),
+        'state': state,
+        "user_id": user_id,
+        "profile_image":
+            image ?? "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      });
+
+      ApiRequest apiRequest = ApiRequest("$apiUrl/user-create-profile",
+          method: ApiMethod.POST, body: body);
+      Response data = await apiRequest.send();
+      if (data.statusCode == 201) {
+        DateTime eventDate = DateTime(2024, 10, 3);
+        DateTime now = DateTime.now();
+
+        if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+          navigate.pushReplacement(routeMe(const HomePage()));
+        } else {
+          context.goTo(ComingSoonAstrologerPage());
+        }
+        showToast("Successful Profile Created");
+      } else {}
     } on DioException catch (e) {
       if (widget.email != null) {
         showToast(

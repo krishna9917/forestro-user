@@ -30,7 +30,7 @@ class TaskTabs extends StatelessWidget {
     },
     {
       "image": "assets/icons/task-3.png",
-      "title": "Online Pooja",
+      "title": "Online Pooja ",
       "onTap": () {
         navigate.push(routeMe(const OnlinePuja()));
       }
@@ -53,7 +53,6 @@ class TaskTabs extends StatelessWidget {
       "image": "assets/icons/task-6.png",
       "title": "Daily Horoscope",
       "onTap": () {
-       
         navigate.push(routeMe(const HorerscopePage()));
         // Horoscope();
       }
