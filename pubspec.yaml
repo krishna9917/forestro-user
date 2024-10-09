@@ -75,7 +75,7 @@ dev_dependencies:
   firebase_analytics: ^10.10.0
 flutter_icons:
   android: "launcher_icon" 
-  image_path: "assets/logo/Foreastro.png" 
+  image_path: "assets/astro.png" 
   # android: true
   ios: true
 
