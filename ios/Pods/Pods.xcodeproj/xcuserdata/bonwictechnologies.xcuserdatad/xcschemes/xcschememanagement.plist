@@ -194,11 +194,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>OrderedSet-OrderedSet_privacy.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>OrderedSet.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -350,11 +345,6 @@
 			<false/>
 		</dict>
 		<key>flutter_facebook_auth.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>flutter_inappwebview_ios-flutter_inappwebview_ios_privacy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
