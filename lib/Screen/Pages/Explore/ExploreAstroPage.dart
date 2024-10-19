@@ -63,9 +63,7 @@ class _ExploreAstroPageState extends State<ExploreAstroPage> {
     Get.find<GetAstrologerProfile>().astroData();
 
     Get.find<ProfileList>().fetchProfileData();
-    // Timer.periodic(Duration(seconds: 5), (timer) {
-    //   Get.find<GetAstrologerProfile>().astroData();
-    // });
+   
 
     firbasetoken();
   }
@@ -289,9 +287,8 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
 
   void _startOnlineStatusCheck() {
     Timer.periodic(const Duration(seconds: 1), (timer) async {
-      // Re-fetch the astrologer data every second to check the online status
       await blocListController.astroData();
-      setState(() {}); // Trigger UI update
+      setState(() {});
     });
   }
 
@@ -408,7 +405,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                           Column(children: [
                             const SizedBox(height: 5),
                             Text(
-                              addLineBreaks(astrologer.name ?? '', 2),
+                              addLineBreaks(astrologer.name ?? '', 1),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,

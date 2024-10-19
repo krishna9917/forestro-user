@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
@@ -8,11 +7,12 @@ import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
+import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/extensions/build_context.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,41 +30,18 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     Get.find<ProfileList>().fetchProfileData();
-    chatzegocloud();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 60),
     )..repeat();
-    Timer(const Duration(seconds: 3), () {
-      checkTokenAndNavigate();
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      Get.find<GetAstrologerProfile>().astroData();
     });
+    checkTokenAndNavigate();
+   
   }
 
-  chatzegocloud() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user_id = prefs.getString('user_id');
-    if (user_id == null) {
-      print('User ID not found in SharedPreferences');
-      return;
-    }
-
-    var name = 'Unknown User';
-    String profile = profileController.profileDataList.isNotEmpty
-        ? profileController.profileDataList.first.profileImg
-        : '';
-    if (profileController.profileDataList != null &&
-        profileController.profileDataList.isNotEmpty) {
-      name = profileController.profileDataList.first.name ?? 'Unknown User';
-    }
-
-    print("name=======$name $user_id $profile  --   $user_id-user  ");
-
-    await ZIMKit().connectUser(
-      id: "$user_id-user",
-      name: name,
-      avatarUrl: profile,
-    );
-  }
+  
 
   Future<void> checkTokenAndNavigate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

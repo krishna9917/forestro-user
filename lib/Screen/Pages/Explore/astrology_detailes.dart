@@ -790,8 +790,8 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                   height: 50, // Adjust height as needed
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      'assets/default_profile.png',
+                                    return Image.network(
+                                      'https://cdn-icons-png.flaticon.com/512/149/149071.png',
                                       width: 55,
                                       height: 55,
                                       fit: BoxFit.fill,

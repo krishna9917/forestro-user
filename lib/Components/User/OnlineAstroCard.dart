@@ -51,7 +51,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: 200,
-                    height: 210,
+                    height: 220,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 20),
                     decoration: BoxDecoration(
@@ -103,7 +103,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                             }),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 2),
                         Text(
                           astrologer.name ?? 'No Name',
                           maxLines: 1,
@@ -114,7 +114,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        // const SizedBox(height: 8),
                         Text(
                           astrologer.specialization ?? '',
                           style: TextStyle(
@@ -141,6 +141,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                       .toInt(), // Parse as double and then to integer
                                   (_) => Icon(
                                     Icons.star,
+                                    size: 13,
                                     color: AppColor.primary,
                                   ),
                                 ),

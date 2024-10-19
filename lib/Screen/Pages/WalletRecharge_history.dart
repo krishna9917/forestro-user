@@ -130,6 +130,12 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                         .profileDataList!.first.wallet ??
                                     'NA';
 
+                                if (wallet != 'NA') {
+                                  double walletAmount =
+                                      double.tryParse(wallet) ?? 0.0;
+                                  wallet = walletAmount.toStringAsFixed(2);
+                                }
+
                                 return Text(
                                   "₹$wallet",
                                   style: const TextStyle(
@@ -145,7 +151,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                   print("Profile data list is empty");
                                 }
                                 return const Text(
-                                  '00',
+                                  '₹00.00',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,

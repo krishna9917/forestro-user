@@ -58,10 +58,7 @@ class _WalletPageState extends State<WalletPage> {
       "amount": amount,
       "name": "For Astro App",
       "description": "Payment for the some random product",
-      "prefill": {
-        "contact": "+91 8879381057",
-        "email": "anuragtiwari1172000@gmail.com"
-      },
+      "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
       "external": {
         "wallets": ["paytm"],
         "upi": {
