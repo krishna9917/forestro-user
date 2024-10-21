@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foreastro/Components/ViewImage.dart';
@@ -21,19 +23,32 @@ class OnlineAstroCard extends StatefulWidget {
 
 class _OnlineAstroCardState extends State<OnlineAstroCard> {
   late GetAstrologerProfile blocListController;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     blocListController = Get.find<GetAstrologerProfile>();
-    Get.find<GetAstrologerProfile>().astroData().obs;
+    // timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    //   setState(() {
+    //     // Trigger an update every second
+    //     blocListController.astroData().obs;
+    //   });
+    // });
+    // Get.find<GetAstrologerProfile>().astroData().obs;
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Get.find<GetAstrologerProfile>().astroData().obs;
+  void dispose() {
+    timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   Get.find<GetAstrologerProfile>().astroData().obs;
+  // }
 
   @override
   Widget build(BuildContext context) {

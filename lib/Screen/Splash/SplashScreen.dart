@@ -13,7 +13,6 @@ import 'package:foreastro/extensions/build_context.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -34,14 +33,11 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 60),
     )..repeat();
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       Get.find<GetAstrologerProfile>().astroData();
     });
     checkTokenAndNavigate();
-   
   }
-
-  
 
   Future<void> checkTokenAndNavigate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

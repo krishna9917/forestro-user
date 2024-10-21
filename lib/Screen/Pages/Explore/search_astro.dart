@@ -19,26 +19,20 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final GetAstrologerProfile astroController = Get.put(GetAstrologerProfile());
-
   final TextEditingController _searchController = TextEditingController();
+  List<Data> _filteredAstrologers = [];
+  bool _isLoading = true; // Add this variable to track loading state
 
-  final Rx<List<Data>> _filteredAstrologers = Rx<List<Data>>([]);
-  Timer? _updateTimer;
   @override
   void initState() {
     super.initState();
-
-    // Periodically update the astrologer data every 5 seconds
-    _updateTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
-      astroController.astroData(); // Re-fetch data from the server
+    // Fetch the data once when the screen loads
+    astroController.astroData().then((_) {
+      setState(() {
+        _filteredAstrologers = astroController.astroDataList;
+        _isLoading = false; // Set loading to false after data is fetched
+      });
     });
-  }
-
-  @override
-  void dispose() {
-    // Cancel the timer when the widget is disposed
-    _updateTimer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -47,83 +41,79 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         title: const Text("Search Astrologer"),
       ),
-      body: Obx(() {
-        if (astroController.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        _filteredAstrologers.value = astroController.astroDataList;
-
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (query) {
-                  final filtered =
-                      astroController.astroDataList.where((astrologer) {
-                    final nameLower = astrologer.name!.toLowerCase();
-                    final queryLower = query.toLowerCase();
-                    return nameLower.contains(queryLower);
-                  }).toList();
-                  _filteredAstrologers.value = filtered;
-                },
-                decoration: InputDecoration(
-                  hintText: "Search by name",
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (query) {
+                final filtered =
+                    astroController.astroDataList.where((astrologer) {
+                  final nameLower = astrologer.name!.toLowerCase();
+                  final queryLower = query.toLowerCase();
+                  return nameLower.contains(queryLower);
+                }).toList();
+                setState(() {
+                  _filteredAstrologers = filtered;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: "Search by name",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
             ),
-            Expanded(
-              child: Obx(() {
-                return ListView.builder(
-                  itemCount: _filteredAstrologers.value.length,
-                  itemBuilder: (context, index) {
-                    final astrologer = _filteredAstrologers.value[index];
-                    return ListTile(
-                      leading: ClipOval(
-                        child: astrologer.profileImg != null &&
-                                File(astrologer.profileImg!).existsSync()
-                            ? Image.file(
-                                File(astrologer.profileImg!),
-                                width: 55,
-                                height: 55,
-                                fit: BoxFit.fill,
-                              )
-                            : CachedNetworkImage(
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                imageUrl: astrologer.profileImg ?? '',
-                                width: 55,
-                                height: 55,
-                                fit: BoxFit.fill,
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  'assets/default_profile_pic.png',
+          ),
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child:
+                        CircularProgressIndicator()) // Show the circular indicator while loading
+                : ListView.builder(
+                    itemCount: _filteredAstrologers.length,
+                    itemBuilder: (context, index) {
+                      final astrologer = _filteredAstrologers[index];
+                      return ListTile(
+                        leading: ClipOval(
+                          child: astrologer.profileImg != null &&
+                                  File(astrologer.profileImg!).existsSync()
+                              ? Image.file(
+                                  File(astrologer.profileImg!),
                                   width: 55,
                                   height: 55,
                                   fit: BoxFit.fill,
+                                )
+                              : CachedNetworkImage(
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  imageUrl: astrologer.profileImg ?? '',
+                                  width: 55,
+                                  height: 55,
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/default_profile_pic.png',
+                                    width: 55,
+                                    height: 55,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                              ),
-                      ),
-                      title: Text(astrologer.name ?? 'NA'),
-                      subtitle: Text(astrologer.specialization ?? ''),
-                      onTap: () {
-                        navigate.push(routeMe(
-                            AustrologyDetailes(astrologer: astrologer)));
-                      },
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
-        );
-      }),
+                        ),
+                        title: Text(astrologer.name ?? 'NA'),
+                        subtitle: Text(astrologer.specialization ?? ''),
+                        onTap: () {
+                          navigate.push(routeMe(
+                              AustrologyDetailes(astrologer: astrologer)));
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

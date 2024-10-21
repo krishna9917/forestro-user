@@ -63,7 +63,9 @@ class _ExploreAstroPageState extends State<ExploreAstroPage> {
     Get.find<GetAstrologerProfile>().astroData();
 
     Get.find<ProfileList>().fetchProfileData();
-   
+    // Timer.periodic(Duration(seconds: 1), (timer) {
+    //   Get.find<GetAstrologerProfile>().astroData();
+    // });
 
     firbasetoken();
   }

@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )));
         }
       } else {
-        showToast("Something went wrong, please try again.");
+        // showToast("Something went wrong, please try again.");
       }
 
       setState(() {
@@ -299,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )));
         }
       } else {
-        showToast("Something went wrong, please try again.");
+        // showToast("Something went wrong, please try again.");
       }
 
       setState(() {

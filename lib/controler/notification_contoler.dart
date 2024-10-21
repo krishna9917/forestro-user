@@ -38,6 +38,56 @@ class NotificationService {
         fontSize: 16.0,
       );
 
+      // Show bottom sheet after the toast
+      showModalBottomSheet(
+        context: Get.context!,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            height: 150,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Please wait for some time while Astrologer is responding.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                // const SizedBox(height: 20),
+                const CircularProgressIndicator(
+                  color: Colors.orange,
+                ),
+              ],
+            ),
+          );
+        },
+      );
+
       Get.find<SocketController>().sendNewRequest(
           userId: id,
           requestType: servicetype,
