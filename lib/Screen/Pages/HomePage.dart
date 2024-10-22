@@ -191,11 +191,11 @@ class _HomePageState extends State<HomePage> {
                         // Assuming wallet is a number or a string that can be parsed to a number
                         String wallet =
                             profileController.profileDataList.first.wallet ??
-                                'NA';
+                                '0';
 
                         // Check if wallet is a number and format it to two decimal places
-                        String formattedWallet = 'NA';
-                        if (wallet != 'NA') {
+                        String formattedWallet = '0';
+                        if (wallet != '0') {
                           try {
                             formattedWallet =
                                 double.parse(wallet).toStringAsFixed(2);
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                         if (profileController.profileDataList == null) {
                         } else if (profileController.profileDataList.isEmpty) {}
                         return Text(
-                          'NA',
+                          '0',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!

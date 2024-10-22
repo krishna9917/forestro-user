@@ -65,21 +65,6 @@ class _MyCallState extends State<MyCall> {
         "${seconds.toString().padLeft(2, '0')}";
 
     calculateprice(totaltime);
-
-    // socketController.closeSession(
-    //   senderId: widget.userId,
-    //   requestType: "chat",
-    //   message: "User Cancel Can",
-    //   data: {"userId": widget.userId},
-    // );
-
-    Get.back();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 
   Future calculateprice(String totaltime) async {
@@ -97,6 +82,7 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
+        // Get.back();
         setState(() {
           Get.find<ProfileList>().fetchProfileData();
         });
@@ -106,6 +92,12 @@ class _MyCallState extends State<MyCall> {
     } catch (e) {
       // showToast(tosteError);
     }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -123,32 +115,18 @@ class _MyCallState extends State<MyCall> {
             },
           ),
           onCallEnd: (event, defaultAction) {
-            showToast("Call End");
             endChatSession();
-            setState(() {
-              Get.find<ProfileList>().fetchProfileData();
-            });
+            showToast("Call End");
+
+            // setState(() {
+            //   Get.find<ProfileList>().fetchProfileData();
+            // });
           },
         ),
         config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-          // ..topMenuBar.isVisible = true
-          // ..topMenuBar.buttons = [
-          //   ZegoCallMenuBarButtonName.minimizingButton,
-          //   ZegoCallMenuBarButtonName.showMemberListButton,
-          // ],
           ..layout = ZegoLayout.pictureInPicture(
             isSmallViewDraggable: true,
             switchLargeOrSmallViewByClick: true,
-          )
-          ..beauty = ZegoBeautyPluginConfig(
-            effectsTypes: List.empty(growable: true),
-            uiConfig: ZegoBeautyPluginUIConfig(),
-          )
-        // ..topMenuBar.isVisible = true
-        // ..topMenuBar.buttons = [
-        //   ZegoCallMenuBarButtonName.minimizingButton,
-        //   ZegoCallMenuBarButtonName.showMemberListButton,
-        // ],
-        );
+          ));
   }
 }

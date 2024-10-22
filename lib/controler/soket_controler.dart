@@ -125,7 +125,7 @@ class SocketController extends GetxController {
             price: price,
             totalMinutes: totalMinutes,
           ));
-        } else {}
+        } 
       } else if (data['requestType'] == 'video') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';

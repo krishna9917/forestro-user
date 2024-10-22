@@ -14,115 +14,116 @@ class SendRequest {
   }
 
   static Future sendrequestvideo(
-    String? id,
-    token,
-    coupencode,
-  ) async {
+      String? id, String token, String coupencode) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var servicetype = "Video";
         String? user_id = prefs.getString('user_id');
-        var title = "New  Video Call Request";
+        var title = "New Video Call Request";
         String videocallId = generateRandomOrderId();
 
         ApiRequest apiRequest = ApiRequest(
           "$apiUrl/send-communication-request",
           method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'video',
-              'status': 'pending',
-              'communication_id': 'video$videocallId',
-              'coupon_applied': coupencode,
-            },
-          ),
+          body: packFormData({
+            'user_id': user_id,
+            'astro_id': id,
+            'type': 'video',
+            'status': 'pending',
+            'communication_id': 'video$videocallId',
+            'coupon_applied': coupencode,
+          }),
         );
+
         dio.Response data = await apiRequest.send();
         if (data.statusCode == 201) {
-          showToast("Video Call Request send");
+          showToast("Video Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {}
+      } else {
+        // showToast("ID is null");
+      }
     } catch (e) {
-      showToast(tosteError);
+      // showToast("Error: ${e.toString()}");
     }
   }
 
-  static Future sendrequestchat(String? id, token, coupencode) async {
+  static Future sendrequestchat(
+      String? id, String token, String coupencode) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var servicetype = "Chat";
         String? user_id = prefs.getString('user_id');
-        var title = "New  chat Request";
+        var title = "New Chat Request";
         String chatId = generateRandomOrderId();
 
         ApiRequest apiRequest = ApiRequest(
           "$apiUrl/send-communication-request",
           method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'chat',
-              'status': 'pending',
-              'communication_id': 'chat$chatId',
-              'coupon_applied': coupencode,
-            },
-          ),
+          body: packFormData({
+            'user_id': user_id,
+            'astro_id': id,
+            'type': 'chat',
+            'status': 'pending',
+            'communication_id': 'chat$chatId',
+            'coupon_applied': coupencode,
+          }),
         );
+
         dio.Response data = await apiRequest.send();
         if (data.statusCode == 201) {
-          showToast("Chat Request send");
+          showToast("Chat Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {}
+      } else {
+        // showToast("ID is null");
+      }
     } catch (e) {
-      showToast(tosteError);
+      // showToast("Error: ${e.toString()}");
     }
   }
 
-  static Future sendrequestaudio(String? id, token, coupencode) async {
+  static Future sendrequestaudio(
+      String? id, String token, String coupencode) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var servicetype = "Audio";
         String? user_id = prefs.getString('user_id');
-
+        var title = "New Audio Call Request";
         String audiocallId = generateRandomOrderId();
-        var title = "New  Audio Call Request";
 
         ApiRequest apiRequest = ApiRequest(
           "$apiUrl/send-communication-request",
           method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'audio',
-              'status': 'pending',
-              'communication_id': 'audio$audiocallId',
-              'coupon_applied': coupencode,
-            },
-          ),
+          body: packFormData({
+            'user_id': user_id,
+            'astro_id': id,
+            'type': 'audio',
+            'status': 'pending',
+            'communication_id': 'audio$audiocallId',
+            'coupon_applied': coupencode,
+          }),
         );
+
         dio.Response data = await apiRequest.send();
         if (data.statusCode == 201) {
-          showToast("Audio Call Request send");
+          showToast("Audio Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {}
+      } else {
+        // showToast("ID is null");
+      }
     } catch (e) {
-      showToast(tosteError);
+      // showToast("Error: ${e.toString()}");
     }
   }
 }

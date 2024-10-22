@@ -37,13 +37,12 @@ class _AudioCallState extends State<AudioCall> {
 
   @override
   void initState() {
-   
     super.initState();
 
     startTime = DateTime.now();
 
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
-   
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds > 1) {
         setState(() {
@@ -69,11 +68,11 @@ class _AudioCallState extends State<AudioCall> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-
+    print("totaltime================$totaltime");
 
     calculateprice(totaltime);
 
-    Get.back();
+    // Get.back();
   }
 
   @override
@@ -95,33 +94,33 @@ class _AudioCallState extends State<AudioCall> {
           },
         ),
       );
+
       dio.Response data = await apiRequest.send();
+      print("datatttttttttt$data");
       if (data.statusCode == 201) {
+        print(
+            "data send suscessfullyyyyyyyyyyyyyyyyyyyyyy==============================================>>>>>>>>$data");
         setState(() {
           Get.find<ProfileList>().fetchProfileData();
         });
-       
+        Get.back();
       } else {
-       
         showToast("Failed to complete profile. Please try again later.");
       }
-     
     } catch (e) {
-      showToast(tosteError);
+      print(e);
+      // showToast(tosteError);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ZegoUIKitPrebuiltCall(
-      appID: MyConst
-          .appId, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
-      appSign: MyConst
-          .appSign, // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
+      appID: MyConst.appId,
+      appSign: MyConst.appSign,
       userID: widget.userid,
       userName: widget.username,
       callID: widget.callID,
-
       events: ZegoUIKitPrebuiltCallEvents(
         user: ZegoCallUserEvents(
           onEnter: (p) {
@@ -134,31 +133,13 @@ class _AudioCallState extends State<AudioCall> {
           setState(() {
             Get.find<ProfileList>().fetchProfileData();
           });
-          // endTime = DateTime.now();
-          // Duration duration = endTime.difference(startTime);
-
-          // int hours = duration.inHours;
-          // int minutes = duration.inMinutes % 60;
-          // int seconds = duration.inSeconds % 60;
-
-          // String totaltime = "${hours.toString().padLeft(2, '0')}:"
-          //     "${minutes.toString().padLeft(2, '0')}:"
-          //     "${seconds.toString().padLeft(2, '0')}";
-
-          // // This will print the time in the format 00:00:00
-
-          // print("totaltime$totaltime");
-          // calculateprice(totaltime);
-          // Get.off(const ExploreAstroPage());
         },
       ),
-      // You can also use groupVideo/groupVoice/oneOnOneVoice to make more types of calls.
       config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()
         ..layout = ZegoLayout.pictureInPicture(
           isSmallViewDraggable: true,
           switchLargeOrSmallViewByClick: true,
         ),
-      // ..onOnlySelfInRoom = (context) => Navigator.of(context).pop(),
     );
   }
 }

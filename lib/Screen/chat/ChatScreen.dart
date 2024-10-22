@@ -43,7 +43,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-   
     super.initState();
     sessionController = Get.put(SessionController());
     sessionController.newSession(RequestType.Chat);
@@ -84,8 +83,6 @@ class _ChatScreenState extends State<ChatScreen> {
       message: "User Cancel Can",
       data: {"userId": widget.userId},
     );
-
-    Get.back();
   }
 
   @override
@@ -112,19 +109,16 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           Get.find<ProfileList>().fetchProfileData();
         });
-      
-      } else {
-       
-      }
-     
+        Get.back();
+      } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Fluttertoast.showToast(msg: widget.id);
+    // Fluttertoast.showToast(msg: widget.id);
     return WillPopScope(
       onWillPop: () async {
         showAlertPopup(context,

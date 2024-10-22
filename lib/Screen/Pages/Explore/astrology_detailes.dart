@@ -3,22 +3,20 @@ import 'dart:math';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
 import 'package:foreastro/Screen/Pages/Explore/rating_page.dart';
 import 'package:foreastro/Utils/Quick.dart';
+import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AustrologyDetailes extends StatefulWidget {
@@ -598,8 +596,19 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                               var id = astroid
                                                                   .toString();
 
-                                                              sendrequestvideo(
-                                                                  id, token);
+                                                              var coupon = widget
+                                                                  .astrologer!
+                                                                  .videoCouponCode;
+                                                              var coupencode =
+                                                                  coupon
+                                                                      .toString();
+                                                              SendRequest
+                                                                  .sendrequestvideo(
+                                                                      id,
+                                                                      token,
+                                                                      coupencode);
+                                                              // sendrequestvideo(
+                                                              //     id, token);
                                                               Get.back();
                                                             } else {
                                                               showToast(
@@ -646,8 +655,21 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                               var id = astroid
                                                                   .toString();
 
-                                                              sendrequestaudio(
-                                                                  id, token);
+                                                              var coupon = widget
+                                                                  .astrologer!
+                                                                  .callCouponCode;
+                                                              var coupencode =
+                                                                  coupon
+                                                                      .toString();
+
+                                                              SendRequest
+                                                                  .sendrequestaudio(
+                                                                      id,
+                                                                      token,
+                                                                      coupencode);
+
+                                                              // sendrequestaudio(
+                                                              //     id, token);
                                                               Get.back();
                                                             } else {
                                                               showToast(
@@ -694,7 +716,14 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                   widget.astrologer!.id;
                                               var id = astroid.toString();
 
-                                              sendrequestchat(id, token);
+                                              var coupon = widget
+                                                  .astrologer!.chatCouponCode;
+                                              var coupencode =
+                                                  coupon.toString();
+                                              SendRequest.sendrequestchat(
+                                                  id, token, coupencode);
+
+                                              // sendrequestchat(id, token);
                                             } else {
                                               showToast(
                                                   "You Have Insufficient balance to start chat");

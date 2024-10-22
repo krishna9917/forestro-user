@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
@@ -667,10 +668,16 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                 var id = astroid
                                                                     .toString();
 
-                                                                sendrequestvideo(
-                                                                    id,
-                                                                    token,
-                                                                    coupencode);
+                                                                SendRequest
+                                                                    .sendrequestvideo(
+                                                                        id,
+                                                                        token,
+                                                                        coupencode);
+
+                                                                // sendrequestvideo(
+                                                                //     id,
+                                                                //     token,
+                                                                //     coupencode);
                                                                 Get.back();
                                                               } else {
                                                                 showToast(
@@ -730,10 +737,16 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                 var id = astroid
                                                                     .toString();
 
-                                                                sendrequestaudio(
-                                                                    id,
-                                                                    token,
-                                                                    coupencode);
+                                                                SendRequest
+                                                                    .sendrequestaudio(
+                                                                        id,
+                                                                        token,
+                                                                        coupencode);
+
+                                                                // sendrequestaudio(
+                                                                //     id,
+                                                                //     token,
+                                                                //     coupencode);
                                                                 Get.back();
                                                               } else {
                                                                 showToast(
@@ -790,9 +803,10 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                       astrologer.chatCouponCode;
                                                   var coupencode =
                                                       coupon.toString();
-
-                                                  sendrequestchat(
+                                                  SendRequest.sendrequestchat(
                                                       id, token, coupencode);
+                                                  // sendrequestchat(
+                                                  //     id, token, coupencode);
                                                 } else {
                                                   showToast(
                                                       "You Have Insufficient balance to start chat");
