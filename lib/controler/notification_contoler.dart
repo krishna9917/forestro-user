@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:get/get.dart';
@@ -39,50 +40,84 @@ class NotificationService {
       );
 
       // Show bottom sheet after the toast
-      showModalBottomSheet(
+      showDialog(
         context: Get.context!,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        backgroundColor: Colors.white,
         builder: (BuildContext context) {
-          return Container(
-            padding: const EdgeInsets.all(16.0),
-            height: 150,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 40,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
+            backgroundColor: Colors.white,
+            elevation: 10, // Adds shadow for depth
+            content: Container(
+              padding: const EdgeInsets.all(16.0),
+              height: 160, // Adjust height for better spacing
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 50, // Slightly wider for better visual balance
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Please wait for some time while Astrologer is responding.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                  const SizedBox(height: 10),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                              "The planets are adjusting their frequencies just for you... ",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "STAY TUNE ",
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primary, // "5" in green color
+                          ),
+                        ),
+                        TextSpan(
+                          text: "your astrologer will ",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "CONNECT WITH YOU ",
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primary, // "5" in green color
+                          ),
+                        ),
+                        TextSpan(
+                          text: "in any moment! ",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                // const SizedBox(height: 20),
-                const CircularProgressIndicator(
-                  color: Colors.orange,
-                ),
-              ],
+                  // const CircularProgressIndicator(
+                  //   color: Colors.orange,
+                  //   strokeWidth: 3.0, // Thinner for a sleek look
+                  // ),
+                ],
+              ),
             ),
           );
         },
@@ -97,7 +132,7 @@ class NotificationService {
             "profile_pic": img
           });
     } catch (e) {
-      print(e);
+      // print(e);
       Fluttertoast.showToast(
         msg: "Failed to send notification.",
         toastLength: Toast.LENGTH_SHORT,

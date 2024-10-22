@@ -67,8 +67,8 @@ class SocketController extends GetxController {
               ],
             ),
             actionsPadding: const EdgeInsets.only(
-                bottom: 10), // Added spacing between actions
-            actionsAlignment: MainAxisAlignment.spaceAround, // Center buttons
+                bottom: 10), 
+            actionsAlignment: MainAxisAlignment.spaceAround, 
             actions: [
               ElevatedButton(
                 style:
