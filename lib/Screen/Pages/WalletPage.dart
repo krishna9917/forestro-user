@@ -154,7 +154,7 @@ class _WalletPageState extends State<WalletPage> {
       }
       print("manjulika${data}");
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
     setState(() {
       Get.find<ProfileList>().fetchProfileData();

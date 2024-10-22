@@ -72,7 +72,7 @@ class _AppDrawerState extends State<AppDrawer> {
       }
       print("manjulika${data}");
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 

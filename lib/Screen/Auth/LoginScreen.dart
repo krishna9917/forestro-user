@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
           phone: _phoneNum,
         )));
       } else {
-        showToast(tosteError);
+        // showToast(tosteError);
       }
       setState(() {
         loading = false;
@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -263,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -309,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -323,8 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _privacyPolicy() async {
-    final Uri url =
-        Uri.parse('https://foreastro.com/user-privacy-policy');
+    final Uri url = Uri.parse('https://foreastro.com/user-privacy-policy');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
