@@ -43,12 +43,12 @@ class NotificationService {
       showDialog(
         context: Get.context!,
         builder: (BuildContext context) {
-          Future.delayed(const Duration(seconds: 8), () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(
-                  context); // This ensures the dialog is closed after 30 seconds
-            }
-          });
+          // Future.delayed(const Duration(seconds: 8), () {
+          //   if (Navigator.canPop(context)) {
+          //     Navigator.pop(
+          //         context); // This ensures the dialog is closed after 30 seconds
+          //   }
+          // });
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
