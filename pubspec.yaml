@@ -34,13 +34,14 @@ dependencies:
   flexible_grid_view: ^0.0.2
   get: ^4.6.6
   card_swiper: ^3.0.1
-  zego_uikit_prebuilt_call: ^4.14.3
+  zego_uikit_prebuilt_call: ^4.16.12
   zego_uikit_signaling_plugin: ^2.8.2
   firebase_messaging: ^14.9.2
   custom_rating_bar: ^2.0.5
   intl: ^0.19.0
   youtube_player_flutter: ^9.0.1
   url_launcher: ^6.3.0
+  permission_handler: ^11.3.1
   # call function
   zego_zim: ^2.16.0+4
   zego_zimkit: ^1.18.10
@@ -54,7 +55,7 @@ dependencies:
   quickalert: ^1.1.0
   chewie: ^1.8.1
   translator: ^1.0.0
-  zego_uikit_prebuilt_live_streaming: ^3.10.1
+  zego_uikit_prebuilt_live_streaming: ^3.13.5
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^7.0.1
   flutter_launcher_icons: ^0.13.1

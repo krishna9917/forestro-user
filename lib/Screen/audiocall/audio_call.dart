@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -29,18 +28,14 @@ class AudioCall extends StatefulWidget {
 
 class _AudioCallState extends State<AudioCall> {
   late DateTime startTime;
-
   late DateTime endTime;
-
   late Timer _timer;
   late int _remainingSeconds;
 
   @override
   void initState() {
     super.initState();
-
     startTime = DateTime.now();
-
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -49,14 +44,18 @@ class _AudioCallState extends State<AudioCall> {
           _remainingSeconds--;
         });
       } else {
-        _timer.cancel();
-        endChatSession();
+        if (_timer.isActive) {
+          _timer.cancel();
+        }
+        endChatSession(); 
       }
     });
   }
 
   void endChatSession() {
-    // sessionController.closeSession();
+  
+    showToast("Ending session...");
+
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
 
@@ -68,17 +67,7 @@ class _AudioCallState extends State<AudioCall> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    print("totaltime================$totaltime");
-
     calculateprice(totaltime);
-
-    // Get.back();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 
   Future calculateprice(String totaltime) async {
@@ -114,32 +103,47 @@ class _AudioCallState extends State<AudioCall> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ZegoUIKitPrebuiltCall(
-      appID: MyConst.appId,
-      appSign: MyConst.appSign,
-      userID: widget.userid,
-      userName: widget.username,
-      callID: widget.callID,
-      events: ZegoUIKitPrebuiltCallEvents(
-        user: ZegoCallUserEvents(
-          onEnter: (p) {
-            showToast("${p.name} join in call");
-          },
-        ),
-        onCallEnd: (event, defaultAction) {
-          showToast("Call End");
-          endChatSession();
-          setState(() {
-            Get.find<ProfileList>().fetchProfileData();
-          });
-        },
+    return SafeArea(
+      top: true,
+      child: Stack(
+        children: [
+          ZegoUIKitPrebuiltCall(
+              appID: MyConst.appId,
+              appSign: MyConst.appSign,
+              userID: widget.userid,
+              userName: widget.username,
+              callID: widget.callID,
+              events: ZegoUIKitPrebuiltCallEvents(
+                onCallEnd: (event, defaultAction) {
+                  endChatSession();
+                  showToast("Call End");
+                  setState(() {
+                    Get.find<ProfileList>().fetchProfileData();
+                  });
+                  Get.back();
+                },
+                onError: (error) {
+                  print("Error: $error");
+                },
+                user: ZegoCallUserEvents(
+                  onEnter: (user) {
+                    showToast("${user.name} joined the call");
+                  },
+                  onLeave: (user) {
+                    print("${user.name} left the call");
+                  },
+                ),
+              ),
+              config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()),
+        ],
       ),
-      config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()
-        ..layout = ZegoLayout.pictureInPicture(
-          isSmallViewDraggable: true,
-          switchLargeOrSmallViewByClick: true,
-        ),
     );
   }
 }

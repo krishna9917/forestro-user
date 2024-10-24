@@ -33,9 +33,9 @@ android {
     compileSdk 34
     ndkVersion flutter.ndkVersion
 
-    compileOptions {
-        sourceCompatibility = '17' // or '17'
-    targetCompatibility = '17' // or '17'
+     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions{
@@ -58,7 +58,7 @@ android {
     defaultConfig {
         applicationId "com.foreastro.foreastrouserside"
         minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 34
         versionCode 12
         versionName "1.0.1"
         
@@ -78,7 +78,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
     implementation 'com.google.firebase:firebase-storage:19.2.0' 

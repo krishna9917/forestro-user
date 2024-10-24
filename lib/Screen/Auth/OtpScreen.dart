@@ -52,6 +52,7 @@ class _OtpScreenState extends State<OtpScreen> {
   Future verifyProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
+
     try {
       ApiRequest apiRequest = ApiRequest('$apiUrl/user-login-verify-otp',
           method: ApiMethod.POST,
@@ -64,18 +65,10 @@ class _OtpScreenState extends State<OtpScreen> {
 
         localStorage.setString(
             "is_profile_created", isProfileCreated.toString());
-        DateTime eventDate = DateTime(2024, 10, 3);
-        DateTime now = DateTime.now();
 
         if (isProfileCreated) {
           localStorage.setString("token", res.data['data']['token']);
-          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-            // If the date has passed or is today, navigate to the home page
-            navigate.pushReplacement(routeMe(
-                const HomePage())); // Replace with your actual home page widget
-          } else {
-            navigate.pushReplacement(routeMe(ComingSoonAstrologerPage()));
-          }
+          navigate.pushReplacement(routeMe(const HomePage()));
         } else {
           localStorage.setString("token", res.data['data']['token']);
           // Navigate to SetupProfileScreen

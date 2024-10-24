@@ -37,7 +37,6 @@ class _MyCallState extends State<MyCall> {
     super.initState();
 
     startTime = DateTime.now();
-
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -46,13 +45,17 @@ class _MyCallState extends State<MyCall> {
           _remainingSeconds--;
         });
       } else {
-        _timer.cancel();
+        if (_timer.isActive) {
+          _timer.cancel();
+        }
         endChatSession();
       }
     });
   }
 
   void endChatSession() {
+    // showToast("Ending session...");
+
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
 
@@ -82,10 +85,10 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        // Get.back();
         setState(() {
           Get.find<ProfileList>().fetchProfileData();
         });
+        Get.back();
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
@@ -117,10 +120,10 @@ class _MyCallState extends State<MyCall> {
           onCallEnd: (event, defaultAction) {
             endChatSession();
             showToast("Call End");
-
-            // setState(() {
-            //   Get.find<ProfileList>().fetchProfileData();
-            // });
+            setState(() {
+              Get.find<ProfileList>().fetchProfileData();
+            });
+            Get.back();
           },
         ),
         config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()

@@ -56,13 +56,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    Get.put(BlocList()).blocData();
     Get.find<ProfileList>().fetchProfileData();
+    Get.put(BlocList()).blocData();
+    fetchAndInitProfile();
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
-    chatzegocloud();
+
     // print(chatzegocloud());
   }
 
@@ -80,24 +80,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> fetchAndInitProfile() async {
+    await Get.find<ProfileList>().fetchProfileData();
+    chatzegocloud();
+  }
+
   void chatzegocloud() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
+
     if (user_id == null) {
       print('User ID not found in SharedPreferences');
       return;
     }
 
-    var name;
     String profile = profileController.profileDataList.isNotEmpty
         ? profileController.profileDataList.first.profileImg
         : '';
-    if (profileController.profileDataList != null &&
-        profileController.profileDataList.isNotEmpty) {
-      name = profileController.profileDataList.first.name ?? 'Unknown User';
+
+    String name = profileController.profileDataList.isNotEmpty
+        ? profileController.profileDataList.first.name
+        : '';
+
+    if (name.isEmpty) {
+      print("Name not found");
+      return;
     }
 
-    print("name=======$name $user_id $profile  --   $user_id-user  ");
+    print("name=======$name $user_id $profile  --   $user_id-user");
 
     await ZIMKit().connectUser(
       id: "$user_id-user",
@@ -130,7 +140,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Get.find<ProfileList>();
     var outlineInputBorder = const OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(50)),
       borderSide: BorderSide(

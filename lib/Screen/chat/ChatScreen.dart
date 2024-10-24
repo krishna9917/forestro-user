@@ -110,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Get.find<ProfileList>().fetchProfileData();
         });
         Get.back();
-      } else {}
+      }
     } catch (e) {
       // showToast(tosteError);
     }
@@ -128,6 +128,9 @@ class _ChatScreenState extends State<ChatScreen> {
             confirmBtnText: "Yes",
             type: QuickAlertType.warning, onConfirmBtnTap: () {
           endChatSession();
+          setState(() {
+            Get.find<ProfileList>().fetchProfileData();
+          });
         });
         return true;
       },

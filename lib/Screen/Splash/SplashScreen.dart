@@ -11,6 +11,7 @@ import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/extensions/build_context.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,6 +38,14 @@ class _SplashScreenState extends State<SplashScreen>
       Get.find<GetAstrologerProfile>().astroData();
     });
     checkTokenAndNavigate();
+    requestPermissions();
+  }
+
+  Future<void> requestPermissions() async {
+    await [
+      Permission.camera,
+      Permission.microphone,
+    ].request();
   }
 
   Future<void> checkTokenAndNavigate() async {
@@ -52,14 +61,14 @@ class _SplashScreenState extends State<SplashScreen>
       Future.delayed(const Duration(seconds: 3), () {
         DateTime eventDate = DateTime(2024, 10, 3);
         DateTime now = DateTime.now();
-
-        if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-          // If the date has passed or is today, navigate to the home page
-          navigate.pushReplacement(routeMe(
-              const HomePage())); // Replace with your actual home page widget
-        } else {
-          context.goTo(ComingSoonAstrologerPage());
-        }
+        navigate.pushReplacement(routeMe(const HomePage()));
+        // if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+        //   // If the date has passed or is today, navigate to the home page
+        //   navigate.pushReplacement(routeMe(
+        //       const HomePage())); // Replace with your actual home page widget
+        // } else {
+        //   context.goTo(ComingSoonAstrologerPage());
+        // }
       });
     } else {
       Future.delayed(const Duration(seconds: 3), () {

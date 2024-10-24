@@ -14,8 +14,8 @@ class SocketService {
       }
     });
 
-    socket.onConnect((data) => {});
-    socket.onDisconnect((data) => {});
+    socket.onConnect((data) => {print("connect")});
+    socket.onDisconnect((data) => {print("diconnect")});
     socket.on(
       "error",
       (data) => Logger().e(

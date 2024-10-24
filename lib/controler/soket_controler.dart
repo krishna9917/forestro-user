@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
-import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
 import 'package:foreastro/Screen/audiocall/audio_call.dart';
 import 'package:foreastro/Screen/chat/ChatScreen.dart';
 import 'package:foreastro/Utils/Quick.dart';
@@ -16,11 +15,12 @@ class SocketController extends GetxController {
   final _socket = Rxn<IO.Socket>();
   IO.Socket? get socket => _socket.value;
   bool? get socketConnected => _socket.value?.connected;
-  // Map? _workdata;
-  // bool _iAmWorkScreen = false;
-  // bool get iAmWorkScreen => _iAmWorkScreen;
-  // Map? get workdata => _workdata;
+
   var liveAstrologers = <Map<String, dynamic>>[].obs;
+  Map? _workdata;
+  bool _iAmWorkScreen = false;
+  bool get iAmWorkScreen => _iAmWorkScreen;
+  Map? get workdata => _workdata;
 
   Future<IO.Socket?> initSocketConnection() async {
     _socket.value = await SocketService.initSocket();
@@ -66,9 +66,8 @@ class SocketController extends GetxController {
                 ),
               ],
             ),
-            actionsPadding: const EdgeInsets.only(
-                bottom: 10), 
-            actionsAlignment: MainAxisAlignment.spaceAround, 
+            actionsPadding: const EdgeInsets.only(bottom: 10),
+            actionsAlignment: MainAxisAlignment.spaceAround,
             actions: [
               ElevatedButton(
                 style:
@@ -82,7 +81,7 @@ class SocketController extends GetxController {
                     'data': data,
                   });
                   Get.back();
-                  Get.off(const ExploreAstroPage());
+                  // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("Yes"),
               ),
@@ -97,7 +96,7 @@ class SocketController extends GetxController {
                     'data': data,
                   });
                   Get.back();
-                  Get.off(const ExploreAstroPage());
+                  // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("No"),
               ),
@@ -125,7 +124,7 @@ class SocketController extends GetxController {
             price: price,
             totalMinutes: totalMinutes,
           ));
-        } 
+        }
       } else if (data['requestType'] == 'video') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
@@ -148,15 +147,11 @@ class SocketController extends GetxController {
               totalMinutes: totalMinutes,
             ),
           );
-        } else {
-          showToast("Invalid wallet amount or price per minute.");
         }
       } else if (data['requestType'] == 'audio') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
         var price = data['data']['astroData']['call_charges_per_min'];
-
-        // Ensure wallet and price are valid numbers
         double walletAmount = double.tryParse(wallet) ?? 0;
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
 
@@ -172,22 +167,20 @@ class SocketController extends GetxController {
               totalMinutes: totalMinutes,
             ),
           );
-        } else {
-          showToast("Invalid wallet amount or price per minute.");
         }
+      } else {
+        _iAmWorkScreen = false;
       }
-      Fluttertoast.showToast(
-        msg: "accepted ${data['requestType']} successfully!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "accepted ${data['requestType']} successfully!",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.green,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
     });
-
-    
 
     socket?.on('rejected', (data) {
       Fluttertoast.showToast(
@@ -203,8 +196,10 @@ class SocketController extends GetxController {
     });
 
     socket?.on("closeSession", (data) {
+      onWorkEnd();
       Get.back();
-      if (data['requestType'] == "chat") {}
+
+      // Get.offAll(const ExploreAstroPage());
     });
 
     socket?.on('liveFeeds', (data) {
@@ -235,34 +230,17 @@ class SocketController extends GetxController {
       'data': data,
       'message': message,
     });
+    if (data['requestType'] == "chat") {
+      Get.back();
+    }
+    Get.back();
   }
 
-  // void onWorkEnd() {
-  //     _iAmWorkScreen = false;
-  //     _workdata = null;
-  //   }
-
-//  endLiveSession() {
-//     socket?.emit("endLiveSession");
-//     onWorkEnd();
-//   }
-// Live Stream Socket
-
-// Get All Live Stream Users Data liveFeeds
-
-// `socket.on('liveFeeds', (data){ print('data'); });`
-
-// Reload If Need live Feeds
-
-// `⁠ socket.emit('reloadLiveFeed'); ⁠`
-
-// On Join Any Live Session
-
-// ⁠ `socket.emit('joinLiveSession', { liveId: 'live_session_id' }); ⁠`
-
-// on leave A Live Session
-
-// ⁠ `socket.emit('leaveLiveSession', { liveId: 'live_session_id' }); ⁠`
+  void onWorkEnd() {
+    _iAmWorkScreen = false;
+    _workdata = null;
+    update();
+  }
 
   Future<void> logoutUser() async {
     socket?.disconnect();
@@ -272,6 +250,4 @@ class SocketController extends GetxController {
     await prefs.clear();
     Get.offAll(() => const LoginScreen());
   }
-  
-  
 }
