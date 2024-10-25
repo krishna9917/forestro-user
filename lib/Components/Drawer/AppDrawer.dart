@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
+import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/CallHistory.dart';
 import 'package:foreastro/Screen/Pages/ChatHistory.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
@@ -16,9 +18,9 @@ import 'package:foreastro/Screen/twkt/twkt.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -36,9 +38,8 @@ class _AppDrawerState extends State<AppDrawer> {
       String? user_id = prefs.getString('user_id');
       String? fcmtoken = prefs.getString('fcm_token');
 
-      print(fcmtoken);
-
-      print(user_id);
+      print("FCM Token: $fcmtoken");
+      print("User ID: $user_id");
 
       ApiRequest apiRequest = ApiRequest(
         "$apiUrl/user-logout",
@@ -49,30 +50,18 @@ class _AppDrawerState extends State<AppDrawer> {
           },
         ),
       );
+
       dio.Response data = await apiRequest.send();
-      if (data.statusCode == 201) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        // Clear SharedPreferences
-        await prefs.clear();
+
+      if (data.statusCode == 2001) {
+        showToast('Logout successfully!');
 
         // Check if SharedPreferences are successfully cleared
         bool prefsCleared = (await prefs.getKeys()).isEmpty;
-
-        if (prefsCleared) {
-          Get.put(SocketController()).logoutUser();
-          showToast('Logout successfully!');
-          exit(0);
-        } else {
-          // Handle if SharedPreferences clearing failed
-          print("Failed to clear SharedPreferences.");
-        }
-        print("API request successful: ${data.data}");
-      } else {
-        print("API request failed with status code: ${data.statusCode}");
       }
-      print("manjulika${data}");
     } catch (e) {
-      // showToast(tosteError);
+      print("Logout Error: $e");
+      // showToast("An error occurred during logout.");
     }
   }
 
@@ -361,7 +350,13 @@ class _AppDrawerState extends State<AppDrawer> {
                   DrawerTiles(
                     image: "assets/icons/logout.svg",
                     title: "Log Out",
-                    onTap: () {
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.clear();
+                      await GoogleSignIn().signOut();
+                      // await FirebaseAuth.instance.signOut();
+                      Get.offAll(LoginScreen());
                       Logout();
                     },
                   ),

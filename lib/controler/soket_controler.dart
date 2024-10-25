@@ -117,7 +117,7 @@ class SocketController extends GetxController {
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-          Get.to(ChatScreen(
+          Get.off(ChatScreen(
             id: data['userId'] + "-astro",
             userId: data['userId'],
             callID: data['data']['communication_id'].toString(),
@@ -138,7 +138,7 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-          Get.to(
+          Get.off(
             MyCall(
               userid: data['userId'].toString(),
               username: data['data']['name'].toString(),
@@ -158,7 +158,7 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-          Get.to(
+          Get.off(
             AudioCall(
               userid: data['userId'].toString(),
               username: data['data']['name'].toString(),

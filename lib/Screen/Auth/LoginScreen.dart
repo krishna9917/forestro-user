@@ -150,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLoading = false;
         });
+        showToast("Google sign-in was canceled.");
         return;
       }
 
@@ -163,18 +164,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      email = googleUser.email;
-      token = googleAuth.accessToken;
-      String? name = googleUser.displayName;
-      print('Email: $email');
-      print('Name: $name');
-      verifyProfilee(email!, name!);
-    } on FirebaseAuthException catch (e) {
-      showToast("Firebase Auth Error: ${e.message}");
-    } on PlatformException catch (e) {
-      showToast("Platform Error: ${e.message}");
-    } on SocketException catch (e) {
-      showToast("Network Error: Please check your internet connection.");
+      // Set email and token if they are non-null, otherwise show an error
+      if (googleUser.email != null && googleAuth.accessToken != null) {
+        email = googleUser.email!;
+        token = googleAuth.accessToken!;
+        String name =
+            googleUser.displayName ?? "User"; // Use a default name if null
+
+        await verifyProfilee(email!, name);
+      } else {
+        showToast("Login failed. Missing email or access token.");
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
     } catch (e) {
       showToast("An error occurred: $e");
     } finally {
@@ -211,20 +215,29 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future verifyProfilee(String email, String name) async {
+  Future<void> verifyProfilee(String email, String name) async {
     try {
-      ApiRequest apiRequest = ApiRequest('$apiUrl/login-with-google',
-          method: ApiMethod.POST,
-          body: packFormData({
-            "email": email,
-            "token": token,
-          }));
+      ApiRequest apiRequest = ApiRequest(
+        '$apiUrl/login-with-google',
+        method: ApiMethod.POST,
+        body: packFormData({
+          "email": email,
+          "token": token, // Ensure token is valid here
+        }),
+      );
       Response res = await apiRequest.send<Map>();
 
       SharedPreferences localStorage = await LocalStorage.init();
 
       if (res.data['status'] == true) {
-        localStorage.setString("token", res.data['token']);
+        String? resToken = res.data['token'];
+        if (resToken != null) {
+          localStorage.setString("token", resToken);
+        } else {
+          showToast("Error: 'token' in response is null");
+          return;
+        }
+
         int? userId = res.data['user_id'];
         if (userId != null) {
           localStorage.setString("user_id", userId.toString());
@@ -234,36 +247,22 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (res.data['is_profile_created'] == true) {
-          DateTime eventDate = DateTime(2024, 10, 3);
-          DateTime now = DateTime.now();
-          if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-            // If the date has passed or is today, navigate to the home page
-            navigate.pushReplacement(routeMe(
-                const HomePage())); // Replace with your actual home page widget
-          } else {
-            navigate.pushReplacement(routeMe(ComingSoonAstrologerPage()));
-          }
-          // navigate.push(routeMe(const HomePage()));
+          navigate.pushReplacement(routeMe(const HomePage()));
         } else {
           navigate.push(routeMe(SetupProfileScreen(
-            phone: _phoneNum,
+            phone: _phoneNum ?? '',
             userId: userId,
             email: email,
             name: name,
           )));
         }
-      } else {
-        // showToast("Something went wrong, please try again.");
       }
-
-      setState(() {
-        loading = false;
-      });
     } catch (e) {
+      showToast("An error occurred: $e");
+    } finally {
       setState(() {
         loading = false;
       });
-      // showToast(tosteError);
     }
   }
 
