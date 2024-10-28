@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,10 +60,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BlocList()).blocData();
+    Get.put(CelibrityList()).celibrityData();
+    Get.put(ClientSays()).clientsaysData();
+
     fetchAndInitProfile();
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
+
+    
 
     // print(chatzegocloud());
   }

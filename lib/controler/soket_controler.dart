@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
+import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/audiocall/audio_call.dart';
 import 'package:foreastro/Screen/chat/ChatScreen.dart';
 import 'package:foreastro/Utils/Quick.dart';
+import 'package:foreastro/controler/baner_controler.dart';
+import 'package:foreastro/controler/celebrity_controler.dart';
+import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/soket_services.dart';
 import 'package:foreastro/videocall/my_call.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -248,6 +253,18 @@ class SocketController extends GetxController {
     socket?.dispose();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+    // showToast('Logout successfully!');
+
+    await GoogleSignIn().signOut();
+    // final profileController = Get.find<ProfileList>();
+    // final bannerController = Get.put(BannerList());
+    // final celebrity = Get.put(CelibrityList());
+    // final clientsays = Get.put(ClientSays());
+    // bannerController.dataList.clear();
+    // profileController.profileDataList.clear();
+    // clientsays.clientsaysDataList.clear();
+    // celebrity.celibrityDataList.clear();
     Get.offAll(() => const LoginScreen());
+    showToast('Logout successfully!');
   }
 }

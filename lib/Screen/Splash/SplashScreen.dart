@@ -12,6 +12,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/extensions/build_context.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:restart/restart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    restart;
     Get.find<ProfileList>().fetchProfileData();
     _controller = AnimationController(
       vsync: this,

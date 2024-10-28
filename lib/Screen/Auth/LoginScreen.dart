@@ -53,9 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String? token = '';
   String? fbtoken = '';
 
-  void onSkip() {
-    navigate.push(routeMe(const HomePage()));
-  }
+  // void onSkip() {
+  //   navigate.push(routeMe(const HomePage()));
+  // }
 
   Future<void> onClick() async {
     if (_phoneNum.length != 10) {
@@ -164,12 +164,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Set email and token if they are non-null, otherwise show an error
+      
       if (googleUser.email != null && googleAuth.accessToken != null) {
         email = googleUser.email!;
         token = googleAuth.accessToken!;
         String name =
-            googleUser.displayName ?? "User"; // Use a default name if null
+            googleUser.displayName ?? "User"; 
 
         await verifyProfilee(email!, name);
       } else {
