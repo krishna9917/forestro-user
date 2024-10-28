@@ -162,14 +162,16 @@ class _LoginScreenState extends State<LoginScreen> {
         idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-      
-      if (googleUser.email != null && googleAuth.accessToken != null) {
+      String userId = userCredential.user?.uid ?? "";
+      print("user============$userId");
+
+      if (googleUser.email != null && userCredential.user?.uid != null) {
         email = googleUser.email!;
-        token = googleAuth.accessToken!;
-        String name =
-            googleUser.displayName ?? "User"; 
+        token = userCredential.user?.uid!;
+        String name = googleUser.displayName ?? "User";
 
         await verifyProfilee(email!, name);
       } else {
