@@ -40,6 +40,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Video Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
+          NotificationService.sendNotifications(servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
@@ -78,6 +79,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Chat Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
+          NotificationService.sendNotifications(servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
@@ -116,6 +118,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Audio Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
+          NotificationService.sendNotifications(servicetype);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }

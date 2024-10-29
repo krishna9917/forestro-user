@@ -19,11 +19,12 @@ import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/firebase_options.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
   /////////////////////////// chat function /////////////////////////////
@@ -38,8 +39,9 @@ Future<void> main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Notification();
+
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null) {}
   });
@@ -49,6 +51,9 @@ Future<void> main(List<String> args) async {
     await prefs.setString('fcm_token', fcmToken);
   }
   print(fcmToken);
+  // OneSignal.Debug.setLogLevel(OSLogLevel.debug);
+  // OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
+  // OneSignal.Notifications.requestPermission(true);
   runApp(const InitApp());
 }
 

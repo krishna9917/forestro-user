@@ -27,6 +27,7 @@ import 'package:foreastro/controler/bloc_controler.dart';
 import 'package:foreastro/controler/celebrity_controler.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
+import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/model/listaustro_model.dart';
@@ -67,8 +68,6 @@ class _HomePageState extends State<HomePage> {
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
-
-    
 
     // print(chatzegocloud());
   }
@@ -256,6 +255,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
+                  // NotificationService.sendNotifications();
                   navigate.push(routeMe(const NotificationPage()));
                 },
                 child: Badge(

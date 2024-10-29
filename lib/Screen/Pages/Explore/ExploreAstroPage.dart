@@ -155,7 +155,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
         }
       } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -163,7 +163,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
     var random = Random();
     int randomNumber = 10000 +
         random.nextInt(
-            90000); // Generates a random number between 10000 and 99999
+            90000);
     return '$randomNumber';
   }
 
@@ -239,7 +239,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
         }
       } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -276,7 +276,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
         }
       } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 

@@ -150,4 +150,29 @@ class NotificationService {
       );
     }
   }
+
+  static Future<void> sendNotifications(String servicetype) async {
+    final profileController = Get.find<ProfileList>();
+    var url = Uri.parse('https://onesignal.com/api/v1/notifications');
+    var headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': 'ZWE1ODgwNDEtZGM5NC00NjRhLWE1YjEtZjg1ZGNmZDdjYjdk',
+    };
+
+    var body = jsonEncode({
+      'app_id': "689405dc-4610-4a29-8268-4541a0f6299a",
+      'included_segments': ['All'],
+      'contents': {
+        'en':
+            '${profileController.profileDataList.first.name ?? 'NA'} has just unlocked the secrets of the cosmos! 🔮🌌 by availing our $servicetype'
+      },
+    });
+
+    var response = await http.post(url, headers: headers, body: body);
+    if (response.statusCode == 200) {
+      print('Notification sent successfully!');
+    } else {
+      print('Failed to send notification: ${response.body}');
+    }
+  }
 }
