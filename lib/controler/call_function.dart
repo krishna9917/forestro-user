@@ -14,7 +14,7 @@ class SendRequest {
   }
 
   static Future sendrequestvideo(
-      String? id, String token, String coupencode) async {
+      String? id, String token, String coupencode, String signalId) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,7 +40,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Video Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
-          NotificationService.sendNotifications(servicetype);
+          NotificationService.sendNotifications(servicetype, signalId);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
@@ -53,7 +53,7 @@ class SendRequest {
   }
 
   static Future sendrequestchat(
-      String? id, String token, String coupencode) async {
+      String? id, String token, String coupencode, String signalId) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,7 +79,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Chat Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
-          NotificationService.sendNotifications(servicetype);
+          NotificationService.sendNotifications(servicetype, signalId);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
@@ -92,7 +92,7 @@ class SendRequest {
   }
 
   static Future sendrequestaudio(
-      String? id, String token, String coupencode) async {
+      String? id, String token, String coupencode, String signalId) async {
     try {
       if (id != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -118,7 +118,7 @@ class SendRequest {
         if (data.statusCode == 201) {
           showToast("Audio Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
-          NotificationService.sendNotifications(servicetype);
+          NotificationService.sendNotifications(servicetype, signalId);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }

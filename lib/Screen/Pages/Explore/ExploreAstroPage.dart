@@ -161,9 +161,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
 
   String generateRandomOrderId() {
     var random = Random();
-    int randomNumber = 10000 +
-        random.nextInt(
-            90000);
+    int randomNumber = 10000 + random.nextInt(90000);
     return '$randomNumber';
   }
 
@@ -668,11 +666,19 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                 var id = astroid
                                                                     .toString();
 
+                                                                var signal =
+                                                                    astrologer
+                                                                        .signalId;
+                                                                var signalId =
+                                                                    signal
+                                                                        .toString();
+
                                                                 SendRequest
                                                                     .sendrequestvideo(
                                                                         id,
                                                                         token,
-                                                                        coupencode);
+                                                                        coupencode,
+                                                                        signalId);
 
                                                                 // sendrequestvideo(
                                                                 //     id,
@@ -736,12 +742,19 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                         .toString();
                                                                 var id = astroid
                                                                     .toString();
+                                                                var signal =
+                                                                    astrologer
+                                                                        .signalId;
+                                                                var signalId =
+                                                                    signal
+                                                                        .toString();
 
                                                                 SendRequest
                                                                     .sendrequestaudio(
                                                                         id,
                                                                         token,
-                                                                        coupencode);
+                                                                        coupencode,
+                                                                        signalId);
 
                                                                 // sendrequestaudio(
                                                                 //     id,
@@ -803,8 +816,15 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                       astrologer.chatCouponCode;
                                                   var coupencode =
                                                       coupon.toString();
+                                                  var signal =
+                                                      astrologer.signalId;
+                                                  var signalId =
+                                                      signal.toString();
                                                   SendRequest.sendrequestchat(
-                                                      id, token, coupencode);
+                                                      id,
+                                                      token,
+                                                      coupencode,
+                                                      signalId);
                                                   // sendrequestchat(
                                                   //     id, token, coupencode);
                                                 } else {

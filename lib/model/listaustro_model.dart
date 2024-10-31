@@ -48,6 +48,7 @@ class Data {
   dynamic isOnline;
   dynamic followStatus;
   dynamic notifactionToken;
+  dynamic signalId;
 
   Data(
       {this.id,
@@ -72,7 +73,8 @@ class Data {
       this.videoDiscountStatus,
       this.isOnline,
       this.followStatus,
-      this.notifactionToken});
+      this.notifactionToken,
+      this.signalId});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -98,6 +100,7 @@ class Data {
     isOnline = json['is_online'];
     followStatus = json['follow_status'];
     notifactionToken = json['notifaction_token'];
+    signalId = json['signal_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +128,7 @@ class Data {
     data['is_online'] = this.isOnline;
     data['follow_status'] = this.followStatus;
     data['notifaction_token'] = this.notifactionToken;
+    data['signal_id'] = this.signalId;
     return data;
   }
 }

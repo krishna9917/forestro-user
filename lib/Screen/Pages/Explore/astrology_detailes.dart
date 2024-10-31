@@ -602,11 +602,18 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                               var coupencode =
                                                                   coupon
                                                                       .toString();
+                                                              var signal = widget
+                                                                  .astrologer!
+                                                                  .signalId;
+                                                              var signalId =
+                                                                  signal
+                                                                      .toString();
                                                               SendRequest
                                                                   .sendrequestvideo(
                                                                       id,
                                                                       token,
-                                                                      coupencode);
+                                                                      coupencode,
+                                                                      signalId);
                                                               // sendrequestvideo(
                                                               //     id, token);
                                                               Get.back();
@@ -661,12 +668,19 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                               var coupencode =
                                                                   coupon
                                                                       .toString();
+                                                              var signal = widget
+                                                                  .astrologer!
+                                                                  .signalId;
+                                                              var signalId =
+                                                                  signal
+                                                                      .toString();
 
                                                               SendRequest
                                                                   .sendrequestaudio(
                                                                       id,
                                                                       token,
-                                                                      coupencode);
+                                                                      coupencode,
+                                                                      signalId);
 
                                                               // sendrequestaudio(
                                                               //     id, token);
@@ -720,8 +734,11 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                   .astrologer!.chatCouponCode;
                                               var coupencode =
                                                   coupon.toString();
-                                              SendRequest.sendrequestchat(
-                                                  id, token, coupencode);
+                                              var signal =
+                                                  widget.astrologer!.signalId;
+                                              var signalId = signal.toString();
+                                              SendRequest.sendrequestchat(id,
+                                                  token, coupencode, signalId);
 
                                               // sendrequestchat(id, token);
                                             } else {

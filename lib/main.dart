@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
@@ -19,6 +20,7 @@ import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/firebase_options.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -50,11 +52,51 @@ Future<void> main(List<String> args) async {
     await prefs.setString('fcm_token', fcmToken);
   }
   print(fcmToken);
+
+  initOneSignal();
   // OneSignal.Debug.setLogLevel(OSLogLevel.debug);
   // OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
   // OneSignal.Notifications.requestPermission(true);
   runApp(const InitApp());
 }
+
+Future<void> initOneSignal() async {
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId("689405dc-4610-4a29-8268-4541a0f6299a");
+  OneSignal.shared.promptUserForPushNotificationPermission();
+
+  OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
+    event.complete(event.notification);
+  });
+
+  // Delay to ensure initialization completes
+  await Future.delayed(Duration(seconds: 2));
+  _handleGetExternalId();
+}
+
+void _handleGetExternalId() async {
+  final status = await OneSignal.shared.getDeviceState();
+  final playerId = status?.userId;
+  if (playerId != null) {
+    print('ID: $playerId');
+  } else {
+    print('User ID is null; OneSignal may not be initialized yet.');
+  }
+}
+
+// void _handleGetOnesignalId() async {
+//   OneSignal.User.pushSubscription.addObserver((state) {
+//     print("========abcd=======");
+//     print(OneSignal.User.pushSubscription.optedIn);
+//     print(OneSignal.User.pushSubscription.id);
+//     print(OneSignal.User.pushSubscription.token);
+//     print(state.current.jsonRepresentation());
+//   });
+//   var onesignalId = await OneSignal.User.pushSubscription.id;
+//   print('OneSignal ID: $onesignalId');
+//   final prefs = await SharedPreferences.getInstance();
+//   await prefs.setString('onesignal_id', onesignalId ?? '');
+// }
 
 Future<void> Notification() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

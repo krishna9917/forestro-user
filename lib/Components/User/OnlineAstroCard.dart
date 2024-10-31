@@ -188,9 +188,11 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                       var coupon = astrologer.callCouponCode;
                                       var coupencode = coupon.toString();
                                       var id = astroid.toString();
+                                      var signal = astrologer.signalId;
+                                      var signalId = signal.toString();
 
                                       SendRequest.sendrequestaudio(
-                                          id, token, coupencode);
+                                          id, token, coupencode, signalId);
                                       // Get.back();
                                     } else {
                                       // showToast(
@@ -224,9 +226,11 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                       var id = astroid.toString();
                                       var coupon = astrologer.chatCouponCode;
                                       var coupencode = coupon.toString();
+                                      var signal = astrologer.signalId;
+                                      var signalId = signal.toString();
 
                                       SendRequest.sendrequestchat(
-                                          id, token, coupencode);
+                                          id, token, coupencode, signalId);
                                     } else {
                                       // showToast(
                                       //     "You Have Insufficient balance to start chat");
@@ -260,9 +264,11 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                       var coupon = astrologer.videoCouponCode;
                                       var coupencode = coupon.toString();
                                       var id = astroid.toString();
+                                      var signal = astrologer.signalId;
+                                      var signalId = signal.toString();
 
                                       SendRequest.sendrequestvideo(
-                                          id, token, coupencode);
+                                          id, token, coupencode, signalId);
                                       // Get.back();
                                     } else {
                                       // showToast(
