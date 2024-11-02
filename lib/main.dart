@@ -61,27 +61,40 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> initOneSignal() async {
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("689405dc-4610-4a29-8268-4541a0f6299a");
-  OneSignal.shared.promptUserForPushNotificationPermission();
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
+  OneSignal.Notifications.requestPermission(true);
+  var externalId = "123456789";
+  OneSignal.login(externalId);
 
-  OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
-    event.complete(event.notification);
-  });
-
-  // Delay to ensure initialization completes
   await Future.delayed(Duration(seconds: 2));
   _handleGetExternalId();
+  // _handleLogin();
 }
 
+// void _handleGetExternalId() async {
+//   // final status = await OneSignal.shared.getDeviceState();
+//   var externalId = await OneSignal.User.getOnesignalId();
+//   print('External ID: $externalId');
+//   // final playerId = status?.userId;
+//   // if (playerId != null) {
+//   //   print('ID: $playerId');
+//   // } else {
+//   //   print('User ID is null; OneSignal may not be initialized yet.');
+//   // }
+// }
 void _handleGetExternalId() async {
-  final status = await OneSignal.shared.getDeviceState();
-  final playerId = status?.userId;
-  if (playerId != null) {
-    print('ID: $playerId');
-  } else {
-    print('User ID is null; OneSignal may not be initialized yet.');
-  }
+  var externalId = await OneSignal.User.getExternalId();
+  print('External ID: $externalId');
+}
+
+void _handleLogin() {
+  String? _externalUserId = "your_custom_external_id";
+  print("Setting external user ID");
+  if (_externalUserId == null) return;
+  OneSignal.login(_externalUserId);
+  OneSignal.User.addAlias("fb_id", "1341524");
+  print('External ID: $_externalUserId');
 }
 
 // void _handleGetOnesignalId() async {
