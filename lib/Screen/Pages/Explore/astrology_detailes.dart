@@ -361,7 +361,25 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 35),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const SizedBox(width: 5),
+                              if (widget.astrologer?.rating != null)
+                                Row(
+                                  children: List.generate(
+                                    double.parse(widget.astrologer!.rating
+                                            .toString())
+                                        .toInt(), // Parse as double and then to integer
+                                    (_) => const Icon(
+                                      Icons.star,
+                                      color: AppColor.primary,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          // const SizedBox(height: 35),
                           if (widget.astrologer!.followStatus == "0")
                             Align(
                               alignment: Alignment.bottomCenter,
@@ -409,23 +427,23 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             ),
                         ]),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const SizedBox(width: 5),
-                            if (widget.astrologer?.rating != null)
-                              Row(
-                                children: List.generate(
-                                  double.parse(
-                                          widget.astrologer!.rating.toString())
-                                      .toInt(), // Parse as double and then to integer
-                                  (_) => const Icon(
-                                    Icons.star,
-                                    color: AppColor.primary,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     const SizedBox(width: 5),
+                        //     if (widget.astrologer?.rating != null)
+                        //       Row(
+                        //         children: List.generate(
+                        //           double.parse(
+                        //                   widget.astrologer!.rating.toString())
+                        //               .toInt(), // Parse as double and then to integer
+                        //           (_) => const Icon(
+                        //             Icons.star,
+                        //             color: AppColor.primary,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //   ],
+                        // ),
                       ],
                     ),
                     Container(
