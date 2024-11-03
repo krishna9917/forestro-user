@@ -85,6 +85,12 @@ Future<void> initOneSignal() async {
 void _handleGetExternalId() async {
   var externalId = await OneSignal.User.getExternalId();
   print('External ID: $externalId');
+  if (externalId != null) {
+    print('IDSIGNAL: $externalId');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('externalId', externalId ?? '');
+    // await NotificationRepo.sendsignal();
+  }
 }
 
 void _handleLogin() {

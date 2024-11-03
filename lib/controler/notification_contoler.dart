@@ -164,11 +164,11 @@ class NotificationService {
       'app_id': "689405dc-4610-4a29-8268-4541a0f6299a",
       "target_channel": "push",
       "include_aliases": {
-        "external_id": ["123456789"]
+        "external_id": [signalId]
       },
       'contents': {
         'en':
-            '${profileController.profileDataList.first.name ?? 'NA'} has just unlocked the secrets of the cosmos! 🔮🌌 by availing our $servicetype'
+            'New Session Alert: "You have a $servicetype request from ${profileController.profileDataList.first.name ?? 'NA'}. Respond now!'
       },
     });
 
