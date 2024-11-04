@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/controler/signal_notification.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/firebase_options.dart';
@@ -60,13 +63,20 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> initOneSignal() async {
+   String generateRandomOrderId() {
+    var random = Random();
+    int randomNumber = 10000 + random.nextInt(90000);
+    return '$randomNumber';
+  }
+
+  String externalIdg = generateRandomOrderId();
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
   OneSignal.Notifications.requestPermission(true);
-  var externalId = "123456789";
+  var externalId = externalIdg;
   OneSignal.login(externalId);
 
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 1));
   _handleGetExternalId();
   // _handleLogin();
 }
@@ -89,7 +99,7 @@ void _handleGetExternalId() async {
     print('IDSIGNAL: $externalId');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('externalId', externalId ?? '');
-    // await NotificationRepo.sendsignal();
+    await NotificationRepo.sendsignal();
   }
 }
 
