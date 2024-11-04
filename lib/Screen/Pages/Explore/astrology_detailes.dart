@@ -339,93 +339,95 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             }),
                           ],
                         ),
-                        Column(children: [
-                          // const SizedBox(height: 5),
-                          Text(
-                            addLineBreaks(
-                                widget.astrologer?.name ?? 'No Name', 3),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            addLineBreaks(
-                                widget.astrologer?.specialization ?? '', 2),
-                            style: TextStyle(
-                              fontSize: 9,
-                              color: Colors.black.withOpacity(0.6),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const SizedBox(width: 5),
+                              Text(
+                                addLineBreaks(
+                                    widget.astrologer?.name ?? 'No Name', 3),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                addLineBreaks(
+                                    widget.astrologer?.specialization ?? '', 2),
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              // Spacer(),
+                              // const SizedBox(height: 10),
                               if (widget.astrologer?.rating != null)
-                                Row(
-                                  children: List.generate(
-                                    double.parse(widget.astrologer!.rating
-                                            .toString())
-                                        .toInt(), // Parse as double and then to integer
-                                    (_) => const Icon(
-                                      Icons.star,
-                                      color: AppColor.primary,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: List.generate(
+                                      double.parse(widget.astrologer!.rating
+                                              .toString())
+                                          .toInt(),
+                                      (_) => const Icon(
+                                        Icons.star,
+                                        color: AppColor.primary,
+                                      ),
                                     ),
                                   ),
                                 ),
-                            ],
-                          ),
-                          // const SizedBox(height: 35),
-                          if (widget.astrologer!.followStatus == "0")
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    int? ab = widget.astrologer!.id;
-                                    var id = ab.toString();
-                                    folllow(id);
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: WidgetStateProperty.all<
-                                            Color>(
-                                        const Color.fromARGB(255, 255, 102, 0)),
-                                    padding: WidgetStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 25,
+                              // const SizedBox(height: 10),
+                              if (widget.astrologer!.followStatus == "0")
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        int? ab = widget.astrologer!.id;
+                                        var id = ab.toString();
+                                        folllow(id);
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.all<Color>(
+                                                const Color.fromARGB(
+                                                    255, 255, 102, 0)),
+                                        padding: WidgetStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                          const EdgeInsets.symmetric(
+                                            vertical: 10,
+                                            horizontal: 25,
+                                          ),
+                                        ),
+                                        shape: WidgetStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            side: const BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 255, 102, 0),
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    shape: WidgetStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        side: const BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 255, 102, 0),
-                                          width: 2,
+                                      child: const Text(
+                                        "Follow",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
-                                  child: const Text(
-                                    "Follow",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
                                 ),
-                              ),
-                            ),
-                        ]),
+                            ]),
                         const SizedBox(height: 10),
                         // Row(
                         //   children: [
