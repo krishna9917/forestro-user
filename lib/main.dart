@@ -23,8 +23,8 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-// @pragma('vm:entry-point')
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
   /////////////////////////// chat function /////////////////////////////
