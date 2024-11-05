@@ -15,7 +15,6 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/controler/signal_notification.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/firebase_options.dart';
