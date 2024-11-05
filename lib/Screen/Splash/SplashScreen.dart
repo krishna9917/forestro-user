@@ -4,7 +4,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
@@ -39,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       Get.find<GetAstrologerProfile>().astroData();
     });
+
     checkTokenAndNavigate();
     requestPermissions();
   }
