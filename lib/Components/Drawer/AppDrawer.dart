@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
-import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/CallHistory.dart';
 import 'package:foreastro/Screen/Pages/ChatHistory.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
@@ -22,8 +20,6 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:restart/restart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -360,7 +356,6 @@ class _AppDrawerState extends State<AppDrawer> {
                     image: "assets/icons/logout.svg",
                     title: "Log Out",
                     onTap: () async {
-                      
                       logout();
                     },
                   ),
