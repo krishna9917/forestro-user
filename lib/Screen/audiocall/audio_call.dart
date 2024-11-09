@@ -47,13 +47,14 @@ class _AudioCallState extends State<AudioCall> {
         if (_timer.isActive) {
           _timer.cancel();
         }
-        endChatSession(); 
+        setState(() {
+          endChatSession();
+        });
       }
     });
   }
 
   void endChatSession() {
-  
     showToast("Ending session...");
 
     endTime = DateTime.now();
@@ -89,10 +90,10 @@ class _AudioCallState extends State<AudioCall> {
       if (data.statusCode == 201) {
         print(
             "data send suscessfullyyyyyyyyyyyyyyyyyyyyyy==============================================>>>>>>>>$data");
-        setState(() {
-          Get.find<ProfileList>().fetchProfileData();
-        });
-        Get.back();
+
+        await Get.find<ProfileList>().fetchProfileData();
+
+        // Get.back();
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
@@ -122,12 +123,12 @@ class _AudioCallState extends State<AudioCall> {
               callID: widget.callID,
               events: ZegoUIKitPrebuiltCallEvents(
                 onCallEnd: (event, defaultAction) {
-                  endChatSession();
-                  showToast("Call End");
+                  // endChatSession();
+                  // showToast("Call End");
                   setState(() {
-                    Get.find<ProfileList>().fetchProfileData();
+                    endChatSession();
                   });
-                  Get.back();
+                  // Get.back();
                 },
                 onError: (error) {
                   print("Error: $error");

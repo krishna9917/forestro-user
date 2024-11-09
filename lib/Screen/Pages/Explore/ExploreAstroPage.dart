@@ -54,7 +54,7 @@ class _ExploreAstroPageState extends State<ExploreAstroPage> {
       if (data.statusCode == 201) {
       } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -197,7 +197,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
         }
       } else {}
     } catch (e) {
-      showToast(tosteError);
+      // showToast(tosteError);
     }
   }
 
@@ -302,7 +302,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
     StringBuffer buffer = StringBuffer();
     int wordCount = 0;
 
-    List<String> words = text.split(' '); // Split the text into words
+    List<String> words = text.split(' ');
 
     for (int i = 0; i < words.length; i++) {
       buffer.write(words[i]);

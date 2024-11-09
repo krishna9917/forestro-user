@@ -31,6 +31,7 @@ class _MyCallState extends State<MyCall> {
   late DateTime endTime;
   late Timer _timer;
   late int _remainingSeconds;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -48,13 +49,17 @@ class _MyCallState extends State<MyCall> {
         if (_timer.isActive) {
           _timer.cancel();
         }
-        endChatSession();
+        setState(() {
+          endChatSession();
+        });
       }
     });
   }
 
   void endChatSession() {
-    // showToast("Ending session...");
+    setState(() {
+      _isLoading = true;
+    });
 
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -85,15 +90,17 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        setState(() {
-          Get.find<ProfileList>().fetchProfileData();
-        });
+        await Get.find<ProfileList>().fetchProfileData();
         Get.back();
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
     } catch (e) {
-      // showToast(tosteError);
+      showToast("An error occurred. Please try again.");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -105,31 +112,38 @@ class _MyCallState extends State<MyCall> {
 
   @override
   Widget build(BuildContext context) {
-    return ZegoUIKitPrebuiltCall(
-        appID: MyConst.appId,
-        appSign: MyConst.appSign,
-        userID: widget.userid,
-        userName: widget.username,
-        callID: widget.callID,
-        events: ZegoUIKitPrebuiltCallEvents(
-          user: ZegoCallUserEvents(
-            onEnter: (p) {
-              showToast("${p.name} join in call");
+    return Stack(
+      children: [
+        ZegoUIKitPrebuiltCall(
+          appID: MyConst.appId,
+          appSign: MyConst.appSign,
+          userID: widget.userid,
+          userName: widget.username,
+          callID: widget.callID,
+          events: ZegoUIKitPrebuiltCallEvents(
+            user: ZegoCallUserEvents(
+              onEnter: (p) {
+                showToast("${p.name} join in call");
+              },
+            ),
+            onCallEnd: (event, defaultAction) {
+              setState(() {
+                endChatSession();
+              });
+              // endChatSession();
             },
           ),
-          onCallEnd: (event, defaultAction) {
-            endChatSession();
-            showToast("Call End");
-            setState(() {
-              Get.find<ProfileList>().fetchProfileData();
-            });
-            Get.back();
-          },
+          config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+            ..layout = ZegoLayout.pictureInPicture(
+              isSmallViewDraggable: true,
+              switchLargeOrSmallViewByClick: true,
+            ),
         ),
-        config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-          ..layout = ZegoLayout.pictureInPicture(
-            isSmallViewDraggable: true,
-            switchLargeOrSmallViewByClick: true,
-          ));
+        if (_isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    );
   }
 }

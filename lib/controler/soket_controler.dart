@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foreastro/Components/chatfunction.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/audiocall/audio_call.dart';
@@ -85,7 +86,7 @@ class SocketController extends GetxController {
                     'requestType': data['requestType'],
                     'data': data,
                   });
-                  Get.back();
+                  // Get.back();
                   // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("Yes"),
@@ -100,7 +101,7 @@ class SocketController extends GetxController {
                     'requestType': data['requestType'],
                     'data': data,
                   });
-                  Get.back();
+                  // Get.back();
                   // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("No"),
@@ -114,10 +115,12 @@ class SocketController extends GetxController {
     });
 
     socket?.on('openSession', (data) {
+      print("datasesionstart======$data");
       if (data['requestType'] == 'chat') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
         var price = data['data']['astroData']['chat_charges_per_min'];
+
         double walletAmount = double.tryParse(wallet) ?? 0;
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
@@ -201,8 +204,19 @@ class SocketController extends GetxController {
     });
 
     socket?.on("closeSession", (data) {
-      onWorkEnd();
-      Get.back();
+      print("chat================handel$data");
+      // var price = data['chat_charges_per_min'];
+      if (data['requestType'] == "chat") {
+        Get.back();
+      }
+      if (data['requestType'] == "audio") {
+        Get.back();
+      }
+      if (data['requestType'] == "video") {
+        Get.back();
+      }
+      // onWorkEnd();
+      // Get.back();
 
       // Get.offAll(const ExploreAstroPage());
     });

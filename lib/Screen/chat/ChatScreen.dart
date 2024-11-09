@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
-import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
@@ -57,12 +55,14 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       } else {
         _timer.cancel();
-        endChatSession();
+        setState(() {
+          endChatSession();
+        });
       }
     });
   }
 
-  void endChatSession() {
+  void endChatSession() async {
     sessionController.closeSession();
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    calculateprice(totaltime);
+    await calculateprice(totaltime);
 
     socketController.closeSession(
       senderId: widget.userId,
@@ -87,6 +87,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    if (_remainingSeconds > 0) {
+      endChatSession();
+    }
     _timer.cancel();
     super.dispose();
   }
@@ -106,9 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        setState(() {
-          Get.find<ProfileList>().fetchProfileData();
-        });
+        await Get.find<ProfileList>().fetchProfileData();
         Get.back();
       }
     } catch (e) {
@@ -121,6 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // Fluttertoast.showToast(msg: widget.id);
     return WillPopScope(
       onWillPop: () async {
+        bool shouldClose = false;
         showAlertPopup(context,
             title: "Are you Sure",
             text: "Sure you close Chat Session",

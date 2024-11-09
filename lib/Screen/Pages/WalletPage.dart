@@ -6,6 +6,8 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:math';
@@ -49,34 +51,88 @@ class _WalletPageState extends State<WalletPage> {
     super.dispose();
   }
 
-  void openCheckout() {
+  Future<void> createOrderAndOpenCheckout() async {
     int amount =
         (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
 
-    var options = {
-      "key": "rzp_live_KxN6rq5K8JKbi6",
-      "amount": amount,
-      "name": "For Astro App",
-      "description": "Payment for the some random product",
-      "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
-      "external": {
-        "wallets": ["paytm"],
-        "upi": {
-          "payeeName": "Payee Name",
-          "payeeVpa": "9886975566@okbizaxis",
-        },
+    // Step 1: Create an order
+    var orderResponse = await http.post(
+      Uri.parse("https://api.razorpay.com/v1/orders"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+            "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
       },
-      "theme": {
-        "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
-      }
-    };
+      body: jsonEncode({
+        "amount": amount,
+        "currency": "INR",
+        "payment_capture": 1,
+      }),
+    );
 
-    try {
-      razorpay.open(options);
-    } catch (e) {
-      print(e.toString());
+    if (orderResponse.statusCode == 200) {
+      var orderData = jsonDecode(orderResponse.body);
+      var orderId = orderData['id'];
+      print("ordrr=============$orderId");
+
+      // Step 2: Pass the orderId to openCheckout
+      var options = {
+        "key": "rzp_live_CJkLJpz9BeaRDw",
+        "amount": amount,
+        "name": "For Astro App",
+        "description": "Payment for the some random product",
+        "order_id": orderId, // Use the orderId from the API response
+        "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
+        "external": {
+          "wallets": ["paytm"],
+          "upi": {
+            "payeeName": "Payee Name",
+            "payeeVpa": "9886975566@okbizaxis",
+          },
+        },
+        "theme": {
+          "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
+        }
+      };
+
+      try {
+        razorpay.open(options);
+      } catch (e) {
+        print(e.toString());
+      }
+    } else {
+      print("Error creating order: ${orderResponse.body}");
     }
   }
+
+  // void openCheckout() {
+  //   int amount =
+  //       (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
+
+  //   var options = {
+  //     "key": "rzp_live_KxN6rq5K8JKbi6",
+  //     "amount": amount,
+  //     "name": "For Astro App",
+  //     "description": "Payment for the some random product",
+  //     "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
+  //     "external": {
+  //       "wallets": ["paytm"],
+  //       "upi": {
+  //         "payeeName": "Payee Name",
+  //         "payeeVpa": "9886975566@okbizaxis",
+  //       },
+  //     },
+  //     "theme": {
+  //       "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
+  //     }
+  //   };
+
+  //   try {
+  //     razorpay.open(options);
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   String generateRandomOrderId() {
     var random = Random();
@@ -87,9 +143,9 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   Future<void> handlerPaymentSuccess(PaymentSuccessResponse response) async {
-    print("Payment success");
+    print("Payment success====");
     String paymentId = response.paymentId ?? 'NA';
-    String orderId = generateRandomOrderId();
+    String orderId = response.orderId.toString();
     String signature = response.signature ?? 'NA';
     DateTime paymentTime = DateTime.now();
     String userName =
@@ -332,7 +388,8 @@ class _WalletPageState extends State<WalletPage> {
               height: 55,
               child: ElevatedButton(
                 onPressed: () {
-                  openCheckout();
+                  createOrderAndOpenCheckout();
+                  // openCheckout();
                 },
                 child: const Text("Add To Wallet"),
               ),

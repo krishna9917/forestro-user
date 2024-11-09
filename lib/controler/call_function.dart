@@ -59,6 +59,7 @@ class SendRequest {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var servicetype = "Chat";
         String? user_id = prefs.getString('user_id');
+        print("userid========$user_id");
         var title = "New Chat Request";
         String chatId = generateRandomOrderId();
 
@@ -76,6 +77,7 @@ class SendRequest {
         );
 
         dio.Response data = await apiRequest.send();
+        print("data========${data.data}");
         if (data.statusCode == 201) {
           showToast("Chat Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);

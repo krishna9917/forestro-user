@@ -55,26 +55,22 @@ class _SplashScreenState extends State<SplashScreen>
     String? token = prefs.getString('token');
     String? is_profile_created = prefs.getString('is_profile_created');
     print("manjulika $is_profile_created");
-    if (token != null && token.isNotEmpty) {
-      if (is_profile_created == "false") {
-        context.goTo(const LoginScreen());
-        // context.goTo(HomePage());
-      }
+
+    if (token == null || token.isEmpty) {
+      await prefs.clear();
       Future.delayed(const Duration(seconds: 3), () {
-        DateTime eventDate = DateTime(2024, 10, 3);
-        DateTime now = DateTime.now();
-        navigate.pushReplacement(routeMe(const HomePage()));
-        // if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-        //   // If the date has passed or is today, navigate to the home page
-        //   navigate.pushReplacement(routeMe(
-        //       const HomePage())); // Replace with your actual home page widget
-        // } else {
-        //   context.goTo(ComingSoonAstrologerPage());
-        // }
+        Get.offAll(const LoginScreen());
+        // context.goTo(const LoginScreen());
       });
     } else {
+      if (is_profile_created == "false") {
+        Get.offAll(const LoginScreen());
+        // context.goTo(const LoginScreen());
+        // context.goTo(HomePage());
+      }
+
       Future.delayed(const Duration(seconds: 3), () {
-        context.goTo(const LoginScreen());
+        navigate.pushReplacement(routeMe(const HomePage()));
       });
     }
   }

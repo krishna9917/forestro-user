@@ -53,12 +53,11 @@ Future<void> main(List<String> args) async {
   }
   print(fcmToken);
 
-    initOneSignal();
+  initOneSignal();
   // OneSignal.Debug.setLogLevel(OSLogLevel.debug);
   // OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
   // OneSignal.Notifications.requestPermission(true);
 
-  
   runApp(const InitApp());
 }
 

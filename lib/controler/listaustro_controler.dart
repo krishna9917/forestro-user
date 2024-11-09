@@ -8,16 +8,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetAstrologerProfile extends GetxController {
-  // Initialize the profile data list
-  final _austroDataList = Rx<List<Data>>([]);
 
-  // Getter for the profile data list
+  final _austroDataList = Rx<List<Data>>([]);
   List<Data> get astroDataList => _austroDataList.value.obs;
 
-  // Flag to indicate if the data is loading
   final _isLoading = RxBool(false);
-
-  // Getter for the loading flag
   bool get isLoading => _isLoading.value;
 
   @override
