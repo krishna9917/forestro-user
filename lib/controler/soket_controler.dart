@@ -263,21 +263,9 @@ class SocketController extends GetxController {
 
   Future<void> logoutUser() async {
     socket?.disconnect();
-    socket?.destroy();
-    socket?.dispose();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    // showToast('Logout successfully!');
-
     await GoogleSignIn().signOut();
-    // final profileController = Get.find<ProfileList>();
-    // final bannerController = Get.put(BannerList());
-    // final celebrity = Get.put(CelibrityList());
-    // final clientsays = Get.put(ClientSays());
-    // bannerController.dataList.clear();
-    // profileController.profileDataList.clear();
-    // clientsays.clientsaysDataList.clear();
-    // celebrity.celibrityDataList.clear();
     Get.offAll(() => const LoginScreen());
     showToast('Logout successfully!');
   }

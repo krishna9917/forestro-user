@@ -24,8 +24,8 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
   /////////////////////////// chat function /////////////////////////////
@@ -34,7 +34,7 @@ Future<void> main(List<String> args) async {
       appSign:
           '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
   ////////////////////////// Vedio Call //////////////////////////////////
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -49,15 +49,11 @@ Future<void> main(List<String> args) async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
 
   if (fcmToken != null) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('fcm_token', fcmToken);
   }
   print(fcmToken);
-
   initOneSignal();
-  // OneSignal.Debug.setLogLevel(OSLogLevel.debug);
-  // OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
-  // OneSignal.Notifications.requestPermission(true);
-
   runApp(const InitApp());
 }
 
@@ -80,17 +76,6 @@ Future<void> initOneSignal() async {
   // _handleLogin();
 }
 
-// void _handleGetExternalId() async {
-//   // final status = await OneSignal.shared.getDeviceState();
-//   var externalId = await OneSignal.User.getOnesignalId();
-//   print('External ID: $externalId');
-//   // final playerId = status?.userId;
-//   // if (playerId != null) {
-//   //   print('ID: $playerId');
-//   // } else {
-//   //   print('User ID is null; OneSignal may not be initialized yet.');
-//   // }
-// }
 void _handleGetExternalId() async {
   var externalId = await OneSignal.User.getExternalId();
   print('External ID: $externalId');
@@ -111,19 +96,7 @@ void _handleLogin() {
   print('External ID: $_externalUserId');
 }
 
-// void _handleGetOnesignalId() async {
-//   OneSignal.User.pushSubscription.addObserver((state) {
-//     print("========abcd=======");
-//     print(OneSignal.User.pushSubscription.optedIn);
-//     print(OneSignal.User.pushSubscription.id);
-//     print(OneSignal.User.pushSubscription.token);
-//     print(state.current.jsonRepresentation());
-//   });
-//   var onesignalId = await OneSignal.User.pushSubscription.id;
-//   print('OneSignal ID: $onesignalId');
-//   final prefs = await SharedPreferences.getInstance();
-//   await prefs.setString('onesignal_id', onesignalId ?? '');
-// }
+
 
 Future<void> Notification() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

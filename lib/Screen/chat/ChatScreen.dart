@@ -62,7 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  void endChatSession() async {
+  Future <void> endChatSession() async {
     sessionController.closeSession();
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -110,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
         await Get.find<ProfileList>().fetchProfileData();
-        Get.back();
+        // Get.back();
       }
     } catch (e) {
       // showToast(tosteError);
@@ -128,11 +128,11 @@ class _ChatScreenState extends State<ChatScreen> {
             text: "Sure you close Chat Session",
             showCancelBtn: true,
             confirmBtnText: "Yes",
-            type: QuickAlertType.warning, onConfirmBtnTap: () {
-          endChatSession();
-          setState(() {
-            Get.find<ProfileList>().fetchProfileData();
-          });
+            type: QuickAlertType.warning, onConfirmBtnTap: () async {
+        await  endChatSession();
+          // setState(() {
+          //   Get.find<ProfileList>().fetchProfileData();
+          // });
         });
         return true;
       },

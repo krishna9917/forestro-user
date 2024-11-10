@@ -8,8 +8,8 @@ import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/extensions/build_context.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:restart/restart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,6 +58,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (token == null || token.isEmpty) {
       await prefs.clear();
+      await _deleteCacheDir();
+      await _deleteAppDir();
       Future.delayed(const Duration(seconds: 3), () {
         Get.offAll(const LoginScreen());
         // context.goTo(const LoginScreen());
@@ -72,6 +74,22 @@ class _SplashScreenState extends State<SplashScreen>
       Future.delayed(const Duration(seconds: 3), () {
         navigate.pushReplacement(routeMe(const HomePage()));
       });
+    }
+  }
+
+  Future<void> _deleteCacheDir() async {
+    var tempDir = await getTemporaryDirectory();
+
+    if (tempDir.existsSync()) {
+      tempDir.deleteSync(recursive: true);
+    }
+  }
+
+  Future<void> _deleteAppDir() async {
+    var appDocDir = await getApplicationDocumentsDirectory();
+
+    if (appDocDir.existsSync()) {
+      appDocDir.deleteSync(recursive: true);
     }
   }
 

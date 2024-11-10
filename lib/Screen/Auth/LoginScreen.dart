@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -15,7 +14,6 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/OtpScreen.dart';
 import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
