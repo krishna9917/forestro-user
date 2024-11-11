@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Components/Widgts/custambutton.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/commingsoon/commingsoon.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -45,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
       setState(() {
         loading = false;
       });
-      showToast(e.toString());
+      // showToast(e.toString());
     }
   }
 
@@ -77,9 +75,10 @@ class _OtpScreenState extends State<OtpScreen> {
             userId: res.data['user_id'],
           )));
         }
-      } else {
-        // showToast(tosteError);
       }
+      // else {
+      //   showToast("Invalid OTP!");
+      // }
 
       setState(() {
         loading = false;
@@ -88,7 +87,7 @@ class _OtpScreenState extends State<OtpScreen> {
       setState(() {
         loading = false;
       });
-      // showToast(tosteError);
+      showToast("Invalid OTP!");
     }
   }
 

@@ -34,7 +34,7 @@ Future<void> main(List<String> args) async {
       appSign:
           '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
   ////////////////////////// Vedio Call //////////////////////////////////
-  
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -95,8 +95,6 @@ void _handleLogin() {
   OneSignal.User.addAlias("fb_id", "1341524");
   print('External ID: $_externalUserId');
 }
-
-
 
 Future<void> Notification() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

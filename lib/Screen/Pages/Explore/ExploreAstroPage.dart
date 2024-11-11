@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/controler/soket_controler.dart';
 import 'package:http/http.dart' as http;
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
