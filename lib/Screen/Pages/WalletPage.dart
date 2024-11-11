@@ -54,8 +54,10 @@ class _WalletPageState extends State<WalletPage> {
   Future<void> createOrderAndOpenCheckout() async {
     int amount =
         (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
+    String userphone = profileController.profileDataList.first.phone ?? 'NA';
+    print("userphone=================================$userphone");
+    // int usernumber =
 
-    // Step 1: Create an order
     var orderResponse = await http.post(
       Uri.parse("https://api.razorpay.com/v1/orders"),
       headers: {
@@ -75,14 +77,13 @@ class _WalletPageState extends State<WalletPage> {
       var orderId = orderData['id'];
       print("ordrr=============$orderId");
 
-      // Step 2: Pass the orderId to openCheckout
       var options = {
         "key": "rzp_live_CJkLJpz9BeaRDw",
         "amount": amount,
         "name": "For Astro App",
         "description": "Payment for the some random product",
-        "order_id": orderId, // Use the orderId from the API response
-        "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
+        "order_id": orderId,
+        "prefill": {"contact": "$userphone", "email": "info@foreastro.com"},
         "external": {
           "wallets": ["paytm"],
           "upi": {
@@ -169,15 +170,13 @@ class _WalletPageState extends State<WalletPage> {
       String userName,
       int selectedAmount,
       String userId) async {
-    // Implement your logic to store these details in your preferred storage.
-    // For example, you can store them in a local database or send them to a server.
-    print("Payment ID: $paymentId");
-    print("Order ID: $orderId");
-    print("Signature: $signature");
-    print("Payment Time: $paymentTime");
-    print("User Name: $userName");
-    print("Selected Amount: ₹$selectedAmount");
-    print("User ID: $userId");
+    // print("Payment ID: $paymentId");
+    // print("Order ID: $orderId");
+    // print("Signature: $signature");
+    // print("Payment Time: $paymentTime");
+    // print("User Name: $userName");
+    // print("Selected Amount: ₹$selectedAmount");
+    // print("User ID: $userId");
 
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
