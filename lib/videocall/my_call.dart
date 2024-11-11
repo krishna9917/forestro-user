@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -56,7 +57,7 @@ class _MyCallState extends State<MyCall> {
     });
   }
 
-  void endChatSession() {
+  Future<void> endChatSession() async {
     setState(() {
       _isLoading = true;
     });
@@ -72,7 +73,7 @@ class _MyCallState extends State<MyCall> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    calculateprice(totaltime);
+    await calculateprice(totaltime);
   }
 
   Future calculateprice(String totaltime) async {
@@ -91,12 +92,12 @@ class _MyCallState extends State<MyCall> {
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
         await Get.find<ProfileList>().fetchProfileData();
-        Get.back();
+        // Get.back();
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
     } catch (e) {
-      showToast("An error occurred. Please try again.");
+      // showToast("An error occurred. Please try again.");
     } finally {
       setState(() {
         _isLoading = false;
@@ -126,11 +127,13 @@ class _MyCallState extends State<MyCall> {
                 showToast("${p.name} join in call");
               },
             ),
-            onCallEnd: (event, defaultAction) {
-              setState(() {
-                endChatSession();
-              });
-              // endChatSession();
+            onCallEnd: (event, defaultAction) async {
+              // setState(() {
+              //   endChatSession();
+              // });
+              Get.offAll(const HomePage());
+
+              await endChatSession();
             },
           ),
           config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()

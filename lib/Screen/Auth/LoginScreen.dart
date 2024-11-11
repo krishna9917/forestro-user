@@ -59,6 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_phoneNum.length != 10) {
       showToast("Enter a 10-digit Mobile Number");
     } else {
+      setState(() {
+        loading = true;
+      });
       await Sendotp();
     }
   }
@@ -405,11 +408,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     Gap(3.h),
 
                     /// Submit Button
-                    CustomButton(
-                      loading: loading,
-                      color: AppColor.primary,
-                      onPressed: onClick,
-                      text: buttonText,
+                    Center(
+                      child: _isLoading
+                          ? CircularProgressIndicator()
+                          : CustomButton(
+                              loading: loading,
+                              color: AppColor.primary,
+                              onPressed: onClick,
+                              text: buttonText,
+                            ),
                     ),
 
                     Gap(5.h),

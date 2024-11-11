@@ -14,35 +14,30 @@ class FollowingList extends StatefulWidget {
 class _FollowingListState extends State<FollowingList> {
   bool loading = false;
   List<Map<String, dynamic>> followingData = [];
+
   Future<void> follow() async {
+    setState(() {
+      loading = true;
+    });
+
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
       String? user_id = prefs.getString('user_id');
-      FormData body = FormData.fromMap({
-        'user_id': user_id,
-      });
+      FormData body = FormData.fromMap({'user_id': user_id});
 
-      // Make API request
       ApiRequest apiRequest = ApiRequest("$apiUrl/my-following",
           method: ApiMethod.POST, body: body);
       Response data = await apiRequest.send();
 
-      // Check response status
       if (data.statusCode == 201) {
-        // Extract relevant details from the response
-
         setState(() {
           followingData = List<Map<String, dynamic>>.from(data.data['data']);
         });
-
-        // showToast("Successful");
       } else {
-        showToast("Failed to complete profile. Please try again later.");
+        showToast("Failed to retrieve following list. Please try again.");
       }
     } on DioException {
-     
-      showToast("Failed to complete profile. Please try again later.");
+      showToast("Failed to retrieve following list. Please try again.");
     } catch (e) {
       showToast("An unexpected error occurred. Please try again later.");
     } finally {
@@ -52,38 +47,27 @@ class _FollowingListState extends State<FollowingList> {
     }
   }
 
-  Future<void> unfollw(String ab) async {
-    try {
-      FormData body = FormData.fromMap({
-        'follower_id': ab,
-      });
+  Future<void> unfollow(String ab) async {
+    setState(() {
+      loading = true;
+    });
 
-      // Make API request
+    try {
+      FormData body = FormData.fromMap({'follower_id': ab});
+
       ApiRequest apiRequest =
           ApiRequest("$apiUrl/unfollow", method: ApiMethod.POST, body: body);
       Response data = await apiRequest.send();
 
-      // Check response status
       if (data.statusCode == 201) {
-        // Extract relevant details from the response
-
-        setState(() {
-          follow();
-        });
-
-        showToast("Unfollow Successful");
+        follow(); // Refresh list after unfollowing
+        showToast("Unfollowed Successfully");
       } else {
-        // Failed API request
-
-        showToast("Failed to complete profile. Please try again later.");
+        showToast("Failed to unfollow. Please try again.");
       }
     } on DioException {
-      // Handle DioError
-    
-      showToast("Failed to complete profile. Please try again later.");
+      showToast("Failed to unfollow. Please try again.");
     } catch (e) {
-      // Handle other exceptions
-     
       showToast("An unexpected error occurred. Please try again later.");
     } finally {
       setState(() {
@@ -94,7 +78,6 @@ class _FollowingListState extends State<FollowingList> {
 
   @override
   void initState() {
-
     super.initState();
     follow();
   }
@@ -104,79 +87,87 @@ class _FollowingListState extends State<FollowingList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Following".toUpperCase()),
+        centerTitle: true,
       ),
       body: loading
           ? const Center(
               child: CircularProgressIndicator(
-              color: Colors.black,
-            ))
-          : ListView.builder(
-              itemCount: followingData
-                  .length, // Assuming followingData is a List containing the API response
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(followingData[index]
-                            ['profile_img'] ??
-                        ""), // Use network image for profile image
+                color: Color.fromARGB(255, 255, 102, 0),
+              ),
+            )
+          : followingData.isEmpty
+              ? Center(
+                  child: Text(
+                    "You are not following anyastrologers.",
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-                  title: Row(
-                    children: [
-                      Text(
-                        followingData[index]['astrologier_name'] ?? "",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                )
+              : ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  itemCount: followingData.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          int? id = followingData[index]['id'] ?? "";
-                          var ab = id.toString();
-                         
-                          unfollw(ab);
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                              const Color.fromARGB(
-                                  255, 255, 102, 0)), // Change color as needed
-                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 15), // Adjust padding as needed
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                                followingData[index]['profile_img'] ?? ""),
                           ),
-                          shape:
-                              WidgetStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              side: const BorderSide(
-                                color: Color.fromARGB(255, 255, 102,
-                                    0), // Specify border color here
-                                width: 2, // Specify border width here
-                              ), // Adjust border radius as needed
+                          title: Text(
+                            followingData[index]['astrologier_name'] ?? "",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            followingData[index]['specialization'] ?? "",
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                          trailing: TextButton(
+                            onPressed: () {
+                              int? id = followingData[index]['id'] ?? "";
+                              var ab = id.toString();
+                              unfollow(ab);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 255, 102, 0)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 15),
+                              ),
+                            ),
+                            child: const Text(
+                              "Unfollow",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                        child: const Text(
-                          "Unfollow",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white, // Change text color as needed
-                          ),
-                        ),
                       ),
-                    ],
-                  ),
-                  subtitle: Text(followingData[index]['specialization'] ?? ""),
-                  // You can add more widgets here to display additional information
-                );
-              },
-            ),
+                    );
+                  },
+                ),
     );
   }
 }

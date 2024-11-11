@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -31,6 +32,7 @@ class _AudioCallState extends State<AudioCall> {
   late DateTime endTime;
   late Timer _timer;
   late int _remainingSeconds;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -54,8 +56,11 @@ class _AudioCallState extends State<AudioCall> {
     });
   }
 
-  void endChatSession() {
+  Future<void> endChatSession() async {
     showToast("Ending session...");
+    setState(() {
+      isLoading = true;
+    });
 
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -88,18 +93,23 @@ class _AudioCallState extends State<AudioCall> {
       dio.Response data = await apiRequest.send();
       print("datatttttttttt$data");
       if (data.statusCode == 201) {
-        print(
-            "data send suscessfullyyyyyyyyyyyyyyyyyyyyyy==============================================>>>>>>>>$data");
-
+        print("Data sent successfully");
         await Get.find<ProfileList>().fetchProfileData();
-
-        // Get.back();
+        // setState(() {
+        //   isLoading = false;
+        // });
+        Get.back();
       } else {
-        showToast("Failed to complete profile. Please try again later.");
+        // showToast("Failed to complete profile. Please try again later.");
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (e) {
       print(e);
-      // showToast(tosteError);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -116,33 +126,37 @@ class _AudioCallState extends State<AudioCall> {
       child: Stack(
         children: [
           ZegoUIKitPrebuiltCall(
-              appID: MyConst.appId,
-              appSign: MyConst.appSign,
-              userID: widget.userid,
-              userName: widget.username,
-              callID: widget.callID,
-              events: ZegoUIKitPrebuiltCallEvents(
-                onCallEnd: (event, defaultAction) {
-                  // endChatSession();
-                  // showToast("Call End");
-                  setState(() {
-                    endChatSession();
-                  });
-                  // Get.back();
+            appID: MyConst.appId,
+            appSign: MyConst.appSign,
+            userID: widget.userid,
+            userName: widget.username,
+            callID: widget.callID,
+            events: ZegoUIKitPrebuiltCallEvents(
+              onCallEnd: (event, defaultAction) async {
+                Get.offAll(const HomePage());
+                await endChatSession();
+                // setState(() {
+                //   endChatSession();
+                // });
+              },
+              onError: (error) {
+                print("Error: $error");
+              },
+              user: ZegoCallUserEvents(
+                onEnter: (user) {
+                  showToast("${user.name} joined the call");
                 },
-                onError: (error) {
-                  print("Error: $error");
+                onLeave: (user) {
+                  print("${user.name} left the call");
                 },
-                user: ZegoCallUserEvents(
-                  onEnter: (user) {
-                    showToast("${user.name} joined the call");
-                  },
-                  onLeave: (user) {
-                    print("${user.name} left the call");
-                  },
-                ),
               ),
-              config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()),
+            ),
+            config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
+          ),
+          if (isLoading)
+            Center(
+              child: CircularProgressIndicator(),
+            ),
         ],
       ),
     );

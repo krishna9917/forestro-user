@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
+import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
@@ -62,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  Future <void> endChatSession() async {
+  Future<void> endChatSession() async {
     sessionController.closeSession();
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -122,14 +123,14 @@ class _ChatScreenState extends State<ChatScreen> {
     // Fluttertoast.showToast(msg: widget.id);
     return WillPopScope(
       onWillPop: () async {
-        bool shouldClose = false;
         showAlertPopup(context,
             title: "Are you Sure",
             text: "Sure you close Chat Session",
             showCancelBtn: true,
             confirmBtnText: "Yes",
             type: QuickAlertType.warning, onConfirmBtnTap: () async {
-        await  endChatSession();
+          Get.offAll(const HomePage());
+          await endChatSession();
           // setState(() {
           //   Get.find<ProfileList>().fetchProfileData();
           // });

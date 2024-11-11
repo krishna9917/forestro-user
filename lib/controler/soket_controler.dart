@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Components/chatfunction.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
+import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/audiocall/audio_call.dart';
 import 'package:foreastro/Screen/chat/ChatScreen.dart';
@@ -207,13 +208,13 @@ class SocketController extends GetxController {
       print("chat================handel$data");
       // var price = data['chat_charges_per_min'];
       if (data['requestType'] == "chat") {
-        Get.back();
+        Get.offAll(const HomePage());
       }
       if (data['requestType'] == "audio") {
-        Get.back();
+        Get.offAll(const HomePage());
       }
       if (data['requestType'] == "video") {
-        Get.back();
+        Get.offAll(const HomePage());
       }
       // onWorkEnd();
       // Get.back();

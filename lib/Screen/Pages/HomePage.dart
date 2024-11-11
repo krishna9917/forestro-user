@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                 child: Badge(
                   backgroundColor: AppColor.primary,
                   label: const Text(
-                    "15",
+                    "16",
                     style: TextStyle(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
@@ -431,7 +431,7 @@ class _HomePageState extends State<HomePage> {
                 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //                     Client Says          ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 HomeTitleBar(
                   title: "What our client Says",
                   desc: "Discover what our stargazers have to say",
@@ -605,7 +605,7 @@ class _HomePageState extends State<HomePage> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container(
-                          height: 200,
+                          height: 210,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: List.generate(
@@ -637,7 +637,7 @@ class _HomePageState extends State<HomePage> {
                                           fit: BoxFit.cover,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      // const SizedBox(height: 8),
                                       Flexible(
                                         child: Padding(
                                           padding: const EdgeInsets.all(3.0),
@@ -695,12 +695,12 @@ class _HomePageState extends State<HomePage> {
 
                                 return Container(
                                   margin: const EdgeInsets.all(8.0),
-                                  width: 190,
+                                  width: 210,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 8),
+                                      // const SizedBox(height: 8),
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(25),
                                         child: InkWell(
@@ -723,17 +723,20 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          celebrity.title ?? 'NA',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                      // const SizedBox(height: 8),
+                                      Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            celebrity.title ?? 'NA',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ],
