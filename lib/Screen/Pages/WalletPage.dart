@@ -55,7 +55,8 @@ class _WalletPageState extends State<WalletPage> {
     int amount =
         (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
     String userphone = profileController.profileDataList.first.phone ?? 'NA';
-    print("userphone=================================$userphone");
+    String useremail = profileController.profileDataList.first.email ?? 'NA';
+    print("userphone=================================$userphone,$useremail");
     // int usernumber =
 
     var orderResponse = await http.post(
@@ -83,7 +84,7 @@ class _WalletPageState extends State<WalletPage> {
         "name": "For Astro App",
         "description": "Payment for the some random product",
         "order_id": orderId,
-        "prefill": {"contact": "$userphone", "email": "info@foreastro.com"},
+        "prefill": {"contact": "$userphone", "email": "$useremail"},
         "external": {
           "wallets": ["paytm"],
           "upi": {
