@@ -28,13 +28,10 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
-  /////////////////////////// chat function /////////////////////////////
   await ZIMKit().init(
       appID: 2007373594,
       appSign:
           '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
-  ////////////////////////// Vedio Call //////////////////////////////////
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
