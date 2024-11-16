@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                 child: Badge(
                   backgroundColor: AppColor.primary,
                   label: const Text(
-                    "17",
+                    "18",
                     style: TextStyle(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
