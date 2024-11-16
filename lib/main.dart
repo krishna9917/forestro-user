@@ -86,7 +86,7 @@ void _handleGetExternalId() async {
 
 void _handleLogin() {
   String? _externalUserId = "your_custom_external_id";
-  print("Setting external user ID");
+  print("Setting external user ID ");
   if (_externalUserId == null) return;
   OneSignal.login(_externalUserId);
   OneSignal.User.addAlias("fb_id", "1341524");
