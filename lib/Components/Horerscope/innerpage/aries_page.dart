@@ -42,14 +42,18 @@ class _AriesPageState extends State<AriesPage> {
   }
 
   void fetchHoroscope() {
-    DateTime currentDate = DateTime.now();
-    print("currrennnnntttt=================$currentDate");
-    int offset = dayIndex - 1;
-    DateTime selectedDate = currentDate.add(Duration(days: offset));
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    String formattedDate = dateFormat.format(selectedDate);
-    controller.translatedText.value = '';
+    DateTime currentDate = DateTime.now(); 
+    print("Current Date: $currentDate"); 
 
+    int offset = dayIndex - 1; 
+    DateTime selectedDate = currentDate.add(
+        Duration(days: offset)); 
+    print(
+        "Selected Date: $selectedDate"); 
+    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+    String formattedDate =
+        dateFormat.format(selectedDate); 
+    controller.translatedText.value = ''; 
     Get.find<HoroscopeControler>().horoscopeData(widget.zodiac, formattedDate);
   }
 
@@ -182,11 +186,9 @@ class _AriesPageState extends State<AriesPage> {
                                   .value.response?.botResponse ??
                               'NA';
 
-                         
                           if (originalText != 'NA' &&
                               originalText.isNotEmpty &&
                               controller.translatedText.isEmpty) {
-                            
                             translator
                                 .translate(originalText, from: 'hi', to: 'en')
                                 .then((translatedText) {

@@ -125,12 +125,12 @@ class ChatListCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Duration: ${chatData.communicationTime ?? ''}",
+                  "Duration: ${chatData.communicationTime ?? ''} min",
                   style:
                       const TextStyle(fontSize: 8, fontWeight: FontWeight.w900),
                 ),
                 Text(
-                  "Charges: ${chatData.totalAmount ?? ''}",
+                  "Amount: ₹${chatData.totalAmount ?? ''}",
                   style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
