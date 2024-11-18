@@ -39,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late DateTime endTime;
   late Timer _timer;
   late int _remainingSeconds;
+  bool isSessionEnded = false;
 
   @override
   void initState() {
@@ -88,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    if (_remainingSeconds > 0) {
+    if (_remainingSeconds > 0 && !isSessionEnded) {
       endChatSession();
     }
     _timer.cancel();
@@ -129,6 +130,9 @@ class _ChatScreenState extends State<ChatScreen> {
             showCancelBtn: true,
             confirmBtnText: "Yes",
             type: QuickAlertType.warning, onConfirmBtnTap: () async {
+          setState(() {
+            isSessionEnded = true;
+          });
           Get.offAll(const HomePage());
           await endChatSession();
           // setState(() {

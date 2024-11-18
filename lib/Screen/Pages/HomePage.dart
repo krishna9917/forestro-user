@@ -58,24 +58,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
+    fetchAndInitProfile();
+
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
 
-    fetchAndInitProfile();
     // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
-
+    super.initState();
     // print(chatzegocloud());
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    super.dispose();
   }
 
   void _onSearchChanged() {
@@ -88,10 +82,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchAndInitProfile() async {
     await Get.find<ProfileList>().fetchProfileData();
-   await chatzegocloud();
+    await chatzegocloud();
   }
 
-  Future <void> chatzegocloud() async {
+  Future<void> chatzegocloud() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 
@@ -142,6 +136,12 @@ class _HomePageState extends State<HomePage> {
       return matches.first.group(1)!;
     }
     return '';
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    super.dispose();
   }
 
   @override
