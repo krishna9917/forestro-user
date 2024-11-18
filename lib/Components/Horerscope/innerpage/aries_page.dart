@@ -43,6 +43,7 @@ class _AriesPageState extends State<AriesPage> {
 
   void fetchHoroscope() {
     DateTime currentDate = DateTime.now();
+    print("currrennnnntttt=================$currentDate");
     int offset = dayIndex - 1;
     DateTime selectedDate = currentDate.add(Duration(days: offset));
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
@@ -181,11 +182,11 @@ class _AriesPageState extends State<AriesPage> {
                                   .value.response?.botResponse ??
                               'NA';
 
-                          // Check if the translation is already available to avoid unnecessary translation requests
+                         
                           if (originalText != 'NA' &&
                               originalText.isNotEmpty &&
                               controller.translatedText.isEmpty) {
-                            // Translate the text from Hindi to English
+                            
                             translator
                                 .translate(originalText, from: 'hi', to: 'en')
                                 .then((translatedText) {

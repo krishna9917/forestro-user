@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
+import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/call_histrory_controller.dart';
 import 'package:foreastro/model/call_history_model.dart';
 import 'package:get/get.dart';
@@ -135,6 +136,13 @@ class ChatListCard extends StatelessWidget {
                   "CallDuration: ${callData.callDuration ?? ''}",
                   style:
                       const TextStyle(fontSize: 8, fontWeight: FontWeight.w900),
+                ),
+                Text(
+                  "Charges: ${callData.totalAmount ?? ''}",
+                  style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.primary),
                 ),
               ],
             ),

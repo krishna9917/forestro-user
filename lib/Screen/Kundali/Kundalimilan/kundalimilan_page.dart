@@ -21,7 +21,7 @@ class KundaliMilan extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              _buildHeader(context, "Kundali North Details"),
+              // _buildHeader(context, "Kundali North Details"),
               _buildPlanetDetails(),
               const SizedBox(
                 height: 20,

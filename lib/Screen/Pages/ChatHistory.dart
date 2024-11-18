@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
+import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/chat_history_contaroller.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
@@ -14,7 +15,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
-    
     super.initState();
     Get.put(ChatHistory()).fetchChatHistoryData();
   }
@@ -112,15 +112,31 @@ class ChatListCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Text(
-              (chatData.status ?? '').toUpperCase(),
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: (chatData.status?.toLowerCase() == 'accept')
-                    ? Colors.green
-                    : Colors.red,
-              ),
+            Column(
+              children: [
+                Text(
+                  (chatData.status ?? '').toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: (chatData.status?.toLowerCase() == 'accept')
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+                Text(
+                  "Duration: ${chatData.communicationTime ?? ''}",
+                  style:
+                      const TextStyle(fontSize: 8, fontWeight: FontWeight.w900),
+                ),
+                Text(
+                  "Charges: ${chatData.totalAmount ?? ''}",
+                  style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.primary),
+                ),
+              ],
             ),
           ],
         )

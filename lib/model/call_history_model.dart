@@ -35,6 +35,7 @@ class Data {
   String? status;
   String? type;
   String? callDuration;
+  String? totalAmount;
 
   Data(
       {this.id,
@@ -46,7 +47,7 @@ class Data {
       this.communicationId,
       this.status,
       this.type,
-      this.callDuration});
+      this.callDuration,this.totalAmount});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,6 +60,7 @@ class Data {
     status = json['status'];
     type = json['type'];
     callDuration = json['call_duration'];
+    totalAmount = json['total_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -73,6 +75,7 @@ class Data {
     data['status'] = this.status;
     data['type'] = this.type;
     data['call_duration'] = this.callDuration;
+    data['total_amount'] = this.totalAmount;  
     return data;
   }
 }

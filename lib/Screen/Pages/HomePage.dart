@@ -88,10 +88,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchAndInitProfile() async {
     await Get.find<ProfileList>().fetchProfileData();
-    chatzegocloud();
+   await chatzegocloud();
   }
 
-  void chatzegocloud() async {
+  Future <void> chatzegocloud() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 

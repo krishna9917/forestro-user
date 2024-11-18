@@ -33,7 +33,8 @@ class Data {
   String? time;
   String? status;
   String? type;
-
+  String? communicationTime;
+  String? totalAmount;
   Data(
       {this.id,
       this.astroId,
@@ -42,6 +43,8 @@ class Data {
       this.date,
       this.time,
       this.status,
+      this.communicationTime,
+      this.totalAmount,
       this.type});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -53,6 +56,8 @@ class Data {
     time = json['time'];
     status = json['status'];
     type = json['type'];
+    communicationTime = json['communicition_time'];
+    totalAmount = json['total_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +70,8 @@ class Data {
     data['time'] = this.time;
     data['status'] = this.status;
     data['type'] = this.type;
+    data['communicition_time'] = this.communicationTime;
+    data['total_amount'] = this.totalAmount;
     return data;
   }
 }
