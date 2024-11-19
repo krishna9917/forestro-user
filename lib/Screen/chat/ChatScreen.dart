@@ -83,7 +83,10 @@ class _ChatScreenState extends State<ChatScreen> {
       senderId: widget.userId,
       requestType: "chat",
       message: "User Cancel Can",
-      data: {"userId": widget.userId},
+      data: {
+        "userId": widget.userId,
+        'communication_id': widget.callID,
+      },
     );
   }
 
