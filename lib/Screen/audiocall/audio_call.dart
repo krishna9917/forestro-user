@@ -153,6 +153,7 @@ class _AudioCallState extends State<AudioCall> {
             ),
             config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
           ),
+          Center(child: Image.asset("assets/call_logo.jpg")),
           if (isLoading)
             Center(
               child: CircularProgressIndicator(),
