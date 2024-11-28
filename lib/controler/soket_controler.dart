@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foreastro/Components/chatfunction.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/audiocall/audio_call.dart';
 import 'package:foreastro/Screen/chat/ChatScreen.dart';
 import 'package:foreastro/Utils/Quick.dart';
-import 'package:foreastro/controler/baner_controler.dart';
-import 'package:foreastro/controler/celebrity_controler.dart';
-import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/soket_services.dart';
 import 'package:foreastro/videocall/my_call.dart';
