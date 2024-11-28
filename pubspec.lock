@@ -578,10 +578,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_inappwebview_android
-      sha256: f48203a11c5eb0c23dd5a3cb3638ae678056b6ceae22819373e36c6cb4f1d46a
+      sha256: d247f6ed417f1f8c364612fa05a2ecba7f775c8d0c044c1d3b9ee33a6515c421
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.0.13"
   flutter_inappwebview_internal_annotations:
     dependency: transitive
     description:
@@ -594,26 +594,26 @@ packages:
     dependency: transitive
     description:
       name: flutter_inappwebview_ios
-      sha256: f6f88d464b38f2fc1c5f2ae74024498115eb1470715bd8b40f902dd4ac99ccc8
+      sha256: f363577208b97b10b319cd0c428555cd8493e88b468019a8c5635a0e4312bd0f
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.0.13"
   flutter_inappwebview_macos:
     dependency: transitive
     description:
       name: flutter_inappwebview_macos
-      sha256: "68e0c3785d8d789710cda7d7efe6effa337c91bf300dd28af7efc2d358fa1a98"
+      sha256: b55b9e506c549ce88e26580351d2c71d54f4825901666bd6cfa4be9415bb2636
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.0.11"
   flutter_inappwebview_platform_interface:
     dependency: transitive
     description:
       name: flutter_inappwebview_platform_interface
-      sha256: "97b4ab116d949ede20c90c7e3d15d24afaf1b706cc0af96b060770293cd6c49d"
+      sha256: "545fd4c25a07d2775f7d5af05a979b2cac4fbf79393b0a7f5d33ba39ba4f6187"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.0.10"
   flutter_inappwebview_web:
     dependency: transitive
     description:
@@ -1077,6 +1077,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  onesignal_flutter:
+    dependency: "direct main"
+    description:
+      name: onesignal_flutter
+      sha256: ed1982196708c03017b772a864d9c9520bb5f32335b8480850fc2c5e53cb6dfa
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.8"
   otp_text_field:
     dependency: "direct main"
     description:
@@ -1118,13 +1126,13 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
-      sha256: fec0d61223fba3154d87759e3cc27fe2c8dc498f6386c6d6fc80d1afdd1bf378
+      sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   path_provider_android:
     dependency: transitive
     description:
@@ -1166,7 +1174,7 @@ packages:
     source: hosted
     version: "2.3.0"
   permission_handler:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: permission_handler
       sha256: "18bf33f7fefbd812f37e72091a15575e72d5318854877e0e4035a24ac1113ecb"
@@ -1293,6 +1301,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.7"
+  restart:
+    dependency: "direct main"
+    description:
+      name: restart
+      sha256: "70c12d26900b7c451b99eb012dea7b0d5f229f93e705c3915df41c5ddd0b97cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   rxdart:
     dependency: transitive
     description:
@@ -1414,18 +1430,18 @@ packages:
     dependency: transitive
     description:
       name: sqflite
-      sha256: ff5a2436ef8ebdfda748fbfe957f9981524cb5ff11e7bafa8c42771840e8a788
+      sha256: a43e5a27235518c03ca238e7b4732cf35eabe863a369ceba6cbefa537a66f16d
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3+2"
+    version: "2.3.3+1"
   sqflite_common:
     dependency: transitive
     description:
       name: sqflite_common
-      sha256: "2d8e607db72e9cb7748c9c6e739e2c9618320a5517de693d5a24609c4671b1a4"
+      sha256: "3da423ce7baf868be70e2c0976c28a1bb2f73644268b7ffa7d2e08eab71f16a4"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.4+4"
+    version: "2.5.4"
   stack_trace:
     dependency: transitive
     description:
@@ -1470,10 +1486,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: "69fe30f3a8b04a0be0c15ae6490fc859a78ef4c43ae2dd5e8a623d45bfcf9225"
+      sha256: "539ef412b170d65ecdafd780f924e5be3f60032a1128df156adad6c5b373d558"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0+3"
+    version: "3.1.0+1"
   term_glyph:
     dependency: transitive
     description:
@@ -1526,10 +1542,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: e35a698ac302dd68e41f73250bd9517fe3ab5fa4f18fe4647a0872db61bacbab
+      sha256: f0c73347dfcfa5b3db8bc06e1502668265d39c08f310c29bff4e28eea9699f79
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.10"
+    version: "6.3.9"
   url_launcher_ios:
     dependency: transitive
     description:
@@ -1646,10 +1662,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: "45d21bbba3d10b7182aa08ade5d4c68ed3367016d40f29732bb04a799b26842d"
+      sha256: e343701aa890b74a863fa460f5c0e628127ed06a975d7d9af6b697133fb25bdf
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.5"
+    version: "2.7.1"
   video_player_avfoundation:
     dependency: transitive
     description:
@@ -1814,34 +1830,34 @@ packages:
     dependency: transitive
     description:
       name: zego_plugin_adapter
-      sha256: "74566966c9fe383008b25427c00bd0ccb8ec69699e1bcca48324034e182790e9"
+      sha256: "09aaeeca780c0714f38a5de4b8a9d016d44855f8c91c9c1ae83a21f721e6fd6a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.13.2"
+    version: "2.13.4"
   zego_uikit:
     dependency: transitive
     description:
       name: zego_uikit
-      sha256: f7c35631f1d5553f305fdc1aa0e0003eea0f3409d39573764514a1fc8c7b5e0a
+      sha256: "0a7829ef7c22a8dbf24ccc52f9cda77d3a29313ae4dedfc40b3c987a249638f3"
       url: "https://pub.dev"
     source: hosted
-    version: "2.27.12"
+    version: "2.27.16"
   zego_uikit_prebuilt_call:
     dependency: "direct main"
     description:
       name: zego_uikit_prebuilt_call
-      sha256: "73d6f5575e4f06ce87381c1169c1924cb900adff29fb551f3b7431190865334c"
+      sha256: f8d0ff3c50785aa26d1b21642bcf72ed06b049a5b28e5e176c7d4848102238e2
       url: "https://pub.dev"
     source: hosted
-    version: "4.16.2"
+    version: "4.16.12"
   zego_uikit_prebuilt_live_streaming:
     dependency: "direct main"
     description:
       name: zego_uikit_prebuilt_live_streaming
-      sha256: "634c0c9466060cbcc8d963d66e6e43af325bddbb984c30966c4ce3bdd065f566"
+      sha256: "414822815f3f688035d5ae5b10069357423ace379a023b075c14e91c0b076036"
       url: "https://pub.dev"
     source: hosted
-    version: "3.13.2"
+    version: "3.13.5"
   zego_uikit_prebuilt_video_conference:
     dependency: "direct main"
     description:
@@ -1854,18 +1870,18 @@ packages:
     dependency: "direct main"
     description:
       name: zego_uikit_signaling_plugin
-      sha256: "2c79ecf86189f56778cea7fe195df4579eca02e677b81eb35a0b8276d06e9ddc"
+      sha256: "5105fa7114fb824e22992f4a43a8e7a149b81cdaf1cc3e21b225df960059930e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.4"
+    version: "2.8.7"
   zego_zim:
     dependency: "direct main"
     description:
       name: zego_zim
-      sha256: beaf48e5055f30244336f60f46ba25cfe74601f31b9dfeb3d19616c2923ab791
+      sha256: "9dd129f8823e69a6b754a829f521bbd2b49209cd0a63041a8ba5a2333fc5ed90"
       url: "https://pub.dev"
     source: hosted
-    version: "2.17.1"
+    version: "2.17.1+1"
   zego_zim_audio:
     dependency: transitive
     description:
@@ -1891,5 +1907,5 @@ packages:
     source: hosted
     version: "2.6.0+3"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.0"
+  dart: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"

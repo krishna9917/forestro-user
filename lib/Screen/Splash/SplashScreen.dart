@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
         // context.goTo(HomePage());
       }
 
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 2), () {
         navigate.pushReplacement(routeMe(const HomePage()));
       });
     }

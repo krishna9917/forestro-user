@@ -45,15 +45,19 @@ class SocketController extends GetxController {
 
     socket?.on('accepted', (data) {
       print(data);
+      final profileController = Get.find<ProfileList>();
       try {
         var profileimage = data['data']['astroData']['profile_img'] ??
             "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         var name = data['data']['astroData']['name'];
+        var wallet = profileController.profileDataList.first.wallet ?? 'NA';
+
+        // Check if wallet is greater than 0
+
         print("hhh==============>>>>>");
         Get.dialog(
           AlertDialog(
-            contentPadding:
-                const EdgeInsets.all(20), // Add padding for better appearance
+            contentPadding: const EdgeInsets.all(20),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -65,11 +69,11 @@ class SocketController extends GetxController {
                 Text(
                   "Are you sure you want to start ${data['requestType'] == 'audio' || data['requestType'] == 'video' ? 'a ${data['requestType']} call' : 'a ${data['requestType']}'} with this astrologer, $name?",
                   style: const TextStyle(
-                    fontSize: 14, // Updated font size for better readability
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
                   ),
-                  textAlign: TextAlign.center, // Center the text
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -77,16 +81,28 @@ class SocketController extends GetxController {
             actionsAlignment: MainAxisAlignment.spaceAround,
             actions: [
               ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(minimumSize: const Size(100, 40)),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(100, 40),
+                ),
                 onPressed: () {
-                  Fluttertoast.showToast(msg: "Processing");
-                  socket?.emit('startSession', {
-                    'userId': data['userId'],
-                    'userType': data['userType'],
-                    'requestType': data['requestType'],
-                    'data': data,
-                  });
+                  final walletBalance = double.tryParse(wallet);
+                  if (walletBalance == null || walletBalance <= 0) {
+                    Fluttertoast.showToast(
+                      msg:
+                          "Insufficient balance in your wallet. Please recharge.",
+                      toastLength: Toast.LENGTH_LONG,
+                    );
+                    return;
+                  } else {
+                    Fluttertoast.showToast(msg: "Processing...");
+                    socket?.emit('startSession', {
+                      'userId': data['userId'],
+                      'userType': data['userType'],
+                      'requestType': data['requestType'],
+                      'data': data,
+                    });
+                  }
+                  // Uncomment these lines if navigation is required
                   // Get.back();
                   // Get.off(const ExploreAstroPage());
                 },

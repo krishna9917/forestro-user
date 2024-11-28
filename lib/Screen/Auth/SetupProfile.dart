@@ -17,6 +17,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/core/function/pickimage.dart';
 import 'package:foreastro/extensions/build_context.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:phone_input/phone_input_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -679,20 +680,18 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 onTap: () async {
-                                  // Show date picker when the text field is tapped
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(
-                                        1900), // Adjust as per your requirement
+                                    firstDate: DateTime(1900),
                                     lastDate: DateTime.now(),
                                   );
 
                                   if (pickedDate != null) {
                                     String formattedDate =
-                                        "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // Format the picked date as needed
+                                        DateFormat('dd-MM-yyyy')
+                                            .format(pickedDate);
                                     setState(() {
-                                      // Update the controller or state with the selected date
                                       _birthDateController.text = formattedDate;
                                     });
                                   }
@@ -701,14 +700,16 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 decoration: const InputDecoration(
                                   hintText: "Enter Date-Of-Birth",
                                   hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                  suffixIcon: Icon(Icons
-                                      .calendar_today), // Change the icon to represent date picking
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  suffixIcon: Icon(
+                                      Icons.calendar_today), // Calendar icon
                                 ),
                                 readOnly: true,
                               ),
                             ),
+
                             const SizedBox(height: 50),
                             SizedBox(
                               width: scrWeight(context),
