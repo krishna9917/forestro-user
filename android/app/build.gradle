@@ -59,7 +59,7 @@ android {
         applicationId "com.foreastro.foreastrouserside"
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 19
+        versionCode 20
         versionName "1.0.1"
         
     }
