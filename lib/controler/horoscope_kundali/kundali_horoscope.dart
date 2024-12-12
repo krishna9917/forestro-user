@@ -6,6 +6,7 @@ import 'package:foreastro/model/kundali/kp_housemodel.dart';
 import 'package:foreastro/model/kundali/matchkundali/northkundali_model.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
+import 'package:foreastro/model/kundali/vimshotri_model.dart';
 import 'package:get/get.dart';
 
 class KundaliController extends GetxController {
@@ -13,6 +14,7 @@ class KundaliController extends GetxController {
   var assedentDataList = AsedentReportModel().obs;
   var personalcharacteristics = Personal_Characteristics_Model().obs;
   var binnashtakvarga = Binnashtakvarga_Model().obs;
+  var vimsotridasadatalist = Vimsotridasa_Model().obs;
   var northmatching = NorthModel().obs;
   var southmatching = SouthKundaliModel().obs;
   var kphousemodel = KpHouseModel().obs;
@@ -187,6 +189,54 @@ class KundaliController extends GetxController {
 
         if (responseData != null) {
           binnashtakvarga.value = Binnashtakvarga_Model.fromJson(responseData);
+        } else {}
+      } else {}
+    } catch (e) {
+      print("Fetch error: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> Vimsotridasa(
+    String dob,
+    String tob,
+    double lat,
+    double lon,
+    String lang, {
+    String? md,
+    String? ad,
+    String? pd,
+    String? sd,
+  }) async {
+    try {
+      isLoading.value = true;
+      final Map<String, dynamic> queryParams = {
+        'dob': dob,
+        'tob': tob,
+        'lat': lat,
+        'lon': lon,
+        'tz': 5.5,
+        'api_key': 'c9783a2d-98e9-5735-81e7-7c093ee21104',
+        'lang': lang,
+      };
+      if (md != null) queryParams['md'] = md;
+      if (ad != null) queryParams['ad'] = ad;
+      if (pd != null) queryParams['pd'] = pd;
+      if (sd != null) queryParams['sd'] = sd;
+      const url =
+          'https://api.vedicastroapi.com/v3-json/dashas/specific-sub-dasha';
+
+      final Dio dio = Dio();
+      final response = await dio.get(url, queryParameters: queryParams);
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        print("responseData===============>>>>>>>>>>>>>$responseData");
+
+        if (responseData != null) {
+          vimsotridasadatalist.value =
+              Vimsotridasa_Model.fromJson(responseData);
         } else {}
       } else {}
     } catch (e) {

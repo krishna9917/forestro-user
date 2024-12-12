@@ -157,6 +157,7 @@ class _KundaliFormState extends State<KundaliForm>
         kundaliController.PersonalCharacteristicsData(dob, tob, lat, lon, lang);
         kundaliController.KpHouseData(dob, tob, lat, lon, lang);
         kundaliController.BinnashtakvargaData(dob, tob, lat, lon, lang);
+        kundaliController.Vimsotridasa(dob, tob, lat, lon, lang);
         kundaliimg.ChartData(dob, tob, lat, lon, lang);
         kundaliimg.KpChartData(dob, tob, lat, lon, lang);
 

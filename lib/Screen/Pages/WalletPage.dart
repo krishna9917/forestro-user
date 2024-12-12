@@ -52,12 +52,20 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   Future<void> createOrderAndOpenCheckout() async {
-    int amount =
-        (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
+    // Get the selected amount from the text field or the amount list
+    int baseAmount =
+        (int.tryParse(_amountController.text) ?? amountList[amountIndex]);
+
+    // Calculate GST (18% of the base amount)
+    double gst = baseAmount * 0.18;
+
+    int totalAmount = (baseAmount + gst).toInt() * 100;
+    String breakdownMessage =
+        "Base Amount: ₹$baseAmount\nGST (18%): ₹${gst.toStringAsFixed(2)}\nTotal Amount: ₹${(baseAmount + gst).toStringAsFixed(2)}";
+    showToast(breakdownMessage);
     String userphone = profileController.profileDataList.first.phone ?? 'NA';
     String useremail = profileController.profileDataList.first.email ?? 'NA';
     print("userphone=================================$userphone,$useremail");
-    // int usernumber =
 
     var orderResponse = await http.post(
       Uri.parse("https://api.razorpay.com/v1/orders"),
@@ -67,7 +75,7 @@ class _WalletPageState extends State<WalletPage> {
             "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
       },
       body: jsonEncode({
-        "amount": amount,
+        "amount": totalAmount,
         "currency": "INR",
         "payment_capture": 1,
       }),
@@ -80,7 +88,7 @@ class _WalletPageState extends State<WalletPage> {
 
       var options = {
         "key": "rzp_live_CJkLJpz9BeaRDw",
-        "amount": amount,
+        "amount": totalAmount,
         "name": "For Astro App",
         "description": "Payment for the some random product",
         "order_id": orderId,

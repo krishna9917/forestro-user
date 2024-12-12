@@ -13,6 +13,7 @@ import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpScreen extends StatefulWidget {
   String phone;
@@ -27,23 +28,43 @@ class OtpScreen extends StatefulWidget {
   State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
   String otp = '';
   bool loading = false;
   bool resendLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    listenForCode();
+  }
+
+  @override
+  void dispose() {
+    cancel();
+    super.dispose();
+  }
+
+  @override
+  void codeUpdated() {
+    setState(() {
+      otp = code!;
+    });
+    if (otp.length == 4) {
+      _confirmOTP(); 
+    }
+  }
 
   void _confirmOTP() async {
     try {
       setState(() {
         loading = true;
       });
-
       await verifyProfile();
     } catch (e) {
       setState(() {
         loading = false;
       });
-      // showToast(e.toString());
     }
   }
 
@@ -69,16 +90,12 @@ class _OtpScreenState extends State<OtpScreen> {
           navigate.pushReplacement(routeMe(const HomePage()));
         } else {
           localStorage.setString("token", res.data['data']['token']);
-          // Navigate to SetupProfileScreen
           navigate.push(routeMe(SetupProfileScreen(
             phone: widget.phone,
-            userId: res.data['user_id'],
+            userId: res.data['data']['user_id'],
           )));
         }
       }
-      // else {
-      //   showToast("Invalid OTP!");
-      // }
 
       setState(() {
         loading = false;
@@ -111,8 +128,6 @@ class _OtpScreenState extends State<OtpScreen> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
-      } else {
-        // showToast(tosteError);
       }
 
       setState(() {
@@ -165,7 +180,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                          subtitle: Text("Enter Your OTP Send On Your Mobile"),
+                          subtitle: Text("Enter Your OTP Sent On Your Mobile"),
                         ),
                       ),
                     ],
@@ -197,18 +212,15 @@ class _OtpScreenState extends State<OtpScreen> {
                       backgroundColor: Colors.transparent,
                       enableActiveFill: true,
                       keyboardType: TextInputType.number,
-                      onCompleted: (String verificationCode) {
-                        setState(() {
-                          otp = verificationCode;
-                        });
-                        // _confirmOTP();
-                      },
                       onChanged: (value) {
-                        // Handle changes if necessary
+                        setState(() {
+                          otp = value;
+                        });
                       },
                       beforeTextPaste: (text) {
                         return true; // Allow pasting of the OTP
                       },
+                      controller: TextEditingController(text: otp),
                     ),
                   ),
 

@@ -8,6 +8,7 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CombinedDetailsView extends StatefulWidget {
   final String dob;
@@ -40,7 +41,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Kundali'),
@@ -64,6 +65,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   // Tab(text: " Kundali "),
                   // Tab(text: " Personal Characteristics "),
                   Tab(text: " Binnashtakvarga "),
+                  Tab(text: " Dasha "),
                   Tab(text: " KP "),
                 ],
               ),
@@ -80,6 +82,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               // _buildKundaliSection(context),
               // _buildPersonalCharacteristicsSection(context),
               _buildBinnashtakvargaSection(context),
+              _buildvimsotridashaSection(context),
+
               _buildKPHousesSection(context),
             ],
           ),
@@ -202,6 +206,27 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: _buildeskpimage(),
+          ),
+          Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(color: Colors.grey),
+                color: Colors.white,
+              ),
+              child: _buildKpHouse()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildvimsotridashaSection(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _buildSectionTitle(context, "Vimshottri Dasha"),
           ),
           Container(
               decoration: BoxDecoration(
@@ -855,169 +880,73 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
         if (kundaliController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          if (kundaliController.kphousemodel.value.response == null) {
+          if (kundaliController.vimsotridasadatalist.value.response == null ||
+              kundaliController
+                      .vimsotridasadatalist.value.response!.mahadasha ==
+                  null) {
             return const Center(child: Text('No data available.'));
           } else {
-            final response = kundaliController.kphousemodel.value.response!;
+            final mahadashaList = kundaliController
+                .vimsotridasadatalist.value.response!.mahadasha!;
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: response.map((item) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          color: const Color.fromARGB(181, 241, 235, 179),
-                          child: DataRowWidget(
-                              label: ' Start Rasi', value: item.startRasi)),
-                      DataRowWidget(label: 'End Rasi', value: item.endRasi),
-                      DataRowWidget(
-                        label: 'Local Start Degree',
-                        value: item.localStartDegree?.toString(),
-                      ),
-                      DataRowWidget(
-                        label: 'Local End Degree',
-                        value: item.localEndDegree?.toString(),
-                      ),
-                      DataRowWidget(
-                          label: 'Length', value: item.length?.toString()),
-                      DataRowWidget(
-                          label: 'House', value: item.house?.toString()),
-                      DataRowWidget(
-                        label: 'Bhavmadhya',
-                        value: item.bhavmadhya?.toString(),
-                      ),
-                      DataRowWidget(
-                        label: 'Global Start Degree',
-                        value: item.globalStartDegree?.toString(),
-                      ),
-                      DataRowWidget(
-                        label: 'Global End Degree',
-                        value: item.globalEndDegree?.toString(),
-                      ),
-                      DataRowWidget(
-                        label: 'Start Nakshatra Lord',
-                        value: item.startNakshatraLord,
-                      ),
-                      DataRowWidget(
-                        label: 'End Nakshatra Lord',
-                        value: item.endNakshatraLord,
-                      ),
-                      DataRowWidget(
-                          label: 'Cusp Sub Lord', value: item.cuspSubLord),
-                      DataRowWidget(
-                        label: 'Cusp Sub Sub Lord',
-                        value: item.cuspSubSubLord,
-                      ),
-                      // Displaying planets data in a table format
-                      if (item.planets != null)
-                        Table(
-                          border: TableBorder.all(),
-                          // columnWidths: const {
-                          //   0: FixedColumnWidth(160.0),
-                          //   1: FlexColumnWidth(3),
-                          //   2: FlexColumnWidth(3),
-                          // },
-                          children: [
-                            const TableRow(children: [
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text('Planet ID'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('Full Name'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text('Name'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('Nakshatra'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('Nakshatra No'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('Nakshatra Pada'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('Retro'),
-                                ),
-                              ),
-                            ]),
-                            ...item.planets!.map((planet) {
-                              return TableRow(children: [
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(planet.planetId ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(planet.fullName ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(planet.name ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(planet.nakshatra ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                        planet.nakshatraNo?.toString() ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                        planet.nakshatraPada?.toString() ?? ''),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(planet.retro?.toString() ?? ''),
-                                  ),
-                                ),
-                              ]);
-                            }),
-                          ],
-                        ),
-                      const SizedBox(height: 16),
+                children: [
+                  const Text(
+                    'Mahadasha Details',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  DataTable(
+                    columnSpacing: 20, // Increased spacing
+                    columns: const [
+                      DataColumn(label: Text('Planet')),
+                      DataColumn(label: Text('Start Date')),
+                      DataColumn(label: Text('End Date')),
+                      DataColumn(
+                          label: Text(
+                              '')), // Updated to describe the purpose of this column
                     ],
-                  );
-                }).toList(),
+                    rows: mahadashaList.map((mahadasha) {
+                      return DataRow(
+                        cells: [
+                          DataCell(Text(
+                            mahadasha.name ?? 'N/A',
+                            style: const TextStyle(fontSize: 10),
+                          )),
+                          DataCell(Text(
+                            mahadasha.start != null
+                                ? (mahadasha.start!.length > 16
+                                    ? '${mahadasha.start!.substring(0, 16)}'
+                                    : mahadasha.start!)
+                                : 'N/A',
+                            style: const TextStyle(fontSize: 10),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                          DataCell(Text(
+                            mahadasha.end != null
+                                ? (mahadasha.end!.length > 16
+                                    ? '${mahadasha.end!.substring(0, 16)}   '
+                                    : mahadasha.end!)
+                                : 'N/A',
+                            style: const TextStyle(fontSize: 10),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                          DataCell(
+                            Icon(Icons
+                                .keyboard_arrow_right), // Should render correctly now
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             );
           }
@@ -1025,6 +954,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
       }),
     );
   }
+
+// Helper function to format date
 }
 
 class DataRowWidget extends StatelessWidget {
