@@ -166,7 +166,8 @@ class _KundaliFormState extends State<KundaliForm>
             tob: tob,
             place: addressController.text,
             lati: lat,
-            long: lon));
+            long: lon,
+            lang:lang));
       } catch (e) {
         print('Error fetching coordinates: $e');
       }

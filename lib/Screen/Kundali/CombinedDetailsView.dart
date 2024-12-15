@@ -8,7 +8,6 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class CombinedDetailsView extends StatefulWidget {
   final String dob;
@@ -16,18 +15,20 @@ class CombinedDetailsView extends StatefulWidget {
   final String place;
   final double lati;
   final double long;
-  const CombinedDetailsView({
-    super.key,
-    // required this.name,
-    required this.dob,
-    required this.tob,
-    required this.place,
-    required this.lati,
-    required this.long,
-    // required this.place,
-    // required this.lat,
-    // required this.log,
-  });
+  final String lang;
+  const CombinedDetailsView(
+      {super.key,
+      // required this.name,
+      required this.dob,
+      required this.tob,
+      required this.place,
+      required this.lati,
+      required this.long,
+      required this.lang
+      // required this.place,
+      // required this.lat,
+      // required this.log,
+      });
   @override
   State<CombinedDetailsView> createState() => _CombinedDetailsViewState();
 }
@@ -213,7 +214,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 border: Border.all(color: Colors.grey),
                 color: Colors.white,
               ),
-              child: _buildKpHouse()),
+              child: _buildKpHousef()),
         ],
       ),
     );
@@ -856,6 +857,183 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
     );
   }
 
+  Widget _buildKpHousef() {
+    return SingleChildScrollView(
+      child: Obx(() {
+        if (kundaliController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          if (kundaliController.kphousemodel.value.response == null) {
+            return const Center(child: Text('No data available.'));
+          } else {
+            final response = kundaliController.kphousemodel.value.response!;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: response.map((item) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          color: const Color.fromARGB(181, 241, 235, 179),
+                          child: DataRowWidget(
+                              label: ' Start Rasi', value: item.startRasi)),
+                      DataRowWidget(label: 'End Rasi', value: item.endRasi),
+                      DataRowWidget(
+                        label: 'Local Start Degree',
+                        value: item.localStartDegree?.toString(),
+                      ),
+                      DataRowWidget(
+                        label: 'Local End Degree',
+                        value: item.localEndDegree?.toString(),
+                      ),
+                      DataRowWidget(
+                          label: 'Length', value: item.length?.toString()),
+                      DataRowWidget(
+                          label: 'House', value: item.house?.toString()),
+                      DataRowWidget(
+                        label: 'Bhavmadhya',
+                        value: item.bhavmadhya?.toString(),
+                      ),
+                      DataRowWidget(
+                        label: 'Global Start Degree',
+                        value: item.globalStartDegree?.toString(),
+                      ),
+                      DataRowWidget(
+                        label: 'Global End Degree',
+                        value: item.globalEndDegree?.toString(),
+                      ),
+                      DataRowWidget(
+                        label: 'Start Nakshatra Lord',
+                        value: item.startNakshatraLord,
+                      ),
+                      DataRowWidget(
+                        label: 'End Nakshatra Lord',
+                        value: item.endNakshatraLord,
+                      ),
+                      DataRowWidget(
+                          label: 'Cusp Sub Lord', value: item.cuspSubLord),
+                      DataRowWidget(
+                        label: 'Cusp Sub Sub Lord',
+                        value: item.cuspSubSubLord,
+                      ),
+                      // Displaying planets data in a table format
+                      if (item.planets != null)
+                        Table(
+                          border: TableBorder.all(),
+                          // columnWidths: const {
+                          //   0: FixedColumnWidth(160.0),
+                          //   1: FlexColumnWidth(3),
+                          //   2: FlexColumnWidth(3),
+                          // },
+                          children: [
+                            const TableRow(children: [
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text('Planet ID'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Full Name'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text('Name'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Nakshatra'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Nakshatra No'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Nakshatra Pada'),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Retro'),
+                                ),
+                              ),
+                            ]),
+                            ...item.planets!.map((planet) {
+                              return TableRow(children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(planet.planetId ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(planet.fullName ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(planet.name ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(planet.nakshatra ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        planet.nakshatraNo?.toString() ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        planet.nakshatraPada?.toString() ?? ''),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(planet.retro?.toString() ?? ''),
+                                  ),
+                                ),
+                              ]);
+                            }),
+                          ],
+                        ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                }).toList(),
+              ),
+            );
+          }
+        }
+      }),
+    );
+  }
+
   Widget _buildeskpimage() {
     return Center(
       child: Obx(() {
@@ -888,6 +1066,22 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           } else {
             final mahadashaList = kundaliController
                 .vimsotridasadatalist.value.response!.mahadasha!;
+            final antardashaList =
+                kundaliController.antardashadatalist.value.response?.antardasha;
+            final mahaantardashaList =
+                kundaliController.antardashadatalist.value.response?.mahadasha;
+            final paryantardashaList = kundaliController
+                .paryantardashadatalist.value.response?.paryantardasha;
+            final mahaparyantardashaList = kundaliController
+                .paryantardashadatalist.value.response?.antardasha;
+            final shookshamadashaList = kundaliController
+                .shookshamadashadatalist.value.response?.shookshamadasha;
+
+            final sd = kundaliController
+                .shookshamadashadatalist.value.response?.paryantardasha;
+
+            final pranadashadashaList =
+                kundaliController.pranadashadatalist.value.response?.pranadasha;
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -896,20 +1090,18 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   const Text(
                     'Mahadasha Details',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
                   DataTable(
-                    columnSpacing: 20, // Increased spacing
+                    columnSpacing: 10, // Increased spacing
                     columns: const [
                       DataColumn(label: Text('Planet')),
                       DataColumn(label: Text('Start Date')),
                       DataColumn(label: Text('End Date')),
-                      DataColumn(
-                          label: Text(
-                              '')), // Updated to describe the purpose of this column
+                      DataColumn(label: Text('')),
                     ],
                     rows: mahadashaList.map((mahadasha) {
                       return DataRow(
@@ -938,14 +1130,291 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )),
-                          DataCell(
-                            Icon(Icons
-                                .keyboard_arrow_right), // Should render correctly now
-                          ),
+                          DataCell(IconButton(
+                            onPressed: () {
+                              kundaliController.Vimsotridasa(
+                                widget.dob,
+                                widget.tob,
+                                widget.lati,
+                                widget.long,
+                                widget.lang,
+                                mahadashaName: mahadasha.name,
+                              );
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_right),
+                          )),
                         ],
                       );
                     }).toList(),
                   ),
+                  const SizedBox(height: 16),
+                  if (antardashaList != null && antardashaList.isNotEmpty) ...[
+                    const Text(
+                      'Antardasha Details',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DataTable(
+                      columnSpacing: 10,
+                      columns: const [
+                        DataColumn(label: Text('Planet')),
+                        DataColumn(label: Text('Start Date')),
+                        DataColumn(label: Text('End Date')),
+                        DataColumn(label: Text('')),
+                      ],
+                      rows: antardashaList.map((antardasha) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(
+                              antardasha.name ?? 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                            )),
+                            // DataCell(Text(
+                            //   antardasha.start ?? 'N/A',
+                            //   style: const TextStyle(fontSize: 10),
+                            // )),
+                            // DataCell(Text(
+                            //   antardasha.end ?? 'N/A',
+                            //   style: const TextStyle(fontSize: 10),
+                            // )),
+                            DataCell(Text(
+                              antardasha.start != null
+                                  ? (antardasha.start!.length > 16
+                                      ? '${antardasha.start!.substring(0, 16)}'
+                                      : antardasha.start!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(Text(
+                              antardasha.end != null
+                                  ? (antardasha.end!.length > 16
+                                      ? '${antardasha.end!.substring(0, 16)}   '
+                                      : antardasha.end!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(IconButton(
+                              onPressed: () {
+                                kundaliController.Vimsotridasa(
+                                  widget.dob,
+                                  widget.tob,
+                                  widget.lati,
+                                  widget.long,
+                                  widget.lang,
+                                  mahadashaName: mahaantardashaList,
+                                  ad: antardasha.name,
+                                );
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_right),
+                            )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  if (paryantardashaList != null &&
+                      paryantardashaList.isNotEmpty) ...[
+                    const Text(
+                      'Paryantardasha Details',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DataTable(
+                      columnSpacing: 10,
+                      columns: const [
+                        DataColumn(label: Text('Planet')),
+                        DataColumn(label: Text('Start Date')),
+                        DataColumn(label: Text('End Date')),
+                        DataColumn(label: Text('')),
+                      ],
+                      rows: paryantardashaList.map((paryantardasha) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(
+                              paryantardasha.name ?? 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                            )),
+                            DataCell(Text(
+                              paryantardasha.start != null
+                                  ? (paryantardasha.start!.length > 16
+                                      ? '${paryantardasha.start!.substring(0, 16)}'
+                                      : paryantardasha.start!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(Text(
+                              paryantardasha.end != null
+                                  ? (paryantardasha.end!.length > 16
+                                      ? '${paryantardasha.end!.substring(0, 16)}   '
+                                      : paryantardasha.end!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(IconButton(
+                              onPressed: () {
+                                kundaliController.Vimsotridasa(
+                                  widget.dob,
+                                  widget.tob,
+                                  widget.lati,
+                                  widget.long,
+                                  widget.lang,
+                                  mahadashaName: mahaantardashaList,
+                                  ad: mahaparyantardashaList,
+                                  pd: paryantardasha.name,
+                                );
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_right),
+                            )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  if (shookshamadashaList != null &&
+                      shookshamadashaList.isNotEmpty) ...[
+                    const Text(
+                      'Shookshamadasha Details',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DataTable(
+                      columnSpacing: 10,
+                      columns: const [
+                        DataColumn(label: Text('Planet')),
+                        DataColumn(label: Text('Start Date')),
+                        DataColumn(label: Text('End Date')),
+                        DataColumn(label: Text('')),
+                      ],
+                      rows: shookshamadashaList.map((shookshamadasha) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(
+                              shookshamadasha.name ?? 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                            )),
+                            DataCell(Text(
+                              shookshamadasha.start != null
+                                  ? (shookshamadasha.start!.length > 16
+                                      ? shookshamadasha.start!.substring(0, 16)
+                                      : shookshamadasha.start!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(Text(
+                              shookshamadasha.end != null
+                                  ? (shookshamadasha.end!.length > 16
+                                      ? '${shookshamadasha.end!.substring(0, 16)}   '
+                                      : shookshamadasha.end!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(IconButton(
+                              onPressed: () {
+                                kundaliController.Vimsotridasa(
+                                  widget.dob,
+                                  widget.tob,
+                                  widget.lati,
+                                  widget.long,
+                                  widget.lang,
+                                  mahadashaName: mahaantardashaList,
+                                  ad: mahaparyantardashaList,
+                                  pd: sd,
+                                  sd: shookshamadasha.name,
+                                );
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_right),
+                            )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  if (pranadashadashaList != null &&
+                      pranadashadashaList.isNotEmpty) ...[
+                    const Text(
+                      'Pranadasha Details',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DataTable(
+                      columnSpacing: 10,
+                      columns: const [
+                        DataColumn(label: Text('Planet')),
+                        DataColumn(label: Text('Start Date')),
+                        DataColumn(label: Text('End Date')),
+                        DataColumn(label: Text('')),
+                      ],
+                      rows: pranadashadashaList.map((pranadashadasha) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(
+                              pranadashadasha.name ?? 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                            )),
+                            DataCell(Text(
+                              pranadashadasha.start != null
+                                  ? (pranadashadasha.start!.length > 16
+                                      ? pranadashadasha.start!.substring(0, 16)
+                                      : pranadashadasha.start!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(Text(
+                              pranadashadasha.end != null
+                                  ? (pranadashadasha.end!.length > 16
+                                      ? '${pranadashadasha.end!.substring(0, 16)}   '
+                                      : pranadashadasha.end!)
+                                  : 'N/A',
+                              style: const TextStyle(fontSize: 10),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            DataCell(IconButton(
+                              onPressed: () {
+                                kundaliController.Vimsotridasa(
+                                  widget.dob,
+                                  widget.tob,
+                                  widget.lati,
+                                  widget.long,
+                                  widget.lang,
+                                );
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_right),
+                            )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ],
               ),
             );
@@ -954,8 +1423,6 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
       }),
     );
   }
-
-// Helper function to format date
 }
 
 class DataRowWidget extends StatelessWidget {

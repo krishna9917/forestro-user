@@ -6,15 +6,26 @@ import 'package:foreastro/model/kundali/kp_housemodel.dart';
 import 'package:foreastro/model/kundali/matchkundali/northkundali_model.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
+import 'package:foreastro/model/kundali/sub_dasha/anterdasha_model.dart';
+import 'package:foreastro/model/kundali/sub_dasha/paryantardasha_model.dart';
+import 'package:foreastro/model/kundali/sub_dasha/pranadasha_model.dart';
+
+import 'package:foreastro/model/kundali/sub_dasha/shookshamadasha_model.dart';
 import 'package:foreastro/model/kundali/vimshotri_model.dart';
 import 'package:get/get.dart';
 
 class KundaliController extends GetxController {
+  var selectedMahadasha = Rxn<String>();
+  var selectedAntardasha = Rxn<String>();
   var planetDataList = Rx<PlanetModel?>(null);
   var assedentDataList = AsedentReportModel().obs;
   var personalcharacteristics = Personal_Characteristics_Model().obs;
   var binnashtakvarga = Binnashtakvarga_Model().obs;
   var vimsotridasadatalist = Vimsotridasa_Model().obs;
+  var antardashadatalist = Antardasha_Model().obs;
+  var paryantardashadatalist = Paryantardasha_Model().obs;
+  var shookshamadashadatalist = Shookshamadasha_Model().obs;
+  var pranadashadatalist = Pranadasha_Model().obs;
   var northmatching = NorthModel().obs;
   var southmatching = SouthKundaliModel().obs;
   var kphousemodel = KpHouseModel().obs;
@@ -204,7 +215,7 @@ class KundaliController extends GetxController {
     double lat,
     double lon,
     String lang, {
-    String? md,
+    String? mahadashaName,
     String? ad,
     String? pd,
     String? sd,
@@ -220,7 +231,8 @@ class KundaliController extends GetxController {
         'api_key': 'c9783a2d-98e9-5735-81e7-7c093ee21104',
         'lang': lang,
       };
-      if (md != null) queryParams['md'] = md;
+      print(queryParams);
+      if (mahadashaName != null) queryParams['md'] = mahadashaName;
       if (ad != null) queryParams['ad'] = ad;
       if (pd != null) queryParams['pd'] = pd;
       if (sd != null) queryParams['sd'] = sd;
@@ -233,10 +245,32 @@ class KundaliController extends GetxController {
       if (response.statusCode == 200) {
         final responseData = response.data;
         print("responseData===============>>>>>>>>>>>>>$responseData");
-
+        // antardashadatalist.value = Antardasha_Model.fromJson(responseData);
         if (responseData != null) {
-          vimsotridasadatalist.value =
-              Vimsotridasa_Model.fromJson(responseData);
+          // shookshamadashadatalist.value =Shookshamadasha_Model.fromJson(responseData);
+          if (mahadashaName != null && ad != null && pd != null && sd != null) {
+            print("Mahadasha, AD, and PD sd available.");
+            pranadashadatalist.value = Pranadasha_Model.fromJson(responseData);
+            // pranadashadatalist.value = Pranadasha_Model.fromJson(responseData);
+          } else if (mahadashaName != null && ad != null && pd != null) {
+            print("Mahadasha, AD, and PD available.");
+            shookshamadashadatalist.value =
+                Shookshamadasha_Model.fromJson(responseData);
+          } else if (mahadashaName != null && ad != null) {
+            print("Both Mahadasha and AD available.");
+            paryantardashadatalist.value =
+                Paryantardasha_Model.fromJson(responseData);
+          }
+          // If only `mahadashaName` is present
+          else if (mahadashaName != null) {
+            print(mahadashaName);
+            antardashadatalist.value = Antardasha_Model.fromJson(responseData);
+          }
+          // Default to `vimsotridasadatalist`
+          else {
+            vimsotridasadatalist.value =
+                Vimsotridasa_Model.fromJson(responseData);
+          }
         } else {}
       } else {}
     } catch (e) {
