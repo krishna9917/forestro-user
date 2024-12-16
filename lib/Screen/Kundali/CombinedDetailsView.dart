@@ -63,11 +63,10 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   Tab(text: " Basic "),
                   Tab(text: " Planet "),
                   Tab(text: " Ascendant Report "),
-                  // Tab(text: " Kundali "),
-                  // Tab(text: " Personal Characteristics "),
                   Tab(text: " Binnashtakvarga "),
                   Tab(text: " Dasha "),
                   Tab(text: " KP "),
+                  // Tab(text: " Chart "),
                 ],
               ),
             ),
@@ -86,9 +85,98 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               _buildvimsotridashaSection(context),
 
               _buildKPHousesSection(context),
+              // _buildChartSection(context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildChartSection(BuildContext context) {
+    final List<String> tabNames = [
+      "D1",
+      "D2",
+      "D3",
+      "D3-s",
+      "D4",
+      "D5",
+      "D7",
+      "D8",
+      "D9",
+      "D10",
+      "D10-R",
+      "D12",
+      "D16",
+      "D20",
+      "D24",
+      "D24-R",
+      "D27",
+      "D40",
+      "D45",
+      "D60",
+      "D30",
+      "chalit",
+      "sun",
+      "moon"
+    ];
+    //  final CartImageControler controller = Get.put(CartImageControler());
+
+    return DefaultTabController(
+      length: tabNames.length,
+      child: Column(
+        children: [
+          ButtonsTabBar(
+            backgroundColor: AppColor.primary,
+            unselectedBackgroundColor: Colors.grey[300],
+            labelStyle: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              color: Colors.black,
+            ),
+            radius: 8.0,
+            tabs: tabNames.map((name) => Tab(text: "   $name   ")).toList(),
+          ),
+          Expanded(
+            child: Builder(
+              builder: (BuildContext tabContext) {
+                final TabController tabController =
+                    DefaultTabController.of(tabContext)!;
+
+                tabController.addListener(() {
+                  if (tabController.indexIsChanging) {
+                    final String selectedTab = tabNames[tabController.index];
+
+                    controller.DivisionalChartData(
+                        dob: widget.dob,
+                        tob: widget.tob,
+                        lat: widget.lati,
+                        lon: widget.long,
+                        lang: widget.lang,
+                        div: selectedTab);
+                  }
+                });
+
+                return Obx(() {
+                  return TabBarView(
+                    children: tabNames.map((name) {
+                      return controller.divisionchartData.value.isNotEmpty
+                          ? SvgPicture.string(
+                              color: AppColor.primary,
+                              controller.divisionchartData.value,
+                              width: 300,
+                              height: 300,
+                            )
+                          : const CircularProgressIndicator();
+                    }).toList(),
+                  );
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1369,7 +1457,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                         DataColumn(label: Text('Planet')),
                         DataColumn(label: Text('Start Date')),
                         DataColumn(label: Text('End Date')),
-                        DataColumn(label: Text('')),
+                        // DataColumn(label: Text('')),
                       ],
                       rows: pranadashadashaList.map((pranadashadasha) {
                         return DataRow(
@@ -1398,18 +1486,18 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             )),
-                            DataCell(IconButton(
-                              onPressed: () {
-                                kundaliController.Vimsotridasa(
-                                  widget.dob,
-                                  widget.tob,
-                                  widget.lati,
-                                  widget.long,
-                                  widget.lang,
-                                );
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_right),
-                            )),
+                            // DataCell(IconButton(
+                            //   onPressed: () {
+                            //     kundaliController.Vimsotridasa(
+                            //       widget.dob,
+                            //       widget.tob,
+                            //       widget.lati,
+                            //       widget.long,
+                            //       widget.lang,
+                            //     );
+                            //   },
+                            //   icon: const Icon(Icons.keyboard_arrow_right),
+                            // )),
                           ],
                         );
                       }).toList(),
