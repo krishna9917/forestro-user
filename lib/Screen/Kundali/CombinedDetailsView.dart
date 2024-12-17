@@ -42,7 +42,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Kundali'),
@@ -66,7 +66,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   Tab(text: " Binnashtakvarga "),
                   Tab(text: " Dasha "),
                   Tab(text: " KP "),
-                  // Tab(text: " Chart "),
+                  Tab(text: " Chart "),
                 ],
               ),
             ),
@@ -85,7 +85,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               _buildvimsotridashaSection(context),
 
               _buildKPHousesSection(context),
-              // _buildChartSection(context),
+              _buildChartSection(context),
             ],
           ),
         ),
@@ -95,30 +95,30 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
 
   Widget _buildChartSection(BuildContext context) {
     final List<String> tabNames = [
-      "D1",
-      "D2",
-      "D3",
-      "D3-s",
-      "D4",
-      "D5",
-      "D7",
-      "D8",
+      // "D1",
+      // "D2",
+      // "D3",
+      // "D3-s",
+      // "D4",
+      // "D5",
+      // "D7",
+      // "D8",
       "D9",
       "D10",
-      "D10-R",
-      "D12",
-      "D16",
-      "D20",
-      "D24",
-      "D24-R",
-      "D27",
-      "D40",
-      "D45",
-      "D60",
-      "D30",
-      "chalit",
-      "sun",
-      "moon"
+      // "D10-R",
+      // "D12",
+      // "D16",
+      // "D20",
+      // "D24",
+      // "D24-R",
+      // "D27",
+      // "D40",
+      // "D45",
+      // "D60",
+      // "D30",
+      // "chalit",
+      // "sun",
+      // "moon"
     ];
     //  final CartImageControler controller = Get.put(CartImageControler());
 
