@@ -92,7 +92,6 @@ class _MyCallState extends State<MyCall> {
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
         await Get.find<ProfileList>().fetchProfileData();
-        // Get.back();
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
@@ -103,6 +102,12 @@ class _MyCallState extends State<MyCall> {
         _isLoading = false;
       });
     }
+  }
+
+  String formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -128,11 +133,7 @@ class _MyCallState extends State<MyCall> {
               },
             ),
             onCallEnd: (event, defaultAction) async {
-              // setState(() {
-              //   endChatSession();
-              // });
               Get.offAll(const HomePage());
-
               await endChatSession();
             },
           ),
@@ -141,6 +142,26 @@ class _MyCallState extends State<MyCall> {
               isSmallViewDraggable: true,
               switchLargeOrSmallViewByClick: true,
             ),
+        ),
+        // Countdown Timer Positioned on the Right Corner
+        Positioned(
+          top: 30,
+          left: 20,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              formatTime(_remainingSeconds),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
         if (_isLoading)
           const Center(

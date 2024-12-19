@@ -15,7 +15,9 @@ import 'package:foreastro/model/kundali/vimshotri_model.dart';
 import 'package:get/get.dart';
 
 class KundaliController extends GetxController {
-  var selectedMahadasha = Rxn<String>();
+  var isLoading = true.obs;
+  var selectedMahadasha = "".obs;
+  var currentDetail = 'mahadasha'.obs;
   var selectedAntardasha = Rxn<String>();
   var planetDataList = Rx<PlanetModel?>(null);
   var assedentDataList = AsedentReportModel().obs;
@@ -29,12 +31,6 @@ class KundaliController extends GetxController {
   var northmatching = NorthModel().obs;
   var southmatching = SouthKundaliModel().obs;
   var kphousemodel = KpHouseModel().obs;
-  var isLoading = false.obs;
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-  }
 
   Future<void> fetchPlanetData(
       String dob, String tob, double lat, double lon, String lang) async {

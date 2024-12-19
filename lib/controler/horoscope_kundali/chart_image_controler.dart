@@ -6,6 +6,7 @@ class CartImageControler extends GetxController {
   var svgData = ''.obs;
   var kpData = ''.obs;
   var divisionchartData = ''.obs;
+  var divisionchartDatas = ''.obs;
 
   @override
   Future<void> onInit() async {
@@ -60,7 +61,7 @@ class CartImageControler extends GetxController {
       required String div}) async {
     try {
       isLoading.value = true;
-      divisionchartData.value = '';
+      // divisionchartData.value = '';
       final Map<String, dynamic> queryParams = {
         'dob': dob,
         'tob': tob,
@@ -88,6 +89,51 @@ class CartImageControler extends GetxController {
       if (response.statusCode == 200) {
         divisionchartData.value = response.data;
         print("Divisional Chart Data for $div: ${response.data}");
+      } else {}
+    } catch (e) {
+      print("fetch the error $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> DivisionalChartDatas(
+      {required String dob,
+      required String tob,
+      required double lat,
+      required double lon,
+      required String lang,
+      required String div}) async {
+    try {
+      // isLoading.value = true;
+      // divisionchartData.value = '';
+      final Map<String, dynamic> queryParams = {
+        'dob': dob,
+        'tob': tob,
+        'lat': lat,
+        'lon': lon,
+        'tz': '5.5',
+        'div': div,
+        'color': '%23ff3366',
+        'style': 'south',
+        'font_size': '12',
+        'font_style': 'roboto',
+        'colorful_planets': '1',
+        'size': '300',
+        'stroke': '2',
+        'format': 'base64',
+        'api_key': 'c9783a2d-98e9-5735-81e7-7c093ee21104',
+        'lang': lang,
+      };
+      print("quriparametterrr============$queryParams");
+      final url = 'https://api.vedicastroapi.com/v3-json/horoscope/chart-image';
+
+      final Dio dio = Dio();
+      final response = await dio.get(url, queryParameters: queryParams);
+
+      if (response.statusCode == 200) {
+        divisionchartDatas.value = response.data;
+        print("Divisionals Chart Data for $div: ${response.data}");
       } else {}
     } catch (e) {
       print("fetch the error $e");

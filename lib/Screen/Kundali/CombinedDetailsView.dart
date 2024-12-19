@@ -38,6 +38,40 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
 
   final CartImageControler controller = Get.put(CartImageControler());
   final ProfileList profilecontoler = Get.put(ProfileList());
+  String displayText = "Mahadasha";
+  // String currentDetail = 'mahadasha';
+
+  @override
+  void initState() {
+    super.initState();
+    if (kundaliController.currentDetail.value.isEmpty) {
+      kundaliController.currentDetail.value = 'mahadasha';
+    }
+    final String initialTab = "D9";
+    controller.DivisionalChartData(
+      dob: widget.dob,
+      tob: widget.tob,
+      lat: widget.lati,
+      lon: widget.long,
+      lang: widget.lang,
+      div: initialTab,
+    );
+    controller.DivisionalChartDatas(
+      dob: widget.dob,
+      tob: widget.tob,
+      lat: widget.lati,
+      lon: widget.long,
+      lang: widget.lang,
+      div: initialTab,
+    );
+    // currentDetail;
+    // _buildKpHouse();
+  }
+
+  // void fetchDashaData() {
+  //   kundaliController.Vimsotridasa(
+  //       widget.dob, widget.tob, widget.lati, widget.long, widget.lang);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +154,32 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
       // "sun",
       // "moon"
     ];
+    final List<String> tabName = [
+      // "D1",
+      // "D2",
+      // "D3",
+      // "D3-s",
+      // "D4",
+      // "D5",
+      // "D7",
+      // "D8",
+      "D9(Navamsa)",
+      "D10(Dasamsa)",
+      // "D10-R",
+      // "D12",
+      // "D16",
+      // "D20",
+      // "D24",
+      // "D24-R",
+      // "D27",
+      // "D40",
+      // "D45",
+      // "D60",
+      // "D30",
+      // "chalit",
+      // "sun",
+      // "moon"
+    ];
     //  final CartImageControler controller = Get.put(CartImageControler());
 
     return DefaultTabController(
@@ -137,7 +197,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               color: Colors.black,
             ),
             radius: 8.0,
-            tabs: tabNames.map((name) => Tab(text: "   $name   ")).toList(),
+            tabs: tabName.map((name) => Tab(text: "   $name   ")).toList(),
           ),
           Expanded(
             child: Builder(
@@ -156,20 +216,47 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                         lon: widget.long,
                         lang: widget.lang,
                         div: selectedTab);
+
+                    controller.DivisionalChartDatas(
+                        dob: widget.dob,
+                        tob: widget.tob,
+                        lat: widget.lati,
+                        lon: widget.long,
+                        lang: widget.lang,
+                        div: selectedTab);
                   }
                 });
 
                 return Obx(() {
                   return TabBarView(
                     children: tabNames.map((name) {
-                      return controller.divisionchartData.value.isNotEmpty
-                          ? SvgPicture.string(
-                              color: AppColor.primary,
-                              controller.divisionchartData.value,
-                              width: 300,
-                              height: 300,
+                      return controller.divisionchartData.value.isNotEmpty &&
+                              controller.divisionchartDatas.value.isNotEmpty
+                          ? Column(
+                              children: [
+                                const Text("North"),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SvgPicture.string(
+                                    color: AppColor.primary,
+                                    controller.divisionchartData.value,
+                                    width: 230,
+                                    height: 230,
+                                  ),
+                                ),
+                                const Text("South"),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SvgPicture.string(
+                                    color: AppColor.primary,
+                                    controller.divisionchartDatas.value,
+                                    width: 230,
+                                    height: 230,
+                                  ),
+                                ),
+                              ],
                             )
-                          : const CircularProgressIndicator();
+                          : Center(child: const CircularProgressIndicator());
                     }).toList(),
                   );
                 });
@@ -316,6 +403,20 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: _buildSectionTitle(context, "Vimshottri Dasha"),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  displayText,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
           Container(
               decoration: BoxDecoration(
@@ -1141,375 +1242,312 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
   }
 
   Widget _buildKpHouse() {
-    return SingleChildScrollView(
-      child: Obx(() {
-        if (kundaliController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          if (kundaliController.vimsotridasadatalist.value.response == null ||
-              kundaliController
-                      .vimsotridasadatalist.value.response!.mahadasha ==
-                  null) {
-            return const Center(child: Text('No data available.'));
-          } else {
-            final mahadashaList = kundaliController
-                .vimsotridasadatalist.value.response!.mahadasha!;
-            final antardashaList =
-                kundaliController.antardashadatalist.value.response?.antardasha;
-            final mahaantardashaList =
-                kundaliController.antardashadatalist.value.response?.mahadasha;
-            final paryantardashaList = kundaliController
-                .paryantardashadatalist.value.response?.paryantardasha;
-            final mahaparyantardashaList = kundaliController
-                .paryantardashadatalist.value.response?.antardasha;
-            final shookshamadashaList = kundaliController
-                .shookshamadashadatalist.value.response?.shookshamadasha;
+    return Obx(() {
+      if (kundaliController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-            final sd = kundaliController
-                .shookshamadashadatalist.value.response?.paryantardasha;
+      final mahadashaList =
+          kundaliController.vimsotridasadatalist.value.response?.mahadasha ??
+              [];
+      final antardashaList =
+          kundaliController.antardashadatalist.value.response?.antardasha ?? [];
+      final paryantardashaList = kundaliController
+              .paryantardashadatalist.value.response?.paryantardasha ??
+          [];
+      final shookshamadashaList = kundaliController
+              .shookshamadashadatalist.value.response?.shookshamadasha ??
+          [];
+      final pranadashadashaList =
+          kundaliController.pranadashadatalist.value.response?.pranadasha ?? [];
 
-            final pranadashadashaList =
-                kundaliController.pranadashadatalist.value.response?.pranadasha;
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Mahadasha Details',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  DataTable(
-                    columnSpacing: 10, // Increased spacing
-                    columns: const [
-                      DataColumn(label: Text('Planet')),
-                      DataColumn(label: Text('Start Date')),
-                      DataColumn(label: Text('End Date')),
-                      DataColumn(label: Text('')),
-                    ],
-                    rows: mahadashaList.map((mahadasha) {
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(
-                            mahadasha.name ?? 'N/A',
-                            style: const TextStyle(fontSize: 10),
-                          )),
-                          DataCell(Text(
-                            mahadasha.start != null
-                                ? (mahadasha.start!.length > 16
-                                    ? '${mahadasha.start!.substring(0, 16)}'
-                                    : mahadasha.start!)
-                                : 'N/A',
-                            style: const TextStyle(fontSize: 10),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          DataCell(Text(
-                            mahadasha.end != null
-                                ? (mahadasha.end!.length > 16
-                                    ? '${mahadasha.end!.substring(0, 16)}   '
-                                    : mahadasha.end!)
-                                : 'N/A',
-                            style: const TextStyle(fontSize: 10),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          DataCell(IconButton(
-                            onPressed: () {
-                              kundaliController.Vimsotridasa(
-                                widget.dob,
-                                widget.tob,
-                                widget.lati,
-                                widget.long,
-                                widget.lang,
-                                mahadashaName: mahadasha.name,
-                              );
-                            },
-                            icon: const Icon(Icons.keyboard_arrow_right),
-                          )),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 16),
-                  if (antardashaList != null && antardashaList.isNotEmpty) ...[
-                    const Text(
-                      'Antardasha Details',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DataTable(
-                      columnSpacing: 10,
-                      columns: const [
-                        DataColumn(label: Text('Planet')),
-                        DataColumn(label: Text('Start Date')),
-                        DataColumn(label: Text('End Date')),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: antardashaList.map((antardasha) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(
-                              antardasha.name ?? 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                            )),
-                            // DataCell(Text(
-                            //   antardasha.start ?? 'N/A',
-                            //   style: const TextStyle(fontSize: 10),
-                            // )),
-                            // DataCell(Text(
-                            //   antardasha.end ?? 'N/A',
-                            //   style: const TextStyle(fontSize: 10),
-                            // )),
-                            DataCell(Text(
-                              antardasha.start != null
-                                  ? (antardasha.start!.length > 16
-                                      ? '${antardasha.start!.substring(0, 16)}'
-                                      : antardasha.start!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(Text(
-                              antardasha.end != null
-                                  ? (antardasha.end!.length > 16
-                                      ? '${antardasha.end!.substring(0, 16)}   '
-                                      : antardasha.end!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(IconButton(
-                              onPressed: () {
-                                kundaliController.Vimsotridasa(
-                                  widget.dob,
-                                  widget.tob,
-                                  widget.lati,
-                                  widget.long,
-                                  widget.lang,
-                                  mahadashaName: mahaantardashaList,
-                                  ad: antardasha.name,
-                                );
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_right),
-                            )),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                  if (paryantardashaList != null &&
-                      paryantardashaList.isNotEmpty) ...[
-                    const Text(
-                      'Paryantardasha Details',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DataTable(
-                      columnSpacing: 10,
-                      columns: const [
-                        DataColumn(label: Text('Planet')),
-                        DataColumn(label: Text('Start Date')),
-                        DataColumn(label: Text('End Date')),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: paryantardashaList.map((paryantardasha) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(
-                              paryantardasha.name ?? 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                            )),
-                            DataCell(Text(
-                              paryantardasha.start != null
-                                  ? (paryantardasha.start!.length > 16
-                                      ? '${paryantardasha.start!.substring(0, 16)}'
-                                      : paryantardasha.start!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(Text(
-                              paryantardasha.end != null
-                                  ? (paryantardasha.end!.length > 16
-                                      ? '${paryantardasha.end!.substring(0, 16)}   '
-                                      : paryantardasha.end!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(IconButton(
-                              onPressed: () {
-                                kundaliController.Vimsotridasa(
-                                  widget.dob,
-                                  widget.tob,
-                                  widget.lati,
-                                  widget.long,
-                                  widget.lang,
-                                  mahadashaName: mahaantardashaList,
-                                  ad: mahaparyantardashaList,
-                                  pd: paryantardasha.name,
-                                );
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_right),
-                            )),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                  if (shookshamadashaList != null &&
-                      shookshamadashaList.isNotEmpty) ...[
-                    const Text(
-                      'Shookshamadasha Details',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DataTable(
-                      columnSpacing: 10,
-                      columns: const [
-                        DataColumn(label: Text('Planet')),
-                        DataColumn(label: Text('Start Date')),
-                        DataColumn(label: Text('End Date')),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: shookshamadashaList.map((shookshamadasha) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(
-                              shookshamadasha.name ?? 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                            )),
-                            DataCell(Text(
-                              shookshamadasha.start != null
-                                  ? (shookshamadasha.start!.length > 16
-                                      ? shookshamadasha.start!.substring(0, 16)
-                                      : shookshamadasha.start!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(Text(
-                              shookshamadasha.end != null
-                                  ? (shookshamadasha.end!.length > 16
-                                      ? '${shookshamadasha.end!.substring(0, 16)}   '
-                                      : shookshamadasha.end!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(IconButton(
-                              onPressed: () {
-                                kundaliController.Vimsotridasa(
-                                  widget.dob,
-                                  widget.tob,
-                                  widget.lati,
-                                  widget.long,
-                                  widget.lang,
-                                  mahadashaName: mahaantardashaList,
-                                  ad: mahaparyantardashaList,
-                                  pd: sd,
-                                  sd: shookshamadasha.name,
-                                );
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_right),
-                            )),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                  const SizedBox(height: 16),
-                  if (pranadashadashaList != null &&
-                      pranadashadashaList.isNotEmpty) ...[
-                    const Text(
-                      'Pranadasha Details',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DataTable(
-                      columnSpacing: 10,
-                      columns: const [
-                        DataColumn(label: Text('Planet')),
-                        DataColumn(label: Text('Start Date')),
-                        DataColumn(label: Text('End Date')),
-                        // DataColumn(label: Text('')),
-                      ],
-                      rows: pranadashadashaList.map((pranadashadasha) {
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(
-                              pranadashadasha.name ?? 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                            )),
-                            DataCell(Text(
-                              pranadashadasha.start != null
-                                  ? (pranadashadasha.start!.length > 16
-                                      ? pranadashadasha.start!.substring(0, 16)
-                                      : pranadashadasha.start!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            DataCell(Text(
-                              pranadashadasha.end != null
-                                  ? (pranadashadasha.end!.length > 16
-                                      ? '${pranadashadasha.end!.substring(0, 16)}   '
-                                      : pranadashadasha.end!)
-                                  : 'N/A',
-                              style: const TextStyle(fontSize: 10),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            // DataCell(IconButton(
-                            //   onPressed: () {
-                            //     kundaliController.Vimsotridasa(
-                            //       widget.dob,
-                            //       widget.tob,
-                            //       widget.lati,
-                            //       widget.long,
-                            //       widget.lang,
-                            //     );
-                            //   },
-                            //   icon: const Icon(Icons.keyboard_arrow_right),
-                            // )),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ],
-              ),
+      if (kundaliController.currentDetail.value == 'mahadasha') {
+        return DataTable(
+          columnSpacing: 12,
+          columns: const [
+            DataColumn(label: Text('Planet')),
+            DataColumn(label: Text('Start Date')),
+            DataColumn(label: Text('End Date')),
+            DataColumn(label: Text('')),
+          ],
+          rows: mahadashaList.map((mahadasha) {
+            return DataRow(
+              cells: [
+                DataCell(Text(
+                  (mahadasha.name?.substring(0, 2).toUpperCase()) ?? 'N/A',
+                )),
+                DataCell(Text(
+                  mahadasha.start != null
+                      ? (mahadasha.start!.length > 16
+                          ? '${mahadasha.start!.substring(0, 16)}'
+                          : mahadasha.start!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(Text(
+                  mahadasha.end != null
+                      ? (mahadasha.end!.length > 16
+                          ? '${mahadasha.end!.substring(0, 16)}'
+                          : mahadasha.end!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(IconButton(
+                  onPressed: () {
+                    kundaliController.currentDetail.value = 'antardasha';
+                    kundaliController.Vimsotridasa(
+                      widget.dob,
+                      widget.tob,
+                      widget.lati,
+                      widget.long,
+                      widget.lang,
+                      mahadashaName: mahadasha.name,
+                    );
+                    setState(() {
+                      displayText = "$displayText + Antardasha";
+                    });
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_right),
+                )),
+              ],
             );
-          }
-        }
-      }),
-    );
+          }).toList(),
+        );
+      } else if (kundaliController.currentDetail.value == 'antardasha') {
+        return DataTable(
+          columnSpacing: 12,
+          columns: const [
+            DataColumn(label: Text('Planet')),
+            DataColumn(label: Text('Start Date')),
+            DataColumn(label: Text('End Date')),
+            DataColumn(label: Text('')),
+          ],
+          rows: antardashaList.map((antardasha) {
+            return DataRow(
+              cells: [
+                DataCell(
+                  Text(
+                    '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} + ${antardasha?.name?.substring(0, 2).toUpperCase() ?? 'N/A'} ',
+                  ),
+                ),
+                DataCell(Text(
+                  antardasha.start != null
+                      ? (antardasha.start!.length > 16
+                          ? '${antardasha.start!.substring(0, 16)}'
+                          : antardasha.start!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(Text(
+                  antardasha.end != null
+                      ? (antardasha.end!.length > 16
+                          ? '${antardasha.end!.substring(0, 16)}'
+                          : antardasha.end!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(IconButton(
+                  onPressed: () {
+                    kundaliController.currentDetail.value = 'paryantardasha';
+                    kundaliController.Vimsotridasa(
+                      widget.dob,
+                      widget.tob,
+                      widget.lati,
+                      widget.long,
+                      widget.lang,
+                      mahadashaName: mahadashaList.first.name,
+                      ad: antardasha.name.toString(),
+                    );
+                    setState(() {
+                      displayText = "$displayText + Paryantardasha";
+                    });
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_right),
+                )),
+              ],
+            );
+          }).toList(),
+        );
+      } else if (kundaliController.currentDetail.value == 'paryantardasha') {
+        return DataTable(
+          columnSpacing: 12,
+          columns: const [
+            DataColumn(label: Text('Planet')),
+            DataColumn(label: Text('Start Date')),
+            DataColumn(label: Text('End Date')),
+            DataColumn(label: Text('')),
+          ],
+          rows: paryantardashaList.map((paryantardasha) {
+            return DataRow(
+              cells: [
+                DataCell(
+                  Text(
+                    '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} + ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} + ${paryantardasha.name!.substring(0, 2).toUpperCase()} ',
+                  ),
+                ),
+                // DataCell(Text(paryantardasha.name ?? 'N/A')),
+                DataCell(Text(
+                  paryantardasha.start != null
+                      ? (paryantardasha.start!.length > 16
+                          ? '${paryantardasha.start!.substring(0, 16)}'
+                          : paryantardasha.start!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(Text(
+                  paryantardasha.end != null
+                      ? (paryantardasha.end!.length > 16
+                          ? '${paryantardasha.end!.substring(0, 16)}'
+                          : paryantardasha.end!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(IconButton(
+                  onPressed: () {
+                    kundaliController.currentDetail.value = 'shookshamadasha';
+                    kundaliController.Vimsotridasa(widget.dob, widget.tob,
+                        widget.lati, widget.long, widget.lang,
+                        mahadashaName: mahadashaList.first.name,
+                        ad: antardashaList.first.name,
+                        pd: paryantardasha.name);
+
+                    setState(() {
+                      displayText = "$displayText + Shookshamadasha";
+                    });
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_right),
+                )),
+              ],
+            );
+          }).toList(),
+        );
+      } else if (kundaliController.currentDetail.value == 'shookshamadasha') {
+        return DataTable(
+          columnSpacing: 12,
+          columns: const [
+            DataColumn(label: Text('Planet')),
+            DataColumn(label: Text('Start Date')),
+            DataColumn(label: Text('End Date')),
+            DataColumn(label: Text('')),
+          ],
+          rows: shookshamadashaList.map((shookshamadasha) {
+            return DataRow(
+              cells: [
+                DataCell(
+                  Text(
+                    '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} + ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} + ${paryantardashaList.first.name!.substring(0, 2).toUpperCase()} + ${shookshamadasha.name!.substring(0, 2).toUpperCase()} ',
+                  ),
+                ),
+                // DataCell(Text(shookshamadasha.name ?? 'N/A')),
+                DataCell(Text(
+                  shookshamadasha.start != null
+                      ? (shookshamadasha.start!.length > 16
+                          ? '${shookshamadasha.start!.substring(0, 16)}'
+                          : shookshamadasha.start!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(Text(
+                  shookshamadasha.end != null
+                      ? (shookshamadasha.end!.length > 16
+                          ? '${shookshamadasha.end!.substring(0, 16)}'
+                          : shookshamadasha.end!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(IconButton(
+                  onPressed: () {
+                    kundaliController.currentDetail.value = 'pranadasha';
+                    kundaliController.Vimsotridasa(widget.dob, widget.tob,
+                        widget.lati, widget.long, widget.lang,
+                        mahadashaName: mahadashaList.first.name,
+                        ad: antardashaList.first.name,
+                        pd: paryantardashaList.first.name,
+                        sd: shookshamadasha.name);
+
+                    setState(() {
+                      displayText = "$displayText + Pranadasha";
+                    });
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_right),
+                )),
+              ],
+            );
+          }).toList(),
+        );
+      } else if (kundaliController.currentDetail.value == 'pranadasha') {
+        return DataTable(
+          columnSpacing: 12,
+          columns: const [
+            DataColumn(label: Text('Planet')),
+            DataColumn(label: Text('Start Date')),
+            DataColumn(label: Text('End Date')),
+            // DataColumn(label: Text('')),
+          ],
+          rows: pranadashadashaList.map((pranadasha) {
+            return DataRow(
+              cells: [
+                DataCell(
+                  Text(
+                    '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} + ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} + ${paryantardashaList.first.name!.substring(0, 2).toUpperCase()} + ${shookshamadashaList.first.name!.substring(0, 2).toUpperCase()} + ${pranadasha.name!.substring(0, 2).toUpperCase()}',
+                  ),
+                ),
+                DataCell(Text(
+                  pranadasha.start != null
+                      ? (pranadasha.start!.length > 16
+                          ? '${pranadasha.start!.substring(0, 16)}'
+                          : pranadasha.start!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                DataCell(Text(
+                  pranadasha.end != null
+                      ? (pranadasha.end!.length > 16
+                          ? '${pranadasha.end!.substring(0, 16)}'
+                          : pranadasha.end!)
+                      : 'N/A',
+                  style: const TextStyle(fontSize: 10),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                // DataCell(IconButton(
+                //   onPressed: () {
+                //     kundaliController.currentDetail.value = 'shookshamadasha';
+                //     kundaliController.Vimsotridasa(widget.dob, widget.tob,
+                //         widget.lati, widget.long, widget.lang,
+                //         mahadashaName: mahadashaList.first.name,
+                //         ad: antardashaList.first.name,
+                //         pd: paryantardashaList.first.name,
+                //         sd: shookshamadasha.name);
+                //   },
+                //   icon: const Icon(Icons.keyboard_arrow_right),
+                // )),
+              ],
+            );
+          }).toList(),
+        );
+      }
+      // Handle other conditions similarly...
+      return const SizedBox();
+    });
   }
 }
 
