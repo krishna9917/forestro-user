@@ -7,6 +7,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/videocall/const.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class AudioCall extends StatefulWidget {
@@ -33,6 +34,10 @@ class _AudioCallState extends State<AudioCall> {
   late Timer _timer;
   late int _remainingSeconds;
   bool isLoading = false;
+  bool _isLoading = false;
+  bool _isBeeping = false;
+  Color countdownColor = Colors.white;
+  AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
@@ -44,6 +49,11 @@ class _AudioCallState extends State<AudioCall> {
       if (_remainingSeconds > 1) {
         setState(() {
           _remainingSeconds--;
+          if (_remainingSeconds == 120 && !_isBeeping) {
+            countdownColor =
+                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
+            playBeepSound();
+          }
         });
       } else {
         if (_timer.isActive) {
@@ -55,6 +65,29 @@ class _AudioCallState extends State<AudioCall> {
       }
     });
   }
+
+  Future<void> playBeepSound() async {
+    try {
+      await player.setAsset('assets/bg/beep.mp3'); 
+      for (int i = 0; i < 3; i++) {
+        await player.play();
+        await Future.delayed(
+            Duration(milliseconds: 500)); 
+      }
+    } catch (e) {
+      print('Audio play error: $e');
+    }
+  }
+  // Future<void> startBeeping() async {
+  //   _isBeeping = true;
+
+  //   for (int i = 0; i < 10; i++) {
+  //     await _audioPlayer.play(AssetSource('assets/beep.mp3'));
+  //     await Future.delayed(const Duration(seconds: 1));
+  //   }
+
+  //   _isBeeping = false;
+  // }
 
   Future<void> endChatSession() async {
     showToast("Ending session...");
@@ -72,8 +105,19 @@ class _AudioCallState extends State<AudioCall> {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
+    try {
+      await calculateprice(totaltime);
 
-    calculateprice(totaltime);
+      // Get.offAll(const WalletPage());
+    } catch (e) {
+      // showToast("Something went wrong. Please try again later.");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    // calculateprice(totaltime);
   }
 
   Future calculateprice(String totaltime) async {
@@ -94,11 +138,12 @@ class _AudioCallState extends State<AudioCall> {
       print("datatttttttttt$data");
       if (data.statusCode == 201) {
         print("Data sent successfully");
+
         await Get.find<ProfileList>().fetchProfileData();
         // setState(() {
         //   isLoading = false;
         // });
-        Get.back();
+        // Get.back();
       } else {
         // showToast("Failed to complete profile. Please try again later.");
         setState(() {
@@ -113,9 +158,17 @@ class _AudioCallState extends State<AudioCall> {
     }
   }
 
+  String formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
   @override
   void dispose() {
     _timer.cancel();
+    player.dispose();
+    // _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -152,6 +205,52 @@ class _AudioCallState extends State<AudioCall> {
               ),
             ),
             config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
+          ),
+          Positioned(
+            top: 30,
+            left: 10,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 125, 122, 122),
+                    Color.fromARGB(151, 234, 231, 227)
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(2, 4),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.timer_outlined,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    formatTime(_remainingSeconds),
+                    style: TextStyle(
+                      color: countdownColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'RobotoMono',
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Center(child: Image.asset("assets/call_logo.jpg")),
           if (isLoading)

@@ -72,6 +72,8 @@ dependencies:
   onesignal_flutter: ^5.2.5
   path_provider: ^2.1.5
   another_telephony: ^0.3.0
+  just_audio: ^0.9.38
+  
   
   
   

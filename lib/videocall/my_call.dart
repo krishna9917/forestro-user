@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/videocall/const.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:just_audio/just_audio.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class MyCall extends StatefulWidget {
@@ -33,6 +35,10 @@ class _MyCallState extends State<MyCall> {
   late Timer _timer;
   late int _remainingSeconds;
   bool _isLoading = false;
+  bool _isBeeping = false;
+  Color countdownColor = Colors.white;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
@@ -45,6 +51,14 @@ class _MyCallState extends State<MyCall> {
       if (_remainingSeconds > 1) {
         setState(() {
           _remainingSeconds--;
+
+          // Change countdown color and start beeping at 2 minutes
+          if (_remainingSeconds == 120 && !_isBeeping) {
+            // startBeeping();
+            countdownColor =
+                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
+            playBeepSound();
+          }
         });
       } else {
         if (_timer.isActive) {
@@ -55,6 +69,18 @@ class _MyCallState extends State<MyCall> {
         });
       }
     });
+  }
+
+  Future<void> playBeepSound() async {
+    try {
+      await player.setAsset('assets/bg/beep.mp3');
+      for (int i = 0; i < 3; i++) {
+        await player.play();
+        await Future.delayed(Duration(milliseconds: 500));
+      }
+    } catch (e) {
+      print('Audio play error: $e');
+    }
   }
 
   Future<void> endChatSession() async {
@@ -73,7 +99,19 @@ class _MyCallState extends State<MyCall> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    await calculateprice(totaltime);
+    try {
+      await calculateprice(totaltime);
+
+      Get.offAll(const WalletPage());
+    } catch (e) {
+      // showToast("Something went wrong. Please try again later.");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    // await calculateprice(totaltime);
   }
 
   Future calculateprice(String totaltime) async {
@@ -96,7 +134,6 @@ class _MyCallState extends State<MyCall> {
         showToast("Failed to complete profile. Please try again later.");
       }
     } catch (e) {
-      // showToast("An error occurred. Please try again.");
     } finally {
       setState(() {
         _isLoading = false;
@@ -113,6 +150,7 @@ class _MyCallState extends State<MyCall> {
   @override
   void dispose() {
     _timer.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -146,23 +184,51 @@ class _MyCallState extends State<MyCall> {
         // Countdown Timer Positioned on the Right Corner
         Positioned(
           top: 30,
-          left: 20,
+          left: 10,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              formatTime(_remainingSeconds),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 125, 122, 122),
+                  Color.fromARGB(151, 234, 231, 227)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(2, 4),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.timer_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  formatTime(_remainingSeconds),
+                  style: TextStyle(
+                    color: countdownColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'RobotoMono',
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+
         if (_isLoading)
           const Center(
             child: CircularProgressIndicator(),
