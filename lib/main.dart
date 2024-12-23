@@ -75,7 +75,7 @@ Future<void> initOneSignal() async {
 
   await Future.delayed(const Duration(seconds: 1));
   _handleGetExternalId();
-  // _handleLogin();
+ 
 }
 
 void _handleGetExternalId() async {
