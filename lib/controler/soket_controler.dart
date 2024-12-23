@@ -46,9 +46,6 @@ class SocketController extends GetxController {
             "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         var name = data['data']['astroData']['name'];
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
-
-        // Check if wallet is greater than 0
-
         print("hhh==============>>>>>");
         Get.dialog(
           AlertDialog(
@@ -137,6 +134,14 @@ class SocketController extends GetxController {
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
+
+          socket?.emit('startSession', {
+            'userId': data['userId'],
+            'requestType': 'chat',
+            'totalMinutes': totalMinutes,
+            'data': data,
+          });
+
           Get.off(ChatScreen(
             id: data['userId'] + "-astro",
             userId: data['userId'],
@@ -155,9 +160,14 @@ class SocketController extends GetxController {
         double walletAmount = double.tryParse(wallet) ?? 0;
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
 
-        // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
+          socket?.emit('startSession', {
+            'userId': data['userId'],
+            'requestType': 'video',
+            'totalMinutes': totalMinutes,
+            'data': data,
+          });
           Get.off(
             MyCall(
               userid: data['userId'].toString(),
@@ -178,6 +188,12 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
+          socket?.emit('startSession', {
+            'userId': data['userId'],
+            'requestType': 'audio',
+            'totalMinutes': totalMinutes,
+            'data': data,
+          });
           Get.off(
             AudioCall(
               userid: data['userId'].toString(),
