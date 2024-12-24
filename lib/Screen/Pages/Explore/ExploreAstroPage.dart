@@ -6,7 +6,6 @@ import 'package:dio/dio.dart' as dio;
 import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
-import 'package:http/http.dart' as http;
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/astrology_detailes.dart';
@@ -639,59 +638,67 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                           .profileDataList
                                                                           .first
                                                                           .wallet);
-                                                              int wallet =
-                                                                  walletValue
-                                                                      .toInt();
+                                                              double
+                                                                  videoChargesPerMin =
+                                                                  double.parse(
+                                                                          astrologer
+                                                                              .videoChargesPerMin) ??
+                                                                      0;
 
-                                                              var fcmtoken =
-                                                                  astrologer
-                                                                          .notifactionToken ??
-                                                                      'NA';
-                                                              var token = fcmtoken
-                                                                  .toString();
+                                                              if (videoChargesPerMin >
+                                                                  0) {
+                                                                var totalMinutes =
+                                                                    walletValue /
+                                                                        videoChargesPerMin;
+                                                                if (totalMinutes >=
+                                                                    2) {
+                                                                  var astroid =
+                                                                      astrologer
+                                                                          .id;
+                                                                  var coupon =
+                                                                      astrologer
+                                                                          .videoCouponCode;
+                                                                  var coupencode =
+                                                                      coupon
+                                                                          .toString();
+                                                                  var id = astroid
+                                                                      .toString();
+                                                                  var signal =
+                                                                      astrologer
+                                                                          .signalId;
+                                                                  var signalId =
+                                                                      signal
+                                                                          .toString();
 
-                                                              if (wallet > 0) {
-                                                                var astroid =
-                                                                    astrologer
-                                                                        .id;
-                                                                var coupon =
-                                                                    astrologer
-                                                                        .videoCouponCode;
-                                                                var coupencode =
-                                                                    coupon
-                                                                        .toString();
-                                                                var id = astroid
-                                                                    .toString();
+                                                                  SendRequest.sendrequestvideo(
+                                                                      id,
+                                                                      astrologer
+                                                                              .notifactionToken ??
+                                                                          'NA',
+                                                                      coupencode,
+                                                                      signalId);
 
-                                                                var signal =
-                                                                    astrologer
-                                                                        .signalId;
-                                                                var signalId =
-                                                                    signal
-                                                                        .toString();
-
-                                                                SendRequest
-                                                                    .sendrequestvideo(
-                                                                        id,
-                                                                        token,
-                                                                        coupencode,
-                                                                        signalId);
-
-                                                                // sendrequestvideo(
-                                                                //     id,
-                                                                //     token,
-                                                                //     coupencode);
-                                                                Get.back();
-                                                              } else {
-                                                                showToast(
-                                                                    "You Have Insufficient balance to start Video Call");
+                                                                  Get.back();
+                                                                } else {
+                                                                  Get.snackbar(
+                                                                    "Your balance is only $walletValue",
+                                                                    "You need a minimum balance for 2 minutes of video call.",
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                  );
+                                                                }
                                                               }
-                                                              Get.off(
-                                                                  const ExploreAstroPage());
-                                                            } else {
-                                                              showToast(
-                                                                  "Profile data is not available");
-                                                            }
+                                                            } 
                                                           },
                                                           child: const Text(
                                                             "Video Call",
@@ -716,57 +723,66 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                           .profileDataList
                                                                           .first
                                                                           .wallet);
-                                                              int wallet =
-                                                                  walletValue
-                                                                      .toInt();
+                                                              double
+                                                                  audioChargesPerMin =
+                                                                  double.parse(
+                                                                          astrologer
+                                                                              .callChargesPerMin) ??
+                                                                      0;
 
-                                                              var fcmtoken =
-                                                                  astrologer
-                                                                          .notifactionToken ??
-                                                                      'NA';
-                                                              var token = fcmtoken
-                                                                  .toString();
+                                                              if (audioChargesPerMin >
+                                                                  0) {
+                                                                var totalMinutes =
+                                                                    walletValue /
+                                                                        audioChargesPerMin;
+                                                                if (totalMinutes >=
+                                                                    2) {
+                                                                  var astroid =
+                                                                      astrologer
+                                                                          .id;
+                                                                  var coupon =
+                                                                      astrologer
+                                                                          .callCouponCode;
+                                                                  var coupencode =
+                                                                      coupon
+                                                                          .toString();
+                                                                  var id = astroid
+                                                                      .toString();
+                                                                  var signal =
+                                                                      astrologer
+                                                                          .signalId;
+                                                                  var signalId =
+                                                                      signal
+                                                                          .toString();
 
-                                                              if (wallet > 0) {
-                                                                var astroid =
-                                                                    astrologer
-                                                                        .id;
-                                                                var coupon =
-                                                                    astrologer
-                                                                        .callCouponCode;
-                                                                var coupencode =
-                                                                    coupon
-                                                                        .toString();
-                                                                var id = astroid
-                                                                    .toString();
-                                                                var signal =
-                                                                    astrologer
-                                                                        .signalId;
-                                                                var signalId =
-                                                                    signal
-                                                                        .toString();
+                                                                  SendRequest.sendrequestaudio(
+                                                                      id,
+                                                                      astrologer
+                                                                              .notifactionToken ??
+                                                                          'NA',
+                                                                      coupencode,
+                                                                      signalId);
 
-                                                                SendRequest
-                                                                    .sendrequestaudio(
-                                                                        id,
-                                                                        token,
-                                                                        coupencode,
-                                                                        signalId);
-
-                                                                // sendrequestaudio(
-                                                                //     id,
-                                                                //     token,
-                                                                //     coupencode);
-                                                                Get.back();
-                                                              } else {
-                                                                showToast(
-                                                                    "You Have Insufficient balance to start Audio Call");
+                                                                  Get.back();
+                                                                } else {
+                                                                  Get.snackbar(
+                                                                    "Your balance is only $walletValue",
+                                                                    "You need a minimum balance for 2 minutes of audio call.",
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                  );
+                                                                }
                                                               }
-                                                              Get.off(
-                                                                  const ExploreAstroPage());
-                                                            } else {
-                                                              showToast(
-                                                                  "Profile data is not available");
                                                             }
                                                           },
                                                           child: const Text(
@@ -798,39 +814,48 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                             .profileDataList
                                                             .first
                                                             .wallet);
-                                                int wallet =
-                                                    walletValue.toInt();
+                                                double chatChargesPerMin =
+                                                    double.parse(astrologer
+                                                            .chatChargesPerMin) ??
+                                                        0;
 
-                                                var fcmtoken = astrologer
-                                                        .notifactionToken ??
-                                                    'NA';
-                                                var token = fcmtoken.toString();
+                                                if (chatChargesPerMin > 0) {
+                                                  var totalMinutes =
+                                                      walletValue /
+                                                          chatChargesPerMin;
+                                                  if (totalMinutes >= 2) {
+                                                    var astroid = astrologer.id;
+                                                    var id = astroid.toString();
+                                                    var coupon = astrologer
+                                                        .chatCouponCode;
+                                                    var coupencode =
+                                                        coupon.toString();
+                                                    var signal =
+                                                        astrologer.signalId;
+                                                    var signalId =
+                                                        signal.toString();
 
-                                                if (wallet > 0) {
-                                                  var astroid = astrologer.id;
-                                                  var id = astroid.toString();
-                                                  var coupon =
-                                                      astrologer.chatCouponCode;
-                                                  var coupencode =
-                                                      coupon.toString();
-                                                  var signal =
-                                                      astrologer.signalId;
-                                                  var signalId =
-                                                      signal.toString();
-                                                  SendRequest.sendrequestchat(
-                                                      id,
-                                                      token,
-                                                      coupencode,
-                                                      signalId);
-                                                  // sendrequestchat(
-                                                  //     id, token, coupencode);
-                                                } else {
-                                                  showToast(
-                                                      "You Have Insufficient balance to start chat");
+                                                    SendRequest.sendrequestchat(
+                                                        id,
+                                                        astrologer
+                                                                .notifactionToken ??
+                                                            'NA',
+                                                        coupencode,
+                                                        signalId);
+                                                  } else {
+                                                    Get.snackbar(
+                                                      "Your balance is only $walletValue",
+                                                      "You need a minimum balance for 2 minutes of chat.",
+                                                      snackPosition:
+                                                          SnackPosition.TOP,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      colorText: Colors.white,
+                                                      duration: const Duration(
+                                                          seconds: 3),
+                                                    );
+                                                  }
                                                 }
-                                              } else {
-                                                showToast(
-                                                    "Profile data is not available");
                                               }
                                             },
                                           ),

@@ -101,23 +101,54 @@ class _ServicesPageState extends State<ServicesPage> {
                   trailing: GestureDetector(
                     onTap: () {
                       if (profileController.profileDataList.isNotEmpty) {
+                        var chatperminatastro = astrologer.chatChargesPerMin;
+
                         double walletValue = double.parse(
                             profileController.profileDataList.first.wallet);
-                        int wallet = walletValue.toInt();
+                        double chatChargesPerMin =
+                            double.parse(chatperminatastro) ?? 0;
 
-                        var fcmtoken = astrologer.notifactionToken ?? 'NA';
-                        var token = fcmtoken.toString();
+                        if (chatChargesPerMin > 0) {
+                          var totalMinutes = walletValue / chatChargesPerMin;
 
-                        if (wallet > 0) {
-                          var astroid = astrologer.id;
-                          var id = astroid.toString();
-                          var coupon = astrologer.chatCouponCode;
-                          var coupencode = coupon.toString();
-                          var signal = astrologer.signalId;
-                          var signalId = signal.toString();
+                          var fcmToken = astrologer.notifactionToken ?? 'NA';
+                          var token = fcmToken.toString();
 
-                          SendRequest.sendrequestchat(
-                              id, token, coupencode, signalId);
+                          if (totalMinutes >= 2) {
+                            var astroId = astrologer.id;
+                            var id = astroId.toString();
+                            var coupon = astrologer.chatCouponCode;
+                            var couponCode = coupon.toString();
+                            var signal = astrologer.signalId;
+                            var signalId = signal.toString();
+
+                            SendRequest.sendrequestchat(
+                                id, token, couponCode, signalId);
+                          } else {
+                            Get.snackbar(
+                              "Your balance is only $walletValue",
+                              "You need a minimum balance for 2 minutes of chat.",
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              duration: Duration(seconds: 3),
+                            );
+                            // Fluttertoast.showToast(
+                            //   msg:
+                            //       "You need a minimum balance for 2 minutes of chat.",
+                            //   toastLength: Toast.LENGTH_SHORT,
+                            //   gravity: ToastGravity.BOTTOM,
+                            //   timeInSecForIosWeb: 1,
+                            //   backgroundColor: AppColor.primary,
+                            //   textColor: Colors.white,
+                            //   fontSize: 16.0,
+                            // );
+                            // Show error: Insufficient balance for at least 2 minutes of chat
+                            print(
+                                "You need a minimum balance for 2 minutes of chat.");
+                            // showToast(
+                            //     "You need a minimum balance for 2 minutes of chat.");
+                          }
                         } else {
                           // showToast(
                           //     "You Have Insufficient balance to start chat");

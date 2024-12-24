@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/astrology_detailes.dart';
+
 import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -40,7 +42,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
 
   @override
   void dispose() {
-    timer?.cancel(); // Cancel the timer when the widget is disposed
+    timer?.cancel();
     super.dispose();
   }
 
@@ -153,7 +155,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                               Row(
                                 children: List.generate(
                                   double.parse(astrologer.rating.toString())
-                                      .toInt(), // Parse as double and then to integer
+                                      .toInt(),
                                   (_) => Icon(
                                     Icons.star,
                                     size: 13,
@@ -177,30 +179,40 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                     double walletValue = double.parse(
                                         profileController
                                             .profileDataList.first.wallet);
-                                    int wallet = walletValue.toInt();
+                                    double callChargesPerMin = double.parse(
+                                            astrologer.callChargesPerMin) ??
+                                        0;
 
-                                    var fcmtoken =
-                                        astrologer.notifactionToken ?? 'NA';
-                                    var token = fcmtoken.toString();
+                                    if (callChargesPerMin > 0) {
+                                      var totalMinutes =
+                                          walletValue / callChargesPerMin;
 
-                                    if (wallet > 0) {
-                                      var astroid = astrologer.id;
-                                      var coupon = astrologer.callCouponCode;
-                                      var coupencode = coupon.toString();
-                                      var id = astroid.toString();
-                                      var signal = astrologer.signalId;
-                                      var signalId = signal.toString();
+                                      var fcmToken =
+                                          astrologer.notifactionToken ?? 'NA';
+                                      var token = fcmToken.toString();
 
-                                      SendRequest.sendrequestaudio(
-                                          id, token, coupencode, signalId);
-                                      // Get.back();
-                                    } else {
-                                      // showToast(
-                                      //     "You Have Insufficient balance to start Audio Call");
+                                      if (totalMinutes >= 2) {
+                                        var astroId = astrologer.id;
+                                        var coupon = astrologer.callCouponCode;
+                                        var couponCode = coupon.toString();
+                                        var id = astroId.toString();
+                                        var signal = astrologer.signalId;
+                                        var signalId = signal.toString();
+
+                                        SendRequest.sendrequestaudio(
+                                            id, token, couponCode, signalId);
+                                      } else {
+                                        Get.snackbar(
+                                          "Your balance is only $walletValue",
+                                          "You need a minimum balance for 2 minutes of an audio call.",
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          duration: Duration(seconds: 3),
+                                        );
+                                      }
                                     }
-                                    // Get.off(
-                                    //     const ExploreAstroPage());
-                                  } else {}
+                                  }
                                 },
                                 child: SvgPicture.asset(
                                   "assets/icons/tiny/call-now.svg",
@@ -212,25 +224,59 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                 onTap: () {
                                   if (profileController
                                       .profileDataList.isNotEmpty) {
+                                    var chatperminatastro =
+                                        astrologer.chatChargesPerMin;
+
                                     double walletValue = double.parse(
                                         profileController
                                             .profileDataList.first.wallet);
-                                    int wallet = walletValue.toInt();
+                                    double chatChargesPerMin =
+                                        double.parse(chatperminatastro) ?? 0;
 
-                                    var fcmtoken =
-                                        astrologer.notifactionToken ?? 'NA';
-                                    var token = fcmtoken.toString();
+                                    if (chatChargesPerMin > 0) {
+                                      // Calculate total minutes that can be covered by the wallet
+                                      var totalMinutes =
+                                          walletValue / chatChargesPerMin;
 
-                                    if (wallet > 0) {
-                                      var astroid = astrologer.id;
-                                      var id = astroid.toString();
-                                      var coupon = astrologer.chatCouponCode;
-                                      var coupencode = coupon.toString();
-                                      var signal = astrologer.signalId;
-                                      var signalId = signal.toString();
+                                      var fcmToken =
+                                          astrologer.notifactionToken ?? 'NA';
+                                      var token = fcmToken.toString();
 
-                                      SendRequest.sendrequestchat(
-                                          id, token, coupencode, signalId);
+                                      if (totalMinutes >= 2) {
+                                        var astroId = astrologer.id;
+                                        var id = astroId.toString();
+                                        var coupon = astrologer.chatCouponCode;
+                                        var couponCode = coupon.toString();
+                                        var signal = astrologer.signalId;
+                                        var signalId = signal.toString();
+
+                                        SendRequest.sendrequestchat(
+                                            id, token, couponCode, signalId);
+                                      } else {
+                                        Get.snackbar(
+                                          "Your balance is only $walletValue",
+                                          "You need a minimum balance for 2 minutes of chat.",
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          duration: Duration(seconds: 3),
+                                        );
+                                        // Fluttertoast.showToast(
+                                        //   msg:
+                                        //       "You need a minimum balance for 2 minutes of chat.",
+                                        //   toastLength: Toast.LENGTH_SHORT,
+                                        //   gravity: ToastGravity.BOTTOM,
+                                        //   timeInSecForIosWeb: 1,
+                                        //   backgroundColor: AppColor.primary,
+                                        //   textColor: Colors.white,
+                                        //   fontSize: 16.0,
+                                        // );
+                                        // Show error: Insufficient balance for at least 2 minutes of chat
+                                        print(
+                                            "You need a minimum balance for 2 minutes of chat.");
+                                        // showToast(
+                                        //     "You need a minimum balance for 2 minutes of chat.");
+                                      }
                                     } else {
                                       // showToast(
                                       //     "You Have Insufficient balance to start chat");
@@ -253,32 +299,42 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                     double walletValue = double.parse(
                                         profileController
                                             .profileDataList.first.wallet);
-                                    int wallet = walletValue.toInt();
+                                    double videoChargesPerMin = double.parse(
+                                            astrologer.videoChargesPerMin) ??
+                                        0;
 
-                                    var fcmtoken =
-                                        astrologer.notifactionToken ?? 'NA';
-                                    var token = fcmtoken.toString();
+                                    if (videoChargesPerMin > 0) {
+                                      // Calculate total minutes that can be covered by the wallet
+                                      var totalMinutes =
+                                          walletValue / videoChargesPerMin;
 
-                                    if (wallet > 0) {
-                                      var astroid = astrologer.id;
-                                      var coupon = astrologer.videoCouponCode;
-                                      var coupencode = coupon.toString();
-                                      var id = astroid.toString();
-                                      var signal = astrologer.signalId;
-                                      var signalId = signal.toString();
+                                      var fcmToken =
+                                          astrologer.notifactionToken ?? 'NA';
+                                      var token = fcmToken.toString();
 
-                                      SendRequest.sendrequestvideo(
-                                          id, token, coupencode, signalId);
-                                      // Get.back();
-                                    } else {
-                                      // showToast(
-                                      //     "You Have Insufficient balance to start Video Call");
+                                      if (totalMinutes >= 2) {
+                                        var astroId = astrologer.id;
+                                        var coupon = astrologer.videoCouponCode;
+                                        var couponCode = coupon.toString();
+                                        var id = astroId.toString();
+                                        var signal = astrologer.signalId;
+                                        var signalId = signal.toString();
+
+                                        SendRequest.sendrequestvideo(
+                                            id, token, couponCode, signalId);
+                                        // Get.back(); // Optional navigation logic
+                                      } else {
+                                        // Show error using Get.snackbar
+                                        Get.snackbar(
+                                          "Your balance is only $walletValue",
+                                          "You need a minimum balance for 2 minutes of video call.",
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          duration: Duration(seconds: 3),
+                                        );
+                                      }
                                     }
-                                    // Get.off(
-                                    //     const ExploreAstroPage());
-                                  } else {
-                                    // showToast(
-                                    //     "Profile data is not available");
                                   }
                                 },
                                 child: SvgPicture.asset(

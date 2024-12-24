@@ -48,11 +48,10 @@ class _MyCallState extends State<MyCall> {
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 1) {
+      if (_remainingSeconds > 60) {
         setState(() {
           _remainingSeconds--;
 
-         
           if (_remainingSeconds == 120 && !_isBeeping) {
             // startBeeping();
             countdownColor =
@@ -60,7 +59,7 @@ class _MyCallState extends State<MyCall> {
             playBeepSound();
           }
         });
-      } else {
+      } else if (_remainingSeconds == 60) {
         if (_timer.isActive) {
           _timer.cancel();
         }
@@ -103,15 +102,7 @@ class _MyCallState extends State<MyCall> {
       await calculateprice(totaltime);
 
       Get.offAll(const WalletPage());
-    } catch (e) {
-      // showToast("Something went wrong. Please try again later.");
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-
-    // await calculateprice(totaltime);
+    } catch (e) {}
   }
 
   Future calculateprice(String totaltime) async {

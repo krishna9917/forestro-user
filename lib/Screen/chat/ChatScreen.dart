@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
@@ -21,13 +20,14 @@ class ChatScreen extends StatefulWidget {
   final String callID;
   final double totalMinutes;
 
-  const ChatScreen(
-      {super.key,
-      required this.id,
-      required this.userId,
-      required this.totalMinutes,
-      required this.price,
-      required this.callID});
+  const ChatScreen({
+    super.key,
+    required this.id,
+    required this.userId,
+    required this.totalMinutes,
+    required this.price,
+    required this.callID,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -41,11 +41,9 @@ class _ChatScreenState extends State<ChatScreen> {
   late Timer _timer;
   late int _remainingSeconds;
   bool isSessionEnded = false;
-  bool _isLoading = false;
   bool _isBeeping = false;
   Color countdownColor = Colors.white;
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  AudioPlayer player = AudioPlayer();
+  final AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
@@ -53,25 +51,21 @@ class _ChatScreenState extends State<ChatScreen> {
     sessionController = Get.put(SessionController());
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
-
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 1) {
+      if (_remainingSeconds > 60) {
         setState(() {
           _remainingSeconds--;
           if (_remainingSeconds == 120 && !_isBeeping) {
-            // startBeeping();
             countdownColor =
                 (_remainingSeconds <= 120) ? Colors.red : Colors.white;
             playBeepSound();
           }
         });
-      } else {
+      } else if (_remainingSeconds == 60 && !isSessionEnded) {
+        endChatSession();
         _timer.cancel();
-        setState(() {
-          endChatSession();
-        });
       }
     });
   }
@@ -89,6 +83,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> endChatSession() async {
+    if (isSessionEnded) return; // Prevent multiple calls
+    isSessionEnded = true;
+
     sessionController.closeSession();
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -101,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    await calculateprice(totaltime);
+    await calculatePrice(totaltime);
 
     socketController.closeSession(
       senderId: widget.userId,
@@ -114,6 +111,29 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Future<void> calculatePrice(String totaltime) async {
+    print(totaltime);
+    try {
+      ApiRequest apiRequest = ApiRequest(
+        "$apiUrl/communication-charges",
+        method: ApiMethod.POST,
+        body: packFormData({
+          'communication_id': widget.callID,
+          'astro_per_min_price': widget.price,
+          'time': totaltime,
+        }),
+      );
+
+      dio.Response data = await apiRequest.send();
+      print("dataprice===========$data");
+      if (data.statusCode == 201) {
+        await Get.find<ProfileList>().fetchProfileData();
+      }
+    } catch (e) {
+      print('Error calculating price: $e');
+    }
+  }
+
   String formatTime(int seconds) {
     final minutes = seconds ~/ 60;
     final remainingSeconds = seconds % 60;
@@ -122,58 +142,34 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    if (_remainingSeconds > 0 && !isSessionEnded) {
+    if (!isSessionEnded) {
       endChatSession();
     }
-    _audioPlayer.dispose();
+    player.dispose();
     _timer.cancel();
     super.dispose();
   }
 
-  Future calculateprice(String totaltime) async {
-    try {
-      ApiRequest apiRequest = ApiRequest(
-        "$apiUrl/communication-charges",
-        method: ApiMethod.POST,
-        body: packFormData(
-          {
-            'communication_id': widget.callID,
-            'astro_per_min_price': widget.price,
-            'time': totaltime,
-          },
-        ),
-      );
-      dio.Response data = await apiRequest.send();
-      if (data.statusCode == 201) {
-        await Get.find<ProfileList>().fetchProfileData();
-        // Get.back();
-      }
-    } catch (e) {
-      // showToast(tosteError);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Fluttertoast.showToast(msg: widget.id);
     return WillPopScope(
       onWillPop: () async {
-        showAlertPopup(context,
-            title: "Are you Sure",
-            text: "Sure you close Chat Session",
-            showCancelBtn: true,
-            confirmBtnText: "Yes",
-            type: QuickAlertType.warning, onConfirmBtnTap: () async {
-          setState(() {
-            isSessionEnded = true;
-          });
-          Get.offAll(const HomePage());
-          await endChatSession();
-          // setState(() {
-          //   Get.find<ProfileList>().fetchProfileData();
-          // });
-        });
-        return true;
+        showAlertPopup(
+          context,
+          title: "Are you Sure",
+          text: "Sure you close Chat Session",
+          showCancelBtn: true,
+          confirmBtnText: "Yes",
+          type: QuickAlertType.warning,
+          onConfirmBtnTap: () async {
+            endChatSession();
+            setState(() {
+              isSessionEnded = true;
+            });
+            Get.offAll(const HomePage());
+          },
+        );
+        return false;
       },
       child: Stack(
         children: [
@@ -184,10 +180,6 @@ class _ChatScreenState extends State<ChatScreen> {
             theme: ThemeData(),
             inputDecoration: const InputDecoration(
               border: InputBorder.none,
-              errorBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
               contentPadding: EdgeInsets.all(0),
             ),
           ),

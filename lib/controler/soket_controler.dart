@@ -86,11 +86,14 @@ class SocketController extends GetxController {
                     );
                     return;
                   } else {
+                    
                     Fluttertoast.showToast(msg: "Processing...");
+
                     socket?.emit('startSession', {
                       'userId': data['userId'],
                       'userType': data['userType'],
                       'requestType': data['requestType'],
+                      'userwallet':wallet,
                       'data': data,
                     });
                   }

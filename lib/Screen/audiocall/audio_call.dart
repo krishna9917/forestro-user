@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/videocall/const.dart';
 import 'package:dio/dio.dart' as dio;
@@ -29,6 +30,7 @@ class AudioCall extends StatefulWidget {
 }
 
 class _AudioCallState extends State<AudioCall> {
+  final SocketController socketController = Get.find<SocketController>();
   late DateTime startTime;
   late DateTime endTime;
   late Timer _timer;
@@ -46,7 +48,7 @@ class _AudioCallState extends State<AudioCall> {
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 1) {
+      if (_remainingSeconds > 60) {
         setState(() {
           _remainingSeconds--;
           if (_remainingSeconds == 120 && !_isBeeping) {
@@ -55,7 +57,7 @@ class _AudioCallState extends State<AudioCall> {
             playBeepSound();
           }
         });
-      } else {
+      } else if (_remainingSeconds == 60) {
         if (_timer.isActive) {
           _timer.cancel();
         }
@@ -68,11 +70,10 @@ class _AudioCallState extends State<AudioCall> {
 
   Future<void> playBeepSound() async {
     try {
-      await player.setAsset('assets/bg/beep.mp3'); 
+      await player.setAsset('assets/bg/beep.mp3');
       for (int i = 0; i < 3; i++) {
         await player.play();
-        await Future.delayed(
-            Duration(milliseconds: 500)); 
+        await Future.delayed(Duration(milliseconds: 500));
       }
     } catch (e) {
       print('Audio play error: $e');
@@ -105,17 +106,17 @@ class _AudioCallState extends State<AudioCall> {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
-    try {
-      await calculateprice(totaltime);
 
-      // Get.offAll(const WalletPage());
-    } catch (e) {
-      // showToast("Something went wrong. Please try again later.");
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    await calculateprice(totaltime);
+    socketController.closeSession(
+      senderId: widget.userid,
+      requestType: "chat",
+      message: "User Cancel Can",
+      data: {
+        "userId": widget.userid,
+        'communication_id': widget.callID,
+      },
+    );
 
     // calculateprice(totaltime);
   }
@@ -144,17 +145,9 @@ class _AudioCallState extends State<AudioCall> {
         //   isLoading = false;
         // });
         // Get.back();
-      } else {
-        // showToast("Failed to complete profile. Please try again later.");
-        setState(() {
-          isLoading = false;
-        });
       }
     } catch (e) {
       print(e);
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 

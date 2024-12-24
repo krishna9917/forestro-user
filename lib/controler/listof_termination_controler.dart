@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ClientSays extends GetxController {
   // Initialize the profile data list
   final _clientsaysDataList = Rx<List<Data>>([]);
@@ -57,8 +56,6 @@ class ClientSays extends GetxController {
       }
     } catch (e) {
       print("featchthe error $e");
-    } finally {
-      _isLoading.value = false;
     }
   }
 }

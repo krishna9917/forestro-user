@@ -94,13 +94,13 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 labelStyle: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
                 tabs: const [
-                  Tab(text: " Basic "),
+                  Tab(text: " Lagna "),
+                  Tab(text: " Divisional Chart "),
+                  Tab(text: " Dasha "),
+                  Tab(text: " KP "),
                   Tab(text: " Planet "),
                   Tab(text: " Ascendant Report "),
                   Tab(text: " Binnashtakvarga "),
-                  Tab(text: " Dasha "),
-                  Tab(text: " KP "),
-                  Tab(text: " Chart "),
                 ],
               ),
             ),
@@ -111,15 +111,14 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           child: TabBarView(
             children: [
               _buildBasicSection(context),
+              _buildChartSection(context),
+              _buildvimsotridashaSection(context),
+              _buildKPHousesSection(context),
               _buildPlanetSection(context),
               _buildAscendantReportSection(context),
               // _buildKundaliSection(context),
               // _buildPersonalCharacteristicsSection(context),
               _buildBinnashtakvargaSection(context),
-              _buildvimsotridashaSection(context),
-
-              _buildKPHousesSection(context),
-              _buildChartSection(context),
             ],
           ),
         ),
@@ -229,6 +228,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
 
                 return Obx(() {
                   return TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
                     children: tabNames.map((name) {
                       return controller.divisionchartData.value.isNotEmpty &&
                               controller.divisionchartDatas.value.isNotEmpty
@@ -256,7 +256,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                                 ),
                               ],
                             )
-                          : Center(child: const CircularProgressIndicator());
+                          : const Center(child: CircularProgressIndicator());
                     }).toList(),
                   );
                 });
