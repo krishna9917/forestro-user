@@ -191,6 +191,7 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
+          
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'audio',

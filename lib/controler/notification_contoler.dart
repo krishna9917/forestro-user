@@ -13,6 +13,7 @@ class NotificationService {
     final profileController = Get.find<ProfileList>();
     var name = profileController.profileDataList.first.name;
     var img = profileController.profileDataList.first.profileImg ?? '';
+    var wallet = profileController.profileDataList.first.wallet ?? '0';
 
     print("token==========$token");
 
@@ -129,14 +130,13 @@ class NotificationService {
         },
       );
 
-      Get.find<SocketController>().sendNewRequest(
-          userId: id,
-          requestType: servicetype,
-          data: {
-            "message": "$name Send You video Request",
-            "name": name,
-            "profile_pic": img
-          });
+      Get.find<SocketController>()
+          .sendNewRequest(userId: id, requestType: servicetype, data: {
+        "message": "$name Send You video Request",
+        "name": name,
+        "profile_pic": img,
+        "user_wallet": wallet
+      });
     } catch (e) {
       // print(e);
       Fluttertoast.showToast(

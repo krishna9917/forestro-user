@@ -108,15 +108,6 @@ class _AudioCallState extends State<AudioCall> {
         "${seconds.toString().padLeft(2, '0')}";
 
     await calculateprice(totaltime);
-    socketController.closeSession(
-      senderId: widget.userid,
-      requestType: "chat",
-      message: "User Cancel Can",
-      data: {
-        "userId": widget.userid,
-        'communication_id': widget.callID,
-      },
-    );
 
     // calculateprice(totaltime);
   }
@@ -141,10 +132,20 @@ class _AudioCallState extends State<AudioCall> {
         print("Data sent successfully");
 
         await Get.find<ProfileList>().fetchProfileData();
-        // setState(() {
-        //   isLoading = false;
-        // });
-        // Get.back();
+        setState(() {
+          isLoading = false;
+        });
+        // socketController.closeSession(
+        //   senderId: widget.userid,
+        //   requestType: "audio",
+        //   message: "User Cancel Can",
+        //   data: {
+        //     "userId": widget.userid,
+        //     'communication_id': widget.callID,
+        //   },
+        // );
+
+        Get.offAll(const HomePage());
       }
     } catch (e) {
       print(e);
@@ -179,8 +180,9 @@ class _AudioCallState extends State<AudioCall> {
             callID: widget.callID,
             events: ZegoUIKitPrebuiltCallEvents(
               onCallEnd: (event, defaultAction) async {
-                Get.offAll(const HomePage());
                 await endChatSession();
+                Get.offAll(const HomePage());
+
                 // setState(() {
                 //   endChatSession();
                 // });

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/videocall/const.dart';
 import 'package:get/get.dart';
@@ -30,6 +30,7 @@ class MyCall extends StatefulWidget {
 }
 
 class _MyCallState extends State<MyCall> {
+  final SocketController socketController = Get.find<SocketController>();
   late DateTime startTime;
   late DateTime endTime;
   late Timer _timer;
@@ -97,15 +98,20 @@ class _MyCallState extends State<MyCall> {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
-
-    try {
-      await calculateprice(totaltime);
-
-      Get.offAll(const WalletPage());
-    } catch (e) {}
+    await calculateprice(totaltime);
+    // socketController.closeSession(
+    //   senderId: widget.userid,
+    //   requestType: "chat",
+    //   message: "User Cancel Can",
+    //   data: {
+    //     "userId": widget.userid,
+    //     'communication_id': widget.callID,
+    //   },
+    // );
   }
 
   Future calculateprice(String totaltime) async {
+
     try {
       ApiRequest apiRequest = ApiRequest(
         "$apiUrl/communication-charges",
@@ -121,15 +127,24 @@ class _MyCallState extends State<MyCall> {
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
         await Get.find<ProfileList>().fetchProfileData();
+        setState(() {
+          _isLoading = false;
+        });
+
+        // socketController.closeSession(
+        //   senderId: widget.userid,
+        //   requestType: "video",
+        //   message: "User Cancel Can",
+        //   data: {
+        //     "userId": widget.userid,
+        //     'communication_id': widget.callID,
+        //   },
+        // );
+        Get.offAll(const HomePage());
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
-    } catch (e) {
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    } catch (e) {}
   }
 
   String formatTime(int seconds) {
@@ -162,8 +177,18 @@ class _MyCallState extends State<MyCall> {
               },
             ),
             onCallEnd: (event, defaultAction) async {
-              Get.offAll(const HomePage());
               await endChatSession();
+              Get.offAll(const HomePage());
+
+              // socketController.closeSession(
+              //   senderId: widget.userid,
+              //   requestType: "chat",
+              //   message: "User Cancel Can",
+              //   data: {
+              //     "userId": widget.userid,
+              //     'communication_id': widget.callID,
+              //   },
+              // );
             },
           ),
           config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
