@@ -32,7 +32,9 @@ class SocketController extends GetxController {
   }
 
   void addSocketListeners() {
-    socket?.on('request', (data) {});
+    socket?.on('request', (data) {
+      print("userdata=====$data");
+    });
     socket?.on("wettingDecline", (data) {
       Fluttertoast.showToast(msg: "Request Cancel");
       Get.back();
@@ -86,14 +88,13 @@ class SocketController extends GetxController {
                     );
                     return;
                   } else {
-                    
                     Fluttertoast.showToast(msg: "Processing...");
 
                     socket?.emit('startSession', {
                       'userId': data['userId'],
                       'userType': data['userType'],
                       'requestType': data['requestType'],
-                      'userwallet':wallet,
+                      'totalMinutes': data['totalMinutes'],
                       'data': data,
                     });
                   }
@@ -191,7 +192,7 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-          
+
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'audio',
@@ -266,6 +267,8 @@ class SocketController extends GetxController {
       'requestType': requestType,
       'data': data
     });
+
+    print("userdata================$data");
   }
 
   void closeSession({
