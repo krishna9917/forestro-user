@@ -27,7 +27,6 @@ import 'package:foreastro/controler/bloc_controler.dart';
 import 'package:foreastro/controler/celebrity_controler.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
-import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/model/listaustro_model.dart';

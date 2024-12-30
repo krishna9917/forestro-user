@@ -33,13 +33,9 @@ class BannerList extends GetxController {
 
       if (response.statusCode == 201) {
         final responseData = response.data;
-
         if (responseData != null && responseData['status'] == true) {
           final dataListFromResponse = responseData['data'];
           dataList = List<String>.from(dataListFromResponse);
-
-          print(dataList);
-          print(dataList);
         }
       }
     } catch (e) {

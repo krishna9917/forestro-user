@@ -431,6 +431,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                     double.parse(astrologer.rating.toString())
                                         .toInt(), // Parse as double and then to integer
                                     (_) => Icon(
+                                      size: 20,
                                       Icons.star,
                                       color: AppColor.primary,
                                     ),
@@ -698,7 +699,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                                   );
                                                                 }
                                                               }
-                                                            } 
+                                                            }
                                                           },
                                                           child: const Text(
                                                             "Video Call",

@@ -74,7 +74,6 @@ Future<void> initOneSignal() async {
 
   await Future.delayed(const Duration(seconds: 1));
   _handleGetExternalId();
- 
 }
 
 void _handleGetExternalId() async {
@@ -109,8 +108,6 @@ Future<void> Notification() async {
     sound: true,
   );
 }
-
-
 
 class InitApp extends StatelessWidget {
   const InitApp({super.key});

@@ -85,7 +85,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
     var random = Random();
     int randomNumber = 10000 +
         random.nextInt(
-            90000); // Generates a random number between 10000 and 99999
+            90000); 
     return '$randomNumber';
   }
 
@@ -364,6 +364,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                               .toString())
                                           .toInt(),
                                       (_) => const Icon(
+                                        size: 20,
                                         Icons.star,
                                         color: AppColor.primary,
                                       ),
@@ -868,12 +869,12 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                       width: 55,
                                       height: 55,
                                       fit: BoxFit.fill,
-                                    ); // Widget to display if image fails to load
+                                    ); 
                                   },
                                   loadingBuilder:
                                       (context, child, loadingProgress) {
                                     if (loadingProgress == null) return child;
-                                    return const CircularProgressIndicator(); // Placeholder widget while loading
+                                    return const CircularProgressIndicator(); 
                                   },
                                 ),
                               ),
@@ -896,7 +897,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                       Row(
                                         children: List.generate(
                                           double.parse(review.rating)
-                                              .toInt(), // Parse as double and then to integer
+                                              .toInt(), 
                                           (_) => const Icon(
                                             Icons.star,
                                             color: AppColor.primary,

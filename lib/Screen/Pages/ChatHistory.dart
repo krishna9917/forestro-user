@@ -65,87 +65,105 @@ class ChatListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        var chathistro = chatData.astroId.toString();
-        Get.to(() => PreviewChatScreen(astroId: chathistro));
-      },
-      child: Column(
+    print(" chatData.profilePic==================${chatData.profilePic}");
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 5,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Row(
         children: [
-          Row(
+          viewImage(
+            boxDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.orange,
+            ),
+            url: chatData.profilePic,
+            width: 60,
+            height: 60,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chatData.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  "${chatData.date ?? ''} | ${chatData.time ?? ''}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Duration: ${chatData.communicationTime ?? '0'} min",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black87,
+                  ),
+                ),
+                Text(
+                  "Amount: ₹${chatData.totalAmount ?? '0'}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
             children: [
-              viewImage(
-                boxDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.orange,
-                ),
-                url: chatData.profilePic,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          chatData.name ?? '',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              chatData.date ?? '',
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              chatData.time ?? '',
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
+              Text(
+                (chatData.status ?? '').toUpperCase(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: (chatData.status?.toLowerCase() == 'accept')
+                      ? Colors.green
+                      : Colors.red,
                 ),
               ),
-              const Spacer(),
-              Column(
-                children: [
-                  Text(
-                    (chatData.status ?? '').toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: (chatData.status?.toLowerCase() == 'accept')
-                          ? Colors.green
-                          : Colors.red,
-                    ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  var chathistro = chatData.astroId.toString();
+                  Get.to(() => PreviewChatScreen(astroId: chathistro));
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  backgroundColor: AppColor.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  Text(
-                    "Duration: ${chatData.communicationTime ?? ''} min",
-                    style: const TextStyle(
-                        fontSize: 8, fontWeight: FontWeight.w900),
+                ),
+                child: const Text(
+                  "View History",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
                   ),
-                  Text(
-                    "Amount: ₹${chatData.totalAmount ?? ''}",
-                    style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.primary),
-                  ),
-                ],
+                ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
