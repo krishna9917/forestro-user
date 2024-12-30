@@ -52,13 +52,9 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   Future<void> createOrderAndOpenCheckout() async {
-    // Get the selected amount from the text field or the amount list
     int baseAmount =
         (int.tryParse(_amountController.text) ?? amountList[amountIndex]);
-
-    // Calculate GST (18% of the base amount)
     double gst = baseAmount * 0.18;
-
     int totalAmount = (baseAmount + gst).toInt() * 100;
     String breakdownMessage =
         "Base Amount: ₹$baseAmount\nGST (18%): ₹${gst.toStringAsFixed(2)}\nTotal Amount: ₹${(baseAmount + gst).toStringAsFixed(2)}";
@@ -66,7 +62,6 @@ class _WalletPageState extends State<WalletPage> {
     String userphone = profileController.profileDataList.first.phone ?? 'NA';
     String useremail = profileController.profileDataList.first.email ?? 'NA';
     print("userphone=================================$userphone,$useremail");
-
     var orderResponse = await http.post(
       Uri.parse("https://api.razorpay.com/v1/orders"),
       headers: {
