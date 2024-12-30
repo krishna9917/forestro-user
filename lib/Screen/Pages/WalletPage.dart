@@ -110,40 +110,9 @@ class _WalletPageState extends State<WalletPage> {
     }
   }
 
-  // void openCheckout() {
-  //   int amount =
-  //       (int.tryParse(_amountController.text) ?? amountList[amountIndex]) * 100;
-
-  //   var options = {
-  //     "key": "rzp_live_KxN6rq5K8JKbi6",
-  //     "amount": amount,
-  //     "name": "For Astro App",
-  //     "description": "Payment for the some random product",
-  //     "prefill": {"contact": "+91 8100484950", "email": "info@foreastro.com"},
-  //     "external": {
-  //       "wallets": ["paytm"],
-  //       "upi": {
-  //         "payeeName": "Payee Name",
-  //         "payeeVpa": "9886975566@okbizaxis",
-  //       },
-  //     },
-  //     "theme": {
-  //       "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
-  //     }
-  //   };
-
-  //   try {
-  //     razorpay.open(options);
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
   String generateRandomOrderId() {
     var random = Random();
-    int randomNumber = 10000 +
-        random.nextInt(
-            90000); // Generates a random number between 10000 and 99999
+    int randomNumber = 10000 + random.nextInt(90000);
     return 'Astro@$randomNumber';
   }
 
@@ -160,7 +129,6 @@ class _WalletPageState extends State<WalletPage> {
         int.tryParse(_amountController.text) ?? amountList[amountIndex];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('user_id');
-    // String userId = profileController.profileDataList?.first.userId ?? 'NA';
 
     storePaymentDetails(paymentId, orderId, signature, paymentTime, userName,
         selectedAmount, userId!);
@@ -174,14 +142,6 @@ class _WalletPageState extends State<WalletPage> {
       String userName,
       int selectedAmount,
       String userId) async {
-    // print("Payment ID: $paymentId");
-    // print("Order ID: $orderId");
-    // print("Signature: $signature");
-    // print("Payment Time: $paymentTime");
-    // print("User Name: $userName");
-    // print("Selected Amount: ₹$selectedAmount");
-    // print("User ID: $userId");
-
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -273,12 +233,9 @@ class _WalletPageState extends State<WalletPage> {
                     () {
                       if (profileController.profileDataList != null &&
                           profileController.profileDataList.isNotEmpty) {
-                        // Assuming wallet is a number or a string that can be parsed to a number
                         String wallet =
                             profileController.profileDataList.first.wallet ??
                                 'NA';
-
-                        // Check if wallet is a number and format it to two decimal places
                         String formattedWallet = 'NA';
                         if (wallet != 'NA') {
                           try {
