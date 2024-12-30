@@ -76,14 +76,9 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
               .map((review) => Review.fromJson(review))
               .toList();
         }
-      } else {}
+      }
     } on DioException {
-    } catch (e) {
-    } finally {
-      // setState(() {
-      //   loading = false;
-      // });
-    }
+    } catch (e) {}
   }
 
   String generateRandomOrderId() {
@@ -131,20 +126,19 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
     StringBuffer buffer = StringBuffer();
     int wordCount = 0;
 
-    List<String> words = text.split(' '); // Split the text into words
+    List<String> words = text.split(' ');
 
     for (int i = 0; i < words.length; i++) {
       buffer.write(words[i]);
 
       if (i < words.length - 1) {
-        // Don't add space after the last word
         buffer.write(' ');
       }
 
       wordCount++;
 
       if (wordCount % wordLimit == 0 && i != words.length - 1) {
-        buffer.write('\n'); // Add a newline after every `wordLimit` words
+        buffer.write('\n');
       }
     }
 
@@ -255,7 +249,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {}
+      }
     } catch (e) {
       // showToast(tosteError);
     }
@@ -275,8 +269,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
           review();
         },
         child: ListView(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -362,7 +354,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              
+
                               if (widget.astrologer?.rating != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -428,7 +420,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 ),
                             ]),
                         const SizedBox(height: 10),
-                      
                       ],
                     ),
                     Container(
