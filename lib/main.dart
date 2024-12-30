@@ -65,7 +65,6 @@ Future<void> initOneSignal() async {
     int randomNumber = 10000 + random.nextInt(90000);
     return '$randomNumber';
   }
-
   String externalIdg = generateRandomOrderId();
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("689405dc-4610-4a29-8268-4541a0f6299a");
