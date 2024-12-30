@@ -100,3 +100,25 @@ class Data {
     return data;
   }
 }
+
+class Certifications {
+  int? certificateId;
+  String? certificate;
+  String? fileSize;
+
+  Certifications({this.certificateId, this.certificate, this.fileSize});
+
+  Certifications.fromJson(Map<String, dynamic> json) {
+    certificateId = json['certificate_id'];
+    certificate = json['certificate'];
+    fileSize = json['file_size'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['certificate_id'] = this.certificateId;
+    data['certificate'] = this.certificate;
+    data['file_size'] = this.fileSize;
+    return data;
+  }
+}

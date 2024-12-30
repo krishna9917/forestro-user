@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:foreastro/Screen/chat/privew_screen.dart';
+import 'package:foreastro/model/profile_model.dart';
+import 'package:foreastro/theme/AppTheme.dart';
+import 'package:get/get.dart';
+
+import 'package:zego_zimkit/zego_zimkit.dart';
+
+class PreviewChatScreen extends StatelessWidget {
+  final String astroId;
+  const PreviewChatScreen({
+    super.key,
+    required this.astroId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // print(id);
+    return Theme(
+      data: appTheme.copyWith(),
+      child: ZIMKitMessageListPage(
+        // showOnly: true,
+        showPickMediaButton: false,
+        showMoreButton: false,
+        showPickFileButton: false,
+        messageInputKeyboardType: TextInputType.none,
+        inputBackgroundDecoration: const BoxDecoration(
+          color: Colors.transparent,
+        ),
+        // messageListBackgroundBuilder: (context, defaultWidget) {
+        //   return Image.asset(
+        //     AssetsPath.chatBgSvg,
+        //     width: context.windowWidth,
+        //     height: context.windowHeight,
+        //     fit: BoxFit.cover,
+        //   );
+        // },
+        appBarBuilder: (context, defaultAppBar) {
+          return AppBar(
+            title: defaultAppBar.title,
+          );
+        },
+        onMessageItemPressed: (context, message, defaultAction) {
+          if (message.type == ZIMMessageType.image) {
+            Get.to(
+              PreviewScreen(
+                isImage: true,
+                certification: Certifications(
+                  certificate: message.imageContent!.fileDownloadUrl,
+                  certificateId: DateTime.now().microsecondsSinceEpoch,
+                  fileSize: message.imageContent!.fileSize.toString(),
+                ),
+              ),
+            );
+          }
+        },
+        onMessageSent: (e) {},
+        inputDecoration: const InputDecoration(
+          border: InputBorder.none,
+          errorBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+        ),
+        showRecordButton: false,
+        conversationID: "${astroId}-astro",
+        conversationType: ZIMConversationType.peer,
+      ),
+    );
+  }
+}

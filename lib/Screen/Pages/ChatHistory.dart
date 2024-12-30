@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
+import 'package:foreastro/Screen/chat/chatprivie_screen.dart';
 import 'package:foreastro/controler/chat_history_contaroller.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -63,46 +63,13 @@ class ChatListCard extends StatelessWidget {
     super.key,
   });
 
-  Future<void> _fetchChatHistory(BuildContext context) async {
-    try {
-      String conversationID = "chat45900"; // Replace with valid conversation ID
-      ZIMConversationType conversationType = ZIMConversationType.peer;
-
-      ZIMMessageQueryConfig config = ZIMMessageQueryConfig()
-        ..count = 50; // Adjust count as needed
-
-      ZIMMessageQueriedResult result =
-          await ZIM.getInstance()!.queryHistoryMessage(
-                conversationID,
-                conversationType,
-                config,
-              );
-
-      if (result.messageList.isNotEmpty) {
-        Get.to(() => ZegoChatHistoryScreen(messages: result.messageList));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No chat history available.")),
-        );
-      }
-    } catch (error) {
-      print("Error fetching chat history: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch chat history: $error")),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _fetchChatHistory(context);
+        var chathistro = chatData.astroId.toString();
+        Get.to(() => PreviewChatScreen(astroId: chathistro));
       },
-      // onTap: () {
-
-      //   () => _fetchChatHistory(context);
-      // },
       child: Column(
         children: [
           Row(
@@ -181,34 +148,6 @@ class ChatListCard extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class ZegoChatHistoryScreen extends StatelessWidget {
-  final List<ZIMMessage> messages;
-
-  const ZegoChatHistoryScreen({required this.messages, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat History'),
-      ),
-      body: messages.isEmpty
-          ? const Center(child: Text('No chat history available.'))
-          : ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                return ListTile(
-                  title: Text(message.senderUserID ?? ''),
-                  // subtitle: Text(message.content ?? ''),
-                  trailing: Text(message.timestamp.toString()),
-                );
-              },
-            ),
     );
   }
 }
