@@ -362,8 +362,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              // Spacer(),
-                              // const SizedBox(height: 10),
+                              
                               if (widget.astrologer?.rating != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -429,23 +428,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 ),
                             ]),
                         const SizedBox(height: 10),
-                        // Row(
-                        //   children: [
-                        //     const SizedBox(width: 5),
-                        //     if (widget.astrologer?.rating != null)
-                        //       Row(
-                        //         children: List.generate(
-                        //           double.parse(
-                        //                   widget.astrologer!.rating.toString())
-                        //               .toInt(), // Parse as double and then to integer
-                        //           (_) => const Icon(
-                        //             Icons.star,
-                        //             color: AppColor.primary,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //   ],
-                        // ),
+                      
                       ],
                     ),
                     Container(
