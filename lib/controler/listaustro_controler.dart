@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetAstrologerProfile extends GetxController {
-
   final _austroDataList = Rx<List<Data>>([]);
   List<Data> get astroDataList => _austroDataList.value.obs;
 
@@ -19,11 +18,6 @@ class GetAstrologerProfile extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     await astroData();
-    await astroData();
-
-    // Timer.periodic(Duration(seconds: 5), (timer) {
-    //   astroData();
-    // });
   }
 
   Future<void> astroData() async {
@@ -40,25 +34,20 @@ class GetAstrologerProfile extends GetxController {
       final response = await dio.get(
         url,
       );
-    
 
       if (response.statusCode == 201) {
         final responseData = response.data;
-
         if (responseData != null && responseData['status'] == true) {
           final dataList = responseData['data'];
-         
           if (dataList != null && dataList is List) {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
             _austroDataList.value = parsedDataList;
-
-           
           }
         }
       }
     } catch (e) {
-      print("featchthe error $e");
+      print("featchthe error Astrology Data $e");
     } finally {
       _isLoading.value = false;
     }

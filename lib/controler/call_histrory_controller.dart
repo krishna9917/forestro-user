@@ -1,15 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/call_history_model.dart';
-
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CallHistory extends GetxController {
-  // Initialize the profile data list
   var CallHistoryDataList = <Data>[].obs;
-
-  // Flag to indicate if the data is loading
   var isLoading = false.obs;
 
   @override
@@ -26,7 +22,6 @@ class CallHistory extends GetxController {
       String? userId = prefs.getString('user_id');
 
       if (token == null || userId == null) {
-        // Handle token or userId being null
         return;
       }
 
@@ -40,12 +35,8 @@ class CallHistory extends GetxController {
 
       if (response.statusCode == 201) {
         final responseData = response.data;
-
-        print(responseData);
-
         if (responseData != null && responseData['status'] == true) {
           final dataList = responseData['data'];
-          print("CallHistory$dataList");
           if (dataList != null && dataList is List) {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
