@@ -44,6 +44,8 @@ class BlocList extends GetxController {
       }
     } catch (e) {
       print("featchthe error Bloc list $e");
+    } finally {
+      _isLoading.value = false;
     }
   }
 }

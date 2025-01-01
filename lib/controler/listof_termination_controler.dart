@@ -7,16 +7,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientSays extends GetxController {
-  // Initialize the profile data list
   final _clientsaysDataList = Rx<List<Data>>([]);
-
-  // Getter for the profile data list
   List<Data> get clientsaysDataList => _clientsaysDataList.value;
-
-  // Flag to indicate if the data is loading
   final _isLoading = RxBool(false);
-
-  // Getter for the loading flag
   bool get isLoading => _isLoading.value;
 
   @override
@@ -41,10 +34,8 @@ class ClientSays extends GetxController {
       );
       if (response.statusCode == 201) {
         final responseData = response.data;
-
         if (responseData != null && responseData['status'] == true) {
           final dataList = responseData['data'];
-
           if (dataList != null && dataList is List) {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
@@ -56,6 +47,8 @@ class ClientSays extends GetxController {
       }
     } catch (e) {
       print("featchthe error $e");
+    } finally {
+      _isLoading.value = false;
     }
   }
 }
