@@ -49,6 +49,8 @@ class CelibrityList extends GetxController {
       }
     } catch (e) {
       print("featchthe error $e");
+    } finally {
+      _isLoading.value = false;
     }
   }
 }
