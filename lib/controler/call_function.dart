@@ -44,9 +44,7 @@ class SendRequest {
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {
-        // showToast("ID is null");
-      }
+      } 
     } catch (e) {
       // showToast("Error: ${e.toString()}");
     }
@@ -59,10 +57,8 @@ class SendRequest {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var servicetype = "Chat";
         String? user_id = prefs.getString('user_id');
-        print("userid========$user_id");
         var title = "New Chat Request";
         String chatId = generateRandomOrderId();
-
         ApiRequest apiRequest = ApiRequest(
           "$apiUrl/send-communication-request",
           method: ApiMethod.POST,
@@ -85,8 +81,6 @@ class SendRequest {
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {
-        // showToast("ID is null");
       }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
@@ -124,9 +118,7 @@ class SendRequest {
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } else {
-        // showToast("ID is null");
-      }
+      } 
     } catch (e) {
       // showToast("Error: ${e.toString()}");
     }
