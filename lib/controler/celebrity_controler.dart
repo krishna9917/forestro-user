@@ -43,7 +43,6 @@ class CelibrityList extends GetxController {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
             _celibrityDataList.value = parsedDataList;
-            // print(_ celibrityDataList);
           }
         }
       }
