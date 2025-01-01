@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/block_model.dart';
-
 import 'package:get/get.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BlocList extends GetxController {
@@ -35,23 +33,17 @@ class BlocList extends GetxController {
 
       if (response.statusCode == 201) {
         final responseData = response.data;
-
-        print(responseData);
-
         if (responseData != null && responseData['status'] == true) {
           final dataList = responseData['data'];
-          print(dataList);
           if (dataList != null && dataList is List) {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
             _blocDataList.value = parsedDataList;
-
-            print(_blocDataList);
           }
         }
       }
     } catch (e) {
-      print("featchthe error $e");
+      print("featchthe error Bloc list $e");
     }
   }
 }
