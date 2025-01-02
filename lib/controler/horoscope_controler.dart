@@ -35,8 +35,8 @@ class HoroscopeControler extends GetxController {
         if (responseData != null) {
           horoscopeDataList.value = HoroscopeModel.fromJson(responseData);
           // print(horoscopeDataList.value);
-        } else {}
-      } else {}
+        } 
+      } 
     } catch (e) {
       // print("fetch the error $e");
     } finally {
