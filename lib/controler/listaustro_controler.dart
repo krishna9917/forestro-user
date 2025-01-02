@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:get/get.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetAstrologerProfile extends GetxController {
@@ -25,12 +23,9 @@ class GetAstrologerProfile extends GetxController {
       _isLoading.value = true;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
-
       final url = '$apiUrl/list-astrologer';
-
       final Dio dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
-
       final response = await dio.get(
         url,
       );
