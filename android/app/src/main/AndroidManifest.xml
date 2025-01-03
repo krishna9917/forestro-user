@@ -17,9 +17,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />    
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <!-- <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/> -->
 
 
 
@@ -83,12 +83,12 @@
             <data android:scheme="@string/fb_login_protocol_scheme" />
         </intent-filter>
     </activity>
-<receiver android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
+<!-- <receiver android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
 		    android:permission="android.permission.BROADCAST_SMS" android:exported="true">
 		    <intent-filter>
 			<action android:name="android.provider.Telephony.SMS_RECEIVED"/>
 		    </intent-filter>
-		</receiver>
+		</receiver> -->
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and

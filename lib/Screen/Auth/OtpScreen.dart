@@ -38,8 +38,8 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
   @override
   void initState() {
     super.initState();
-    listenForCode();
-    _listenForOTP();
+    // listenForCode();
+    // _listenForOTP();
   }
 
   @override
