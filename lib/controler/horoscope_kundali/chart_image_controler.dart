@@ -43,7 +43,6 @@ class CartImageControler extends GetxController {
 
       if (response.statusCode == 200) {
         svgData.value = response.data;
-        print("svagimage");
       } else {}
     } catch (e) {
       print("fetch the error $e");

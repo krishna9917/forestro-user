@@ -156,6 +156,7 @@ class _KundaliFormState extends State<KundaliForm>
         kundaliController.AssedentData(dob, tob, lat, lon, lang);
         kundaliController.PersonalCharacteristicsData(dob, tob, lat, lon, lang);
         kundaliController.KpHouseData(dob, tob, lat, lon, lang);
+        kundaliController.KpHousePlannet(dob, tob, lat, lon, lang);
         kundaliController.BinnashtakvargaData(dob, tob, lat, lon, lang);
         kundaliController.Vimsotridasa(dob, tob, lat, lon, lang);
         kundaliimg.ChartData(dob, tob, lat, lon, lang);
@@ -167,7 +168,7 @@ class _KundaliFormState extends State<KundaliForm>
             place: addressController.text,
             lati: lat,
             long: lon,
-            lang:lang));
+            lang: lang));
       } catch (e) {
         print('Error fetching coordinates: $e');
       }

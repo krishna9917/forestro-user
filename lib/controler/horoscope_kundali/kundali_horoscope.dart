@@ -3,6 +3,7 @@ import 'package:foreastro/model/kundali/Binnashtakvarga_Model.dart';
 import 'package:foreastro/model/kundali/Personal_Characteristics_Model.dart';
 import 'package:foreastro/model/kundali/assedent_model.dart';
 import 'package:foreastro/model/kundali/kp_housemodel.dart';
+import 'package:foreastro/model/kundali/kp_planet_model.dart';
 import 'package:foreastro/model/kundali/matchkundali/northkundali_model.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
@@ -31,6 +32,7 @@ class KundaliController extends GetxController {
   var northmatching = NorthModel().obs;
   var southmatching = SouthKundaliModel().obs;
   var kphousemodel = KpHouseModel().obs;
+  var kphouseplanetmodel = Kp_Planet_Model().obs;
 
   Future<void> fetchPlanetData(
       String dob, String tob, double lat, double lon, String lang) async {
@@ -160,6 +162,38 @@ class KundaliController extends GetxController {
           kphousemodel.value = KpHouseModel.fromJson(responseData);
         } else {}
       } else {}
+    } catch (e) {
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+Future<void> KpHousePlannet(
+      String dob, String tob, double lat, double lon, String lang) async {
+    try {
+      isLoading.value = true;
+      final Map<String, dynamic> queryParams = {
+        'dob': dob,
+        'tob': tob,
+        'lat': lat,
+        'lon': lon,
+        'tz': 5.5,
+        'api_key': 'c9783a2d-98e9-5735-81e7-7c093ee21104',
+        'lang': lang,
+      };
+      const url =
+          'https://api.vedicastroapi.com/v3-json/extended-horoscope/kp-planets';
+
+      final Dio dio = Dio();
+      final response = await dio.get(url, queryParameters: queryParams);
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+
+        if (responseData != null) {
+          kphouseplanetmodel.value = Kp_Planet_Model.fromJson(responseData);
+        } 
+      } 
     } catch (e) {
     } finally {
       isLoading.value = false;

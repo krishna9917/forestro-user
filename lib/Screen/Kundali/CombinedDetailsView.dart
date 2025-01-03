@@ -47,7 +47,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
     if (kundaliController.currentDetail.value.isEmpty) {
       kundaliController.currentDetail.value = 'mahadasha';
     }
-    final String initialTab = "D9";
+    const String initialTab = "D9";
     controller.DivisionalChartData(
       dob: widget.dob,
       tob: widget.tob,
@@ -390,6 +390,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 color: Colors.white,
               ),
               child: _buildKpHousef()),
+
+          // _buildKpHouseplanet(),
         ],
       ),
     );
@@ -1222,6 +1224,184 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
       }),
     );
   }
+
+  // Widget _buildKpHouseplanet() {
+  //   return SingleChildScrollView(
+  //     child: Obx(() {
+  //       if (kundaliController.isLoading.value) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       } else {
+  //         if (kundaliController.kphouseplanetmodel.value.response == null) {
+  //           return const Center(child: Text('No data available.'));
+  //         } else {
+  //           final response =
+  //               kundaliController.kphouseplanetmodel.value.response!;
+  //           return Padding(
+  //             padding: const EdgeInsets.all(16.0),
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: response.map((item) {
+  //                 return Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Container(
+  //                         color: const Color.fromARGB(181, 241, 235, 179),
+  //                         child: DataRowWidget(
+  //                             label: ' Start Rasi', value: item.startRasi)),
+  //                     DataRowWidget(label: 'End Rasi', value: item.endRasi),
+  //                     DataRowWidget(
+  //                       label: 'Local Start Degree',
+  //                       value: item.localStartDegree?.toString(),
+  //                     ),
+  //                     DataRowWidget(
+  //                       label: 'Local End Degree',
+  //                       value: item.localEndDegree?.toString(),
+  //                     ),
+  //                     DataRowWidget(
+  //                         label: 'Length', value: item.length?.toString()),
+  //                     DataRowWidget(
+  //                         label: 'House', value: item.house?.toString()),
+  //                     DataRowWidget(
+  //                       label: 'Bhavmadhya',
+  //                       value: item.bhavmadhya?.toString(),
+  //                     ),
+  //                     DataRowWidget(
+  //                       label: 'Global Start Degree',
+  //                       value: item.globalStartDegree?.toString(),
+  //                     ),
+  //                     DataRowWidget(
+  //                       label: 'Global End Degree',
+  //                       value: item.globalEndDegree?.toString(),
+  //                     ),
+  //                     DataRowWidget(
+  //                       label: 'Start Nakshatra Lord',
+  //                       value: item.startNakshatraLord,
+  //                     ),
+  //                     DataRowWidget(
+  //                       label: 'End Nakshatra Lord',
+  //                       value: item.endNakshatraLord,
+  //                     ),
+  //                     DataRowWidget(
+  //                         label: 'Cusp Sub Lord', value: item.cuspSubLord),
+  //                     DataRowWidget(
+  //                       label: 'Cusp Sub Sub Lord',
+  //                       value: item.cuspSubSubLord,
+  //                     ),
+  //                     // Displaying planets data in a table format
+  //                     if (item.planets != null)
+  //                       Table(
+  //                         border: TableBorder.all(),
+  //                         // columnWidths: const {
+  //                         //   0: FixedColumnWidth(160.0),
+  //                         //   1: FlexColumnWidth(3),
+  //                         //   2: FlexColumnWidth(3),
+  //                         // },
+  //                         children: [
+  //                           const TableRow(children: [
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(5.0),
+  //                                 child: Text('Planet ID'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(8.0),
+  //                                 child: Text('Full Name'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(5.0),
+  //                                 child: Text('Name'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(8.0),
+  //                                 child: Text('Nakshatra'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(8.0),
+  //                                 child: Text('Nakshatra No'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(8.0),
+  //                                 child: Text('Nakshatra Pada'),
+  //                               ),
+  //                             ),
+  //                             TableCell(
+  //                               child: Padding(
+  //                                 padding: EdgeInsets.all(8.0),
+  //                                 child: Text('Retro'),
+  //                               ),
+  //                             ),
+  //                           ]),
+  //                           ...item.planets!.map((planet) {
+  //                             return TableRow(children: [
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(planet.planetId ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(planet.fullName ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(planet.name ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(planet.nakshatra ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(
+  //                                       planet.nakshatraNo?.toString() ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(
+  //                                       planet.nakshatraPada?.toString() ?? ''),
+  //                                 ),
+  //                               ),
+  //                               TableCell(
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: Text(planet.retro?.toString() ?? ''),
+  //                                 ),
+  //                               ),
+  //                             ]);
+  //                           }),
+  //                         ],
+  //                       ),
+  //                     const SizedBox(height: 16),
+  //                   ],
+  //                 );
+  //               }).toList(),
+  //             ),
+  //           );
+  //         }
+  //       }
+  //     }),
+  //   );
+  // }
 
   Widget _buildeskpimage() {
     return Center(
