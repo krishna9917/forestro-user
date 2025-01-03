@@ -390,6 +390,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 color: Colors.white,
               ),
               child: _buildKpHousef()),
+
+          _buildCuspsTable()
           // _buildKpHouseplanet(),
         ],
       ),
@@ -1065,11 +1067,6 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                          color: const Color.fromARGB(181, 241, 235, 179),
-                          child: DataRowWidget(
-                              label: ' Start Rasi', value: item.startRasi)),
-                      DataRowWidget(label: 'End Rasi', value: item.endRasi),
                       DataRowWidget(
                         label: 'Local Start Degree',
                         value: item.localStartDegree?.toString(),
@@ -1080,12 +1077,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                       ),
                       DataRowWidget(
                           label: 'Length', value: item.length?.toString()),
-                      DataRowWidget(
-                          label: 'House', value: item.house?.toString()),
-                      DataRowWidget(
-                        label: 'Bhavmadhya',
-                        value: item.bhavmadhya?.toString(),
-                      ),
+
                       DataRowWidget(
                         label: 'Global Start Degree',
                         value: item.globalStartDegree?.toString(),
@@ -1094,16 +1086,12 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                         label: 'Global End Degree',
                         value: item.globalEndDegree?.toString(),
                       ),
-                      DataRowWidget(
-                        label: 'Start Nakshatra Lord',
-                        value: item.startNakshatraLord,
-                      ),
+
                       DataRowWidget(
                         label: 'End Nakshatra Lord',
                         value: item.endNakshatraLord,
                       ),
-                      DataRowWidget(
-                          label: 'Cusp Sub Lord', value: item.cuspSubLord),
+
                       DataRowWidget(
                         label: 'Cusp Sub Sub Lord',
                         value: item.cuspSubSubLord,
@@ -1216,6 +1204,182 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                     ],
                   );
                 }).toList(),
+              ),
+            );
+          }
+        }
+      }),
+    );
+  }
+
+  Widget _buildCuspsTable() {
+    return SingleChildScrollView(
+      child: Obx(() {
+        if (kundaliController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          if (kundaliController.kphousemodel.value.response == null) {
+            return const Center(child: Text('No data available.'));
+          } else {
+            final response = kundaliController.kphousemodel.value.response!;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Table(
+                    border: TableBorder.all(),
+                    children: [
+                      const TableRow(
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(165, 255, 102, 0)),
+                        children: [
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Cusp',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Degree',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white),
+                                // textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Sign',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Sign Lord',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Star Lord',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Sub Lord',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...response.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        var item = entry.value;
+                        return TableRow(
+                          decoration: BoxDecoration(
+                            color:
+                                index.isEven ? Colors.white : Colors.grey[100],
+                          ),
+                          children: [
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(item.house?.toString() ?? '-'),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  item.bhavmadhya != null
+                                      ? item.bhavmadhya!.toStringAsFixed(2)
+                                      : '-',
+                                  textAlign: TextAlign.right,
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(item.startRasi ?? '-'),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  (item.endNakshatraLord
+                                          ?.substring(0, 2)
+                                          .toUpperCase() ??
+                                      '-'),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  (item.startNakshatraLord
+                                          ?.substring(0, 2)
+                                          .toUpperCase() ??
+                                      '-'),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  (item.cuspSubLord
+                                          ?.substring(0, 2)
+                                          .toUpperCase() ??
+                                      '-'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ],
               ),
             );
           }
