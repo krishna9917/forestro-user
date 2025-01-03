@@ -168,7 +168,7 @@ class KundaliController extends GetxController {
     }
   }
 
-Future<void> KpHousePlannet(
+  Future<void> KpHousePlannet(
       String dob, String tob, double lat, double lon, String lang) async {
     try {
       isLoading.value = true;
@@ -189,12 +189,19 @@ Future<void> KpHousePlannet(
 
       if (response.statusCode == 200) {
         final responseData = response.data;
+        print("plannetkp========================>>>>>>>${responseData}");
 
-        if (responseData != null) {
+        if (responseData != null && responseData['status'] == 200) {
           kphouseplanetmodel.value = Kp_Planet_Model.fromJson(responseData);
-        } 
-      } 
+          print("Parsed kp house planet model: ${kphouseplanetmodel.value}");
+        } else {
+          print("Unexpected response structure: $responseData");
+        }
+      } else {
+        print("API error: ${response.statusCode}, ${response.statusMessage}");
+      }
     } catch (e) {
+      print("eeeeeeeeee=======$e");
     } finally {
       isLoading.value = false;
     }
