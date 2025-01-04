@@ -58,17 +58,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     fetchAndInitProfile();
-
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
-
-    // Get.find<GetAstrologerProfile>().astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
     super.initState();
-    // print(chatzegocloud());
   }
 
   void _onSearchChanged() {
@@ -184,7 +180,7 @@ class _HomePageState extends State<HomePage> {
             actions: [
               IconButton(
                   onPressed: () {
-                    navigate.push(routeMe(SearchPage()));
+                    navigate.push(routeMe(const SearchPage()));
                   },
                   icon: Icon(
                     Icons.search,
@@ -193,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                   )),
               GestureDetector(
                 onTap: () {
-                  navigate.push(routeMe(WalletPage()));
+                  navigate.push(routeMe(const WalletPage()));
                 },
                 child: Container(
                   width: 95,
@@ -207,12 +203,9 @@ class _HomePageState extends State<HomePage> {
                       () {
                         if (profileController.profileDataList != null &&
                             profileController.profileDataList.isNotEmpty) {
-                          // Assuming wallet is a number or a string that can be parsed to a number
                           String wallet =
                               profileController.profileDataList.first.wallet ??
                                   '0';
-
-                          // Check if wallet is a number and format it to two decimal places
                           String formattedWallet = '0';
                           if (wallet != '0') {
                             try {
@@ -274,31 +267,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.all(20.0),
-                //   child: TextField(
-                //     onTap: () {
-                //       navigate.push(routeMe(SearchPage()));
-                //     },
-                //     readOnly: true,
-                //     // controller: _searchController,
-                //     decoration: InputDecoration(
-                //       filled: true,
-                //       fillColor: Colors.white,
-                //       enabledBorder: outlineInputBorder,
-                //       border: outlineInputBorder,
-                //       prefixIcon: const Padding(
-                //         padding: EdgeInsets.symmetric(horizontal: 20),
-                //         child: Icon(Icons.search),
-                //       ),
-                //       hintText: "Search for an astrologer.",
-                //       hintStyle: TextStyle(
-                //           color: Colors.black.withOpacity(0.5),
-                //           fontSize: 15,
-                //           fontWeight: FontWeight.w400),
-                //     ),
-                //   ),
-                // ),
                 Obx(() {
                   return _astrologers.isEmpty
                       ? const Center(child: Text(''))
@@ -346,7 +314,6 @@ class _HomePageState extends State<HomePage> {
                           }).toList(),
                         );
                       } else {
-                        // If bannerList is empty, show a message indicating no banners available
                         return const Center(
                             child: Text('No banners available'));
                       }
@@ -411,20 +378,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 TaskTabs(),
-
-                // Horoscope(),
-
-                // Container(
-                //   width: scrWeight(context),
-                //   margin: const EdgeInsets.symmetric(horizontal: 10),
-                //   height: 1,
-                //   color: Colors.black.withOpacity(0.12),
-                // ),
-
-                // const SizedBox(height: 20),
-
-                ////////////////////////////////////////////////////////////////////////////////////////////////////
-//                     Client Says          ///
+ ////////////////////////////////////////////////////////////////////////////////////////////////////
+                    // Client Says //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
                 const SizedBox(height: 20),
                 HomeTitleBar(
@@ -541,16 +496,16 @@ class _HomePageState extends State<HomePage> {
                                                     .skip(index * 7)
                                                     .take(7)
                                                     .join(
-                                                        ' '), // Take 10 words for each chunk
+                                                        ' '), 
                                               ).join(
-                                                  '\n'); // Join all chunks with a new line
+                                                  '\n');
 
                                               return Text(
                                                 chunkedText,
                                                 maxLines:
-                                                    null, // Remove maxLines constraint to allow multiple lines
+                                                    null, 
                                                 overflow: TextOverflow
-                                                    .visible, // Change overflow to visible to show the new line
+                                                    .visible, 
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -559,20 +514,6 @@ class _HomePageState extends State<HomePage> {
                                             },
                                           ),
                                         )
-
-                                        // Padding(
-                                        //   padding: const EdgeInsets.all(5.0),
-                                        //   child: Text(
-                                        //     data.comment ?? 'NA',
-                                        //     maxLines: 2,
-                                        //     overflow: TextOverflow.ellipsis,
-                                        //     style: const TextStyle(
-                                        //       fontSize: 14,
-                                        //       fontWeight: FontWeight.w400,
-                                        //     ),
-                                        //     // textAlign: TextAlign.center,
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -847,7 +788,7 @@ class BottamBar extends StatelessWidget {
               navigate.push(routeMe(const ServicesPage()));
               break;
             case 2:
-              navigate.push(routeMe(WalletPage()));
+              navigate.push(routeMe(const WalletPage()));
               break;
             case 3:
               navigate.push(routeMe(const ProfilePage()));
