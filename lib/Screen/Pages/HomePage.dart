@@ -202,57 +202,50 @@ class _HomePageState extends State<HomePage> {
                     color: AppColor.primary,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: Center(child: Obx(
-                    () {
-                      if (profileController.profileDataList != null &&
-                          profileController.profileDataList.isNotEmpty) {
-                        // Assuming wallet is a number or a string that can be parsed to a number
-                        String wallet =
-                            profileController.profileDataList.first.wallet ??
-                                '0';
+                  child: Center(
+                    child: Obx(
+                      () {
+                        if (profileController.profileDataList != null &&
+                            profileController.profileDataList.isNotEmpty) {
+                          // Assuming wallet is a number or a string that can be parsed to a number
+                          String wallet =
+                              profileController.profileDataList.first.wallet ??
+                                  '0';
 
-                        // Check if wallet is a number and format it to two decimal places
-                        String formattedWallet = '0';
-                        if (wallet != '0') {
-                          try {
-                            formattedWallet =
-                                double.parse(wallet).toStringAsFixed(2);
-                          } catch (e) {
-                            print("Error parsing wallet value: $e");
+                          // Check if wallet is a number and format it to two decimal places
+                          String formattedWallet = '0';
+                          if (wallet != '0') {
+                            try {
+                              formattedWallet =
+                                  double.parse(wallet).toStringAsFixed(2);
+                            } catch (e) {
+                              print("Error parsing wallet value: $e");
+                            }
                           }
+
+                          return Text(
+                            "₹ $formattedWallet",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          );
+                        } else {
+                          if (profileController.profileDataList == null) {
+                          } else if (profileController
+                              .profileDataList.isEmpty) {}
+                          return Text(
+                            '0',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontWeight: FontWeight.w500),
+                          );
                         }
-
-                        return Text(
-                          "₹ $formattedWallet",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                        );
-                      } else {
-                        if (profileController.profileDataList == null) {
-                        } else if (profileController.profileDataList.isEmpty) {}
-                        return Text(
-                          '0',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.w500),
-                        );
-                      }
-                    },
-                  )
-
-                      // Text(
-                      //   "₹ 5000",
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //     color: Colors.white,
-                      //     fontSize: 15,
-                      //   ),
-                      // ),
-                      ),
+                      },
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
