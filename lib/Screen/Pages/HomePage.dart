@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -378,8 +377,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 TaskTabs(),
- ////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // Client Says //
+                ////////////////////////////////////////////////////////////////////////////////////////////////////
+                // Client Says //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
                 const SizedBox(height: 20),
                 HomeTitleBar(
@@ -495,17 +494,13 @@ class _HomePageState extends State<HomePage> {
                                                 (index) => words
                                                     .skip(index * 7)
                                                     .take(7)
-                                                    .join(
-                                                        ' '), 
-                                              ).join(
-                                                  '\n');
+                                                    .join(' '),
+                                              ).join('\n');
 
                                               return Text(
                                                 chunkedText,
-                                                maxLines:
-                                                    null, 
-                                                overflow: TextOverflow
-                                                    .visible, 
+                                                maxLines: null,
+                                                overflow: TextOverflow.visible,
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -686,30 +681,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
-                // SizedBox(height: 50, child: BlocWigit()),
-                // const LatestBlogs(),
-                // const SizedBox(height: 30),
 
-                // const VideoViewSlide(),
-
-/////
-                // const SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: [
-                //       SizedBox(width: 10),
-                //       Padding(
-                //         padding: EdgeInsets.all(10.0),
-                //         child: RatingReviewBox(),
-                //       ),
-                //       Padding(
-                //         padding: EdgeInsets.all(10.0),
-                //         child: RatingReviewBox(),
-                //       ),
-                //       SizedBox(width: 10),
-                //     ],
-                //   ),
-                // ),
                 const SizedBox(height: 100),
               ],
             ),
