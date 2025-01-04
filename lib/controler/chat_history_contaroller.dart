@@ -41,6 +41,8 @@ class ChatHistory extends GetxController {
       }
     } catch (e) {
       print("fetch the error $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 }
