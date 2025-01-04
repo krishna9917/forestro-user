@@ -258,7 +258,6 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
-                  // NotificationService.sendNotifications();
                   navigate.push(routeMe(const NotificationPage()));
                 },
                 child: Badge(
