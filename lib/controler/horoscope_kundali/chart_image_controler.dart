@@ -43,7 +43,7 @@ class CartImageControler extends GetxController {
 
       if (response.statusCode == 200) {
         svgData.value = response.data;
-      } else {}
+      }
     } catch (e) {
       print("fetch the error $e");
     } finally {
@@ -87,8 +87,7 @@ class CartImageControler extends GetxController {
 
       if (response.statusCode == 200) {
         divisionchartData.value = response.data;
-        print("Divisional Chart Data for $div: ${response.data}");
-      } else {}
+      }
     } catch (e) {
       print("fetch the error $e");
     } finally {
@@ -132,8 +131,7 @@ class CartImageControler extends GetxController {
 
       if (response.statusCode == 200) {
         divisionchartDatas.value = response.data;
-        print("Divisionals Chart Data for $div: ${response.data}");
-      } else {}
+      }
     } catch (e) {
       print("fetch the error $e");
     } finally {
@@ -171,7 +169,7 @@ class CartImageControler extends GetxController {
       if (response.statusCode == 200) {
         kpData.value = response.data;
         print("svagimage");
-      } else {}
+      }
     } catch (e) {
       print("fetch the error $e");
     } finally {
