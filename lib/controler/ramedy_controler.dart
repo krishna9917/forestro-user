@@ -24,13 +24,9 @@ class RemedyHistory extends GetxController {
 
       final Map<String, dynamic> queryParams = {'user_id': userId};
       final url = '$apiUrl/list-ramedy';
-
       final Dio dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
-
       final response = await dio.get(url, queryParameters: queryParams);
-      print(response);
-
       if (response != null && response.data['status'] == true) {
         final dataList = response.data['data'];
         print("dataList=======$dataList");
