@@ -39,31 +39,23 @@ class NotificationService {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
-      // Show bottom sheet after the toast
       showDialog(
         context: Get.context!,
         builder: (BuildContext context) {
-          // Future.delayed(const Duration(seconds: 8), () {
-          //   if (Navigator.canPop(context)) {
-          //     Navigator.pop(
-          //         context); // This ensures the dialog is closed after 30 seconds
-          //   }
-          // });
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
             backgroundColor: Colors.white,
-            elevation: 10, // Adds shadow for depth
+            elevation: 10, 
             content: Container(
               padding: const EdgeInsets.all(16.0),
-              height: 160, // Adjust height for better spacing
+              height: 160, 
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: 50, // Slightly wider for better visual balance
+                    width: 50, 
                     height: 5,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -89,7 +81,7 @@ class NotificationService {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: AppColor.primary, // "5" in green color
+                            color: AppColor.primary, 
                           ),
                         ),
                         TextSpan(
@@ -105,7 +97,7 @@ class NotificationService {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: AppColor.primary, // "5" in green color
+                            color: AppColor.primary, 
                           ),
                         ),
                         TextSpan(
@@ -119,10 +111,7 @@ class NotificationService {
                       ],
                     ),
                   ),
-                  // const CircularProgressIndicator(
-                  //   color: Colors.orange,
-                  //   strokeWidth: 3.0, // Thinner for a sleek look
-                  // ),
+                 
                 ],
               ),
             ),
