@@ -73,22 +73,12 @@ class _AudioCallState extends State<AudioCall> {
       await player.setAsset('assets/bg/beep.mp3');
       for (int i = 0; i < 3; i++) {
         await player.play();
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
     } catch (e) {
       print('Audio play error: $e');
     }
   }
-  // Future<void> startBeeping() async {
-  //   _isBeeping = true;
-
-  //   for (int i = 0; i < 10; i++) {
-  //     await _audioPlayer.play(AssetSource('assets/beep.mp3'));
-  //     await Future.delayed(const Duration(seconds: 1));
-  //   }
-
-  //   _isBeeping = false;
-  // }
 
   Future<void> endChatSession() async {
     showToast("Ending session...");
@@ -108,8 +98,6 @@ class _AudioCallState extends State<AudioCall> {
         "${seconds.toString().padLeft(2, '0')}";
 
     await calculateprice(totaltime);
-
-    // calculateprice(totaltime);
   }
 
   Future calculateprice(String totaltime) async {
@@ -135,16 +123,6 @@ class _AudioCallState extends State<AudioCall> {
         setState(() {
           isLoading = false;
         });
-        // socketController.closeSession(
-        //   senderId: widget.userid,
-        //   requestType: "audio",
-        //   message: "User Cancel Can",
-        //   data: {
-        //     "userId": widget.userid,
-        //     'communication_id': widget.callID,
-        //   },
-        // );
-
         Get.offAll(const HomePage());
       }
     } catch (e) {
@@ -162,7 +140,6 @@ class _AudioCallState extends State<AudioCall> {
   void dispose() {
     _timer.cancel();
     player.dispose();
-    // _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -182,10 +159,6 @@ class _AudioCallState extends State<AudioCall> {
               onCallEnd: (event, defaultAction) async {
                 await endChatSession();
                 Get.offAll(const HomePage());
-
-                // setState(() {
-                //   endChatSession();
-                // });
               },
               onError: (error) {
                 print("Error: $error");
@@ -249,7 +222,7 @@ class _AudioCallState extends State<AudioCall> {
           ),
           Center(child: Image.asset("assets/call_logo.jpg")),
           if (isLoading)
-            Center(
+            const Center(
               child: CircularProgressIndicator(),
             ),
         ],
