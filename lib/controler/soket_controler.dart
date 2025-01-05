@@ -98,9 +98,6 @@ class SocketController extends GetxController {
                       'data': data,
                     });
                   }
-                  // Uncomment these lines if navigation is required
-                  // Get.back();
-                  // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("Yes"),
               ),
@@ -114,8 +111,6 @@ class SocketController extends GetxController {
                     'requestType': data['requestType'],
                     'data': data,
                   });
-                  // Get.back();
-                  // Get.off(const ExploreAstroPage());
                 },
                 child: const Text("No"),
               ),
@@ -212,15 +207,6 @@ class SocketController extends GetxController {
       } else {
         _iAmWorkScreen = false;
       }
-      // Fluttertoast.showToast(
-      //   msg: "accepted ${data['requestType']} successfully!",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.green,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
     });
 
     socket?.on('rejected', (data) {
@@ -248,10 +234,6 @@ class SocketController extends GetxController {
       if (data['requestType'] == "video") {
         Get.offAll(const HomePage());
       }
-      // onWorkEnd();
-      // Get.back();
-
-      // Get.offAll(const ExploreAstroPage());
     });
 
     socket?.on('liveFeeds', (data) {
