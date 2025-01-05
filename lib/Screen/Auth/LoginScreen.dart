@@ -51,10 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? token = '';
   String? fbtoken = '';
 
-  // void onSkip() {
-  //   navigate.push(routeMe(const HomePage()));
-  // }
-
   Future<void> onClick() async {
     if (_phoneNum.length != 10) {
       showToast("Enter a 10-digit Mobile Number");
@@ -66,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // ignore: non_constant_identifier_names
   Future Sendotp() async {
     try {
       ApiRequest apiRequest = ApiRequest('$apiUrl/user-login',
@@ -88,9 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         navigate.push(routeMe(OtpScreen(
           phone: _phoneNum,
         )));
-      } else {
-        // showToast(tosteError);
-      }
+      } else {}
       setState(() {
         loading = false;
       });
@@ -98,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      // showToast(tosteError);
     }
   }
 
@@ -207,9 +199,6 @@ class _LoginScreenState extends State<LoginScreen> {
         email = fbemail;
         fbtoken = userData['id'];
         verifyProfileefb(email!);
-        // debugPrint('Email: $email');
-        // debugPrint('id: $id');
-        // navigate.push(routeMe(HomePage()));
       } else {
         showToast(result.message!);
       }
@@ -300,9 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
             email: email,
           )));
         }
-      } else {
-        // showToast("Something went wrong, please try again.");
-      }
+      } else {}
 
       setState(() {
         loading = false;
@@ -311,7 +298,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = false;
       });
-      // showToast(tosteError);
     }
   }
 
@@ -341,19 +327,21 @@ class _LoginScreenState extends State<LoginScreen> {
         .copyWith(color: Colors.black45, fontWeight: FontWeight.w500);
 
     return Scaffold(
-        extendBody: true,
-        extendBodyBehindAppBar: true,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
 
-        /// App Bar
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          scrolledUnderElevation: 0.0,
-        ),
-        body: BGGradientWidget(
-            bgTopMargin: 15.h,
-            child: SingleChildScrollView(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
+      /// App Bar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        scrolledUnderElevation: 0.0,
+      ),
+      body: BGGradientWidget(
+        bgTopMargin: 15.h,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Gap(8.h),
 
               /// LOGO
@@ -478,25 +466,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                     ),
 
-                    // Gap(2.h),
-
-                    /// Google Sign Up
-                    // CustomButton(
-                    //   onPressed: _facebookSignIn,
-                    //   color: Theme.of(context).secondaryHeaderColor,
-                    //   child: Row(
-                    //     mainAxisSize: MainAxisSize.min,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       SvgPicture.asset(
-                    //         Assets.logoFacebookSvg,
-                    //         height: 3.h,
-                    //       ),
-                    //       Gap(5.w),
-                    //       const Text(facebookText),
-                    //     ],
-                    //   ),
-                    // ),
                     Gap(5.h),
 
                     /// Terms and Conditions
@@ -541,6 +510,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-            ]))));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
