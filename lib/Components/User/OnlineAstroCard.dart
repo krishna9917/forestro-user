@@ -151,17 +151,24 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                             //   color: Colors.black,
                             // ),
                             // const SizedBox(width: 5),
-                            if (astrologer.rating != null)
+                            if (astrologer.rating != null &&
+                                astrologer.rating != 0)
                               Row(
-                                children: List.generate(
-                                  double.parse(astrologer.rating.toString())
-                                      .toInt(),
-                                  (_) => Icon(
+                                children: [
+                                  Text(
+                                    astrologer.rating.toStringAsFixed(1),
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Icon(
                                     Icons.star,
                                     size: 13,
                                     color: AppColor.primary,
                                   ),
-                                ),
+                                ],
                               ),
                           ],
                         ),
@@ -208,7 +215,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                           snackPosition: SnackPosition.TOP,
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
-                                          duration: Duration(seconds: 3),
+                                          duration: const Duration(seconds: 3),
                                         );
                                       }
                                     }
@@ -259,7 +266,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                           snackPosition: SnackPosition.TOP,
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
-                                          duration: Duration(seconds: 3),
+                                          duration: const Duration(seconds: 3),
                                         );
                                         // Fluttertoast.showToast(
                                         //   msg:
@@ -331,7 +338,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                           snackPosition: SnackPosition.TOP,
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
-                                          duration: Duration(seconds: 3),
+                                          duration: const Duration(seconds: 3),
                                         );
                                       }
                                     }

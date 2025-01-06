@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage> {
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
+    Get.put(GetAstrologerProfile()).astroData();
     socketController.initSocketConnection();
     _searchController.addListener(_onSearchChanged);
     super.initState();
