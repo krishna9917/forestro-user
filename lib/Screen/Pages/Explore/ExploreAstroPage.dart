@@ -424,18 +424,24 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                           Row(
                             children: [
                               // SizedBox(width: 5),
-                              Text(astrologer.rating != null ? '' : ''),
-                              if (astrologer.rating != null)
+                              if (astrologer.rating != null &&
+                                  astrologer.rating != 0)
                                 Row(
-                                  children: List.generate(
-                                    double.parse(astrologer.rating.toString())
-                                        .toInt(), // Parse as double and then to integer
-                                    (_) => Icon(
-                                      size: 20,
+                                  children: [
+                                    Text(
+                                      astrologer.rating.toStringAsFixed(1),
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Icon(
                                       Icons.star,
+                                      size: 13,
                                       color: AppColor.primary,
                                     ),
-                                  ),
+                                  ],
                                 ),
                             ],
                           ),

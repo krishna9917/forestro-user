@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   bool? isOnline;
   final TextEditingController _searchController = TextEditingController();
-  final GetAstrologerProfile _astrologerProfile = Get.find();
+  // final GetAstrologerProfile _astrologerProfile = Get.find();
   RxList<Data> _astrologers = RxList<Data>();
   final profileController = Get.find<ProfileList>();
 
