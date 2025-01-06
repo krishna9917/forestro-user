@@ -962,7 +962,7 @@ class Review {
       userName: json['user_name']?.toString() ?? 'Anonymous',
       userImgUrl: json['user_img']?.toString() ?? '',
       rating: json['rating']?.toString() ?? '0',
-      comment: json['comment']?.toString() ?? 'No comment',
+      comment: json['comment']?.toString() ?? '',
       postDate: json['post_date']?.toString() ?? '',
     );
   }
