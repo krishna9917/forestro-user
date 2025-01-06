@@ -83,9 +83,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
 
   String generateRandomOrderId() {
     var random = Random();
-    int randomNumber = 10000 +
-        random.nextInt(
-            90000); 
+    int randomNumber = 10000 + random.nextInt(90000);
     return '$randomNumber';
   }
 
@@ -355,21 +353,25 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 textAlign: TextAlign.center,
                               ),
 
-                              if (widget.astrologer?.rating != null)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: List.generate(
-                                      double.parse(widget.astrologer!.rating
-                                              .toString())
-                                          .toInt(),
-                                      (_) => const Icon(
-                                        size: 20,
-                                        Icons.star,
-                                        color: AppColor.primary,
+                              if (widget.astrologer!.rating != null &&
+                                  widget.astrologer!.rating != 0)
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.astrologer!.rating
+                                          .toStringAsFixed(1),
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
                                       ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 5),
+                                    const Icon(
+                                      Icons.star,
+                                      size: 13,
+                                      color: AppColor.primary,
+                                    ),
+                                  ],
                                 ),
                               // const SizedBox(height: 10),
                               if (widget.astrologer!.followStatus == "0")
@@ -869,12 +871,12 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                       width: 55,
                                       height: 55,
                                       fit: BoxFit.fill,
-                                    ); 
+                                    );
                                   },
                                   loadingBuilder:
                                       (context, child, loadingProgress) {
                                     if (loadingProgress == null) return child;
-                                    return const CircularProgressIndicator(); 
+                                    return const CircularProgressIndicator();
                                   },
                                 ),
                               ),
@@ -896,8 +898,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                     if (review.rating != null)
                                       Row(
                                         children: List.generate(
-                                          double.parse(review.rating)
-                                              .toInt(), 
+                                          double.parse(review.rating).toInt(),
                                           (_) => const Icon(
                                             Icons.star,
                                             color: AppColor.primary,
