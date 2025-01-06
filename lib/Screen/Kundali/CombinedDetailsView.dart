@@ -277,7 +277,16 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
             padding: const EdgeInsets.all(8.0),
             child: _buildSectionTitle(context, "Basic Details"),
           ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("North"),
+          ),
           _buildesimage(),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("South"),
+          ),
+          _buildesimages(),
           _basicDetailes(),
           Container(
               decoration: BoxDecoration(
@@ -1041,6 +1050,24 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
         } else {
           return SvgPicture.string(
             controller.svgData.value,
+            width: 300,
+            height: 300,
+          );
+        }
+      }),
+    );
+  }
+
+  Widget _buildesimages() {
+    return Center(
+      child: Obx(() {
+        if (controller.isLoading.value) {
+          return const CircularProgressIndicator();
+        } else if (controller.svgData.value.isEmpty) {
+          return const Text('No image data');
+        } else {
+          return SvgPicture.string(
+            controller.svgDatas.value,
             width: 300,
             height: 300,
           );
