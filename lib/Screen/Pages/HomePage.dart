@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   final bannerController = Get.put(BannerList());
   final BlocList blocListController = Get.put(BlocList());
   final SocketController socketController = Get.put(SocketController());
-
   bool? isOnline;
   final TextEditingController _searchController = TextEditingController();
   // final GetAstrologerProfile _astrologerProfile = Get.find();
