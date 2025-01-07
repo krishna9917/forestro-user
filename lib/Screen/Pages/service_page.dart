@@ -160,21 +160,10 @@ class _ServicesPageState extends State<ServicesPage> {
                               colorText: Colors.white,
                               duration: const Duration(seconds: 3),
                             );
-                            // Fluttertoast.showToast(
-                            //   msg:
-                            //       "You need a minimum balance for 2 minutes of chat.",
-                            //   toastLength: Toast.LENGTH_SHORT,
-                            //   gravity: ToastGravity.BOTTOM,
-                            //   timeInSecForIosWeb: 1,
-                            //   backgroundColor: AppColor.primary,
-                            //   textColor: Colors.white,
-                            //   fontSize: 16.0,
-                            // );
-                            // Show error: Insufficient balance for at least 2 minutes of chat
+                           
                             print(
                                 "You need a minimum balance for 2 minutes of chat.");
-                            // showToast(
-                            //     "You need a minimum balance for 2 minutes of chat.");
+                           
                           }
                         } else {
                           // showToast(
