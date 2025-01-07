@@ -349,13 +349,11 @@ class _WalletPageState extends State<WalletPage> {
               child: ElevatedButton(
                 onPressed: () {
                   createOrderAndOpenCheckout();
-                 
                 },
                 child: const Text("Add To Wallet"),
               ),
             ),
           ),
-          const SizedBox(height: 30),
         ],
       ),
     );
