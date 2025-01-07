@@ -67,7 +67,12 @@ class _ServicesPageState extends State<ServicesPage> {
             itemCount: onlineAstrologers.length,
             itemBuilder: (context, index) {
               final astrologer = onlineAstrologers[index];
-
+              // Extract only the first two words from the name
+              final nameWords =
+                  (astrologer.name ?? "Astrologer Name").split(' ');
+              final displayName = nameWords.length > 2
+                  ? '${nameWords[0]} ${nameWords[1]}'
+                  : astrologer.name ?? "Astrologer Name";
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 shape: RoundedRectangleBorder(
@@ -88,15 +93,38 @@ class _ServicesPageState extends State<ServicesPage> {
                     ),
                   ),
                   title: Text(
-                    astrologer.name ?? "Astrologer Name",
+                    displayName,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
-                  subtitle: const Text(
-                    "Available for chat",
-                    style: TextStyle(color: Colors.green),
+                  subtitle: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "Available for chat at ",
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 14),
+                              ),
+                              TextSpan(
+                                text:
+                                    "\u20B9${astrologer.chatChargesPerMin ?? 0}/min",
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   trailing: GestureDetector(
                     onTap: () {
@@ -131,7 +159,7 @@ class _ServicesPageState extends State<ServicesPage> {
                               snackPosition: SnackPosition.TOP,
                               backgroundColor: Colors.red,
                               colorText: Colors.white,
-                              duration: Duration(seconds: 3),
+                              duration: const Duration(seconds: 3),
                             );
                             // Fluttertoast.showToast(
                             //   msg:
