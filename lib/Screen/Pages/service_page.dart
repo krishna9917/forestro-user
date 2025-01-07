@@ -165,10 +165,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                 "You need a minimum balance for 2 minutes of chat.");
                            
                           }
-                        } else {
-                          // showToast(
-                          //     "You Have Insufficient balance to start chat");
-                        }
+                        } 
                       }
                     },
                     child: Container(
