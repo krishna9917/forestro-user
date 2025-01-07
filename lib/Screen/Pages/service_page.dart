@@ -67,7 +67,6 @@ class _ServicesPageState extends State<ServicesPage> {
             itemCount: onlineAstrologers.length,
             itemBuilder: (context, index) {
               final astrologer = onlineAstrologers[index];
-              // Extract only the first two words from the name
               final nameWords =
                   (astrologer.name ?? "Astrologer Name").split(' ');
               final displayName = nameWords.length > 2
