@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   final SocketController socketController = Get.put(SocketController());
   bool? isOnline;
   final TextEditingController _searchController = TextEditingController();
-  // final GetAstrologerProfile _astrologerProfile = Get.find();
+
   RxList<Data> _astrologers = RxList<Data>();
   final profileController = Get.find<ProfileList>();
 
@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                   title: "Live Video CAll",
                 ),
                 const SizedBox(height: 15),
-               
+
                 const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -361,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                     navigate.push(routeMe(const ExploreAstroPage()));
                   },
                 ),
-                
+
                 const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 TaskTabs(),
- ////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Client Says //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // const SizedBox(height: 20),
@@ -468,7 +468,7 @@ class _HomePageState extends State<HomePage> {
                                                                     index]
                                                                 .rating
                                                                 .toString())
-                                                            .toInt(), 
+                                                            .toInt(),
                                                         (_) => Icon(
                                                           Icons.star,
                                                           color:
