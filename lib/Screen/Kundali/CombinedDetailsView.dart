@@ -609,12 +609,12 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                       BorderRadius.circular(8.0), 
                 ),
                 child: DataTable(
-                  columnSpacing: 20.0, // Increase space between columns
+                  columnSpacing: 20.0, 
                   headingRowColor: WidgetStateProperty.all(
-                      AppColor.primary), // Set header background color
+                      AppColor.primary), 
                   dataRowColor: WidgetStateProperty.resolveWith<Color>(
                     (Set<WidgetState> states) {
-                      // Alternate row color
+                      
                       return states.contains(WidgetState.selected)
                           ? Colors.grey.shade300
                           : Colors.white;
@@ -673,7 +673,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
     return DataRow(
       cells: [
         DataCell(Padding(
-          padding: const EdgeInsets.all(8.0), // Add padding to cells
+          padding: const EdgeInsets.all(8.0), 
           child: Text(planet.fullName ?? ''),
         )),
         DataCell(Padding(
