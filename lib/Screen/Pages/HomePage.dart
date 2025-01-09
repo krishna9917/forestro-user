@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                 child: Badge(
                   backgroundColor: AppColor.primary,
                   label: const Text(
-                    "23",
+                    "24",
                     style: TextStyle(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
@@ -266,19 +266,20 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() {
-                  return _astrologers.isEmpty
-                      ? const Center(child: Text(''))
-                      : ListView.builder(
-                          itemCount: _astrologers.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(_astrologers[index].name ?? 'NA'),
-                            );
-                          },
-                        );
-                }),
-
+                Obx(
+                  () {
+                    return _astrologers.isEmpty
+                        ? const Center(child: Text(''))
+                        : ListView.builder(
+                            itemCount: _astrologers.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(_astrologers[index].name ?? 'NA'),
+                              );
+                            },
+                          );
+                  },
+                ),
                 Obx(
                   () {
                     if (bannerController.isLoading) {
@@ -319,7 +320,6 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                 ),
-
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                   title: "Live Video CAll",
                 ),
                 const SizedBox(height: 15),
-                // lIVE cALL lISTS
+               
                 const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -361,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                     navigate.push(routeMe(const ExploreAstroPage()));
                   },
                 ),
-                // oNLIOE aSTROS dATA
+                
                 const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -377,10 +377,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 TaskTabs(),
-                ////////////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Client Says //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                const SizedBox(height: 20),
+                // const SizedBox(height: 20),
                 HomeTitleBar(
                   title: "What our client Says",
                   desc: "Discover what our stargazers have to say",
@@ -468,7 +468,7 @@ class _HomePageState extends State<HomePage> {
                                                                     index]
                                                                 .rating
                                                                 .toString())
-                                                            .toInt(), // Parse as double and then to integer
+                                                            .toInt(), 
                                                         (_) => Icon(
                                                           Icons.star,
                                                           color:
@@ -528,7 +528,6 @@ class _HomePageState extends State<HomePage> {
                     navigate.push(routeMe(const BlocViewAll()));
                   },
                 ),
-
                 GetBuilder<BlocList>(
                   builder: (controller) {
                     return Obx(() {

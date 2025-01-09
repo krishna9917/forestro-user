@@ -604,9 +604,9 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               return Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: AppColor.primary), // Add border to table
+                      color: AppColor.primary), 
                   borderRadius:
-                      BorderRadius.circular(8.0), // Optional: Rounded corners
+                      BorderRadius.circular(8.0), 
                 ),
                 child: DataTable(
                   columnSpacing: 20.0, // Increase space between columns
