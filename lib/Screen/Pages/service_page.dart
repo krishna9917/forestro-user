@@ -105,7 +105,7 @@ class _ServicesPageState extends State<ServicesPage> {
                           text: TextSpan(
                             children: [
                               const TextSpan(
-                                text: "Available for chat at ",
+                                text: "Available now ",
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 14),
                               ),
@@ -159,12 +159,11 @@ class _ServicesPageState extends State<ServicesPage> {
                               colorText: Colors.white,
                               duration: const Duration(seconds: 3),
                             );
-                           
+
                             print(
                                 "You need a minimum balance for 2 minutes of chat.");
-                           
                           }
-                        } 
+                        }
                       }
                     },
                     child: Container(
