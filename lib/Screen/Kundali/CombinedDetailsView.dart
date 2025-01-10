@@ -1609,19 +1609,18 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
       void navigateTo(String detail,
           {String? mahadashaName, String? ad, String? pd, String? sd}) {
         if (currentIndex < navigationHistory.length - 1) {
-          navigationHistory.removeRange(currentIndex + 1,
-              navigationHistory.length); // Clear forward history
+          navigationHistory.removeRange(
+              currentIndex + 1, navigationHistory.length);
         }
         navigationHistory.add(detail);
         currentIndex++;
-        // Call your Vimsotridasa function with the appropriate parameters
+
         kundaliController.Vimsotridasa(
             widget.dob, widget.tob, widget.lati, widget.long, widget.lang,
             mahadashaName: mahadashaName, ad: ad, pd: pd, sd: sd);
         setState(() {});
       }
 
-      // Back and Forward buttons
       Widget navigationButtons() {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1632,23 +1631,36 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 onPressed: () {
                   setState(() {
                     currentIndex--;
+                    currentDetail = navigationHistory[currentIndex];
+                    if (currentDetail == 'mahadasha') {
+                      displayText = "Mahadasha";
+                    } else if (currentDetail == 'antardasha') {
+                      displayText = "Mahadasha + Antardasha";
+                    } else if (currentDetail == 'paryantardasha') {
+                      displayText = "Mahadasha + Antardasha + Paryantardasha";
+                    } else if (currentDetail == 'shookshamadasha') {
+                      displayText =
+                          "Mahadasha + Antardasha + Paryantardasha + Shookshamadasha";
+                    } else if (currentDetail == 'pranadasha') {
+                      displayText =
+                          "Mahadasha + Antardasha + Paryantardasha + Shookshamadasha + Pranadasha";
+                    }
                   });
                 },
               ),
-            if (currentIndex < navigationHistory.length - 1)
-              IconButton(
-                icon: const Icon(Icons.arrow_forward),
-                onPressed: () {
-                  setState(() {
-                    currentIndex++;
-                  });
-                },
-              ),
+            // if (currentIndex < navigationHistory.length - 1)
+            //   IconButton(
+            //     icon: const Icon(Icons.arrow_forward),
+            //     onPressed: () {
+            //       setState(() {
+            //         currentIndex++;
+            //       });
+            //     },
+            //   ),
           ],
         );
       }
 
-      // Build the DataTable based on the current detail
       if (currentDetail == 'mahadasha') {
         return Column(
           children: [
@@ -1690,6 +1702,9 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                     DataCell(IconButton(
                       onPressed: () {
                         navigateTo('antardasha', mahadashaName: mahadasha.name);
+                        setState(() {
+                          displayText = "$displayText + Antardasha";
+                        });
                       },
                       icon: const Icon(Icons.keyboard_arrow_right),
                     )),
@@ -1744,6 +1759,9 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                         navigateTo('paryantardasha',
                             mahadashaName: mahadashaList.first.name,
                             ad: antardasha.name);
+                        setState(() {
+                          displayText = "$displayText + Paryantardasha";
+                        });
                       },
                       icon: const Icon(Icons.keyboard_arrow_right),
                     )),
@@ -1799,6 +1817,9 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                             mahadashaName: mahadashaList.first.name,
                             ad: antardashaList.first.name,
                             pd: paryantardasha.name);
+                        setState(() {
+                          displayText = "$displayText + Shookshamadasha";
+                        });
                       },
                       icon: const Icon(Icons.keyboard_arrow_right),
                     )),
@@ -1856,6 +1877,9 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                             ad: antardashaList.first.name,
                             pd: paryantardashaList.first.name,
                             sd: shookshamadasha.name);
+                        setState(() {
+                          displayText = "$displayText + Pranadasha";
+                        });
                       },
                       icon: const Icon(Icons.keyboard_arrow_right),
                     )),

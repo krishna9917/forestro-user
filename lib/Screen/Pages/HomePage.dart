@@ -84,6 +84,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> chatzegocloud() async {
+    await ZIMKit().init(
+        appID: 2007373594,
+        appSign:
+            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 
@@ -248,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                 child: Badge(
                   backgroundColor: AppColor.primary,
                   label: const Text(
-                    "24",
+                    "25",
                     style: TextStyle(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
