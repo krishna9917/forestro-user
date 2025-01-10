@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationRepo {
