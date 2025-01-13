@@ -5,7 +5,6 @@ import 'package:foreastro/Screen/chat/chatprivie_screen.dart';
 import 'package:foreastro/controler/chat_history_contaroller.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -44,10 +43,9 @@ class _ChatScreenState extends State<ChatScreen> {
         padding: const EdgeInsets.all(15.0),
         child: Obx(() {
           if (chathistory.isLoading.value) {
-            return Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
+            return const Center(
+              child: CircularProgressIndicator(
                 color: AppColor.primary,
-                size: 50,
               ),
             );
           } else if (chathistory.chatHistoryDataList.isEmpty) {
