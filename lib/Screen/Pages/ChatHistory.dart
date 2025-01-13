@@ -3,8 +3,10 @@ import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Screen/chat/chatprivie_screen.dart';
 import 'package:foreastro/controler/chat_history_contaroller.dart';
+import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -15,18 +17,47 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final profileController = Get.find<ProfileList>();
   @override
   void initState() {
     super.initState();
-    // fetchAndInitProfile();
+    chatzegocloud();
     Get.put(ChatHistory()).fetchChatHistoryData();
   }
 
-  Future<void> fetchAndInitProfile() async {
+  Future<void> chatzegocloud() async {
     await ZIMKit().init(
         appID: 2007373594,
         appSign:
             '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? user_id = prefs.getString('user_id');
+
+    if (user_id == null) {
+      print('User ID not found in SharedPreferences');
+      return;
+    }
+
+    String profile = profileController.profileDataList.isNotEmpty
+        ? profileController.profileDataList.first.profileImg
+        : '';
+
+    String name = profileController.profileDataList.isNotEmpty
+        ? profileController.profileDataList.first.name
+        : '';
+
+    if (name.isEmpty) {
+      print("Name not found");
+      return;
+    }
+
+    print("name=======$name $user_id $profile  --   $user_id-user");
+
+    await ZIMKit().connectUser(
+      id: "$user_id-user",
+      name: name,
+      avatarUrl: profile,
+    );
   }
 
   @override
@@ -157,6 +188,10 @@ class ChatListCard extends StatelessWidget {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
+                  ZIMKit().init(
+                      appID: 2007373594,
+                      appSign:
+                          '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
                   var chathistro = chatData.astroId.toString();
                   Get.to(() => PreviewChatScreen(astroId: chathistro));
                 },
