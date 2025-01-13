@@ -10,11 +10,11 @@ class BannerList extends GetxController {
   List<String> dataList = [];
   bool get isLoading => _isLoading.value;
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    await fetchProfileData();
-  }
+  // @override
+  // Future<void> onInit() async {
+  //   super.onInit();
+  //   await fetchProfileData();
+  // }
 
   Future<void> fetchProfileData() async {
     try {

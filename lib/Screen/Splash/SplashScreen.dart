@@ -6,6 +6,7 @@ import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
+import 'package:foreastro/controler/baner_controler.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    Get.put(BannerList()).fetchProfileData();
+    // Get.find<BannerList>().fetchProfileData();
     chatzegocloud();
     Get.find<ProfileList>().fetchProfileData();
     _controller = AnimationController(

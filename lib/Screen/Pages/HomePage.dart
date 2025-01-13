@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -57,6 +58,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     fetchAndInitProfile();
     Get.find<ProfileList>().fetchProfileData();
+   
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
@@ -284,13 +286,13 @@ class _HomePageState extends State<HomePage> {
                           );
                   },
                 ),
+
                 Obx(
                   () {
                     if (bannerController.isLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       final bannerList = bannerController.dataList;
-
                       if (bannerList.isNotEmpty) {
                         return CarouselSlider(
                           options: CarouselOptions(
@@ -307,9 +309,16 @@ class _HomePageState extends State<HomePage> {
                                       horizontal: 5.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(25),
-                                    child: Image.network(
-                                      imageUrl,
+                                    child: CachedNetworkImage(
+                                      imageUrl: imageUrl,
                                       fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          const Center(
+                                              child: Icon(Icons.error)),
                                     ),
                                   ),
                                 );
