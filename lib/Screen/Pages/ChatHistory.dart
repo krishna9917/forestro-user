@@ -6,6 +6,7 @@ import 'package:foreastro/controler/chat_history_contaroller.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -18,7 +19,15 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    // fetchAndInitProfile();
     Get.put(ChatHistory()).fetchChatHistoryData();
+  }
+
+  Future<void> fetchAndInitProfile() async {
+    await ZIMKit().init(
+        appID: 2007373594,
+        appSign:
+            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
   }
 
   @override
