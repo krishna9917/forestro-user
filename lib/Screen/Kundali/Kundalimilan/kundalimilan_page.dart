@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/model/kundali/matchkundali/northkundali_model.dart';
-import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:get/get.dart';
+import 'dart:ui';
 
 class KundaliMilan extends StatelessWidget {
   final KundaliController kundaliController = Get.put(KundaliController());
@@ -12,42 +11,30 @@ class KundaliMilan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.secondary,
       appBar: AppBar(
-          // centerTitle: true,
-          // title: const Text('Kundali Matching'),
-          ),
+        title: const Text(
+          'Kundali Matching',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
+        elevation: 4,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: AppColor.primary,
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // _buildHeader(context, "Kundali North Details"),
+              _buildHeader("Kundali Matching North Details"),
+              const SizedBox(height: 20),
               _buildPlanetDetails(),
-              const SizedBox(
-                height: 20,
-              ),
-              _buildHeader(context, "Kundail Matching North Details"),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 30),
+              _buildHeader("Kundali Matching South Details"),
+              const SizedBox(height: 20),
               _buildOtherDetails(),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // _buildHeader(context, "Kundali South Details"),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // _buildSouthDetails(),
-              // // _buildPlanetDetails(),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // _buildHeader(context, "Kundail Matching South Details"),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // _buildSouthOtherDetails(),
             ],
           ),
         ),
@@ -55,33 +42,31 @@ class KundaliMilan extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, String title) {
+  Widget _buildHeader(String title) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(
-          child: Padding(
-            padding: EdgeInsets.only(left: 7.w, right: 2.w),
-            child: const Divider(
-              height: 1,
-              color: Colors.black45,
+        Expanded(
+          child: Divider(
+            thickness: 1.5,
+            color: Colors.grey.shade400,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColor.primary,
             ),
           ),
         ),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w800,
-              ),
-        ),
-        Flexible(
-          child: Padding(
-            padding: EdgeInsets.only(right: 7.w, left: 2.w),
-            child: const Divider(
-              height: 1,
-              color: Colors.black45,
-            ),
+        Expanded(
+          child: Divider(
+            thickness: 1.5,
+            color: Colors.grey.shade400,
           ),
         ),
       ],
@@ -89,64 +74,65 @@ class KundaliMilan extends StatelessWidget {
   }
 
   Widget _buildPlanetDetails() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Obx(() {
-            if (kundaliController.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              final response = kundaliController.northmatching.value.response;
-              if (response == null) {
-                return const Center(child: Text('No data available.'));
-              } else if (response.boyPlanetaryDetails.isEmpty &&
-                  response.girlPlanetaryDetails.isEmpty) {
-                return const Center(
-                    child: Text('No planetary details available.'));
-              } else {
-                final boyPlanetaryDetails = response.boyPlanetaryDetails;
-                final girlPlanetaryDetails = response.girlPlanetaryDetails;
+    return Obx(() {
+      if (kundaliController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        final response = kundaliController.northmatching.value.response;
+        if (response == null) {
+          return _buildNoDataMessage("No planetary details available.");
+        } else if (response.boyPlanetaryDetails.isEmpty &&
+            response.girlPlanetaryDetails.isEmpty) {
+          return _buildNoDataMessage("No planetary details available.");
+        } else {
+          return _buildDataTable(
+              response.boyPlanetaryDetails, response.girlPlanetaryDetails);
+        }
+      }
+    });
+  }
 
-                return DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Name')),
-                    DataColumn(label: Text('Full Name')),
-                    DataColumn(label: Text('Zodiac')),
-                    DataColumn(label: Text('Degree')),
-                    DataColumn(label: Text('Zodiac Lord')),
-                    DataColumn(label: Text('Nakshatra')),
-                    DataColumn(label: Text('Nakshatra Lord')),
-                    DataColumn(label: Text('Rasi no.')),
-                    DataColumn(label: Text('House')),
-                  ],
-                  rows: [
-                    // Iterate through boyPlanetaryDetails map
-                    for (var entry in boyPlanetaryDetails.entries)
-                      _buildDataRow(entry.value),
-                    // Iterate through girlPlanetaryDetails map
-                    for (var entry in girlPlanetaryDetails.entries)
-                      _buildDataRow(entry.value),
-                  ],
-                );
-              }
-            }
-          })),
+  Widget _buildDataTable(Map<String, PlanetaryDetail> boyDetails,
+      Map<String, PlanetaryDetail> girlDetails) {
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shadowColor: Colors.grey.withOpacity(0.2),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            headingRowColor: MaterialStateProperty.all(AppColor.grey50),
+            columns: const [
+              DataColumn(label: Text('Name')),
+              DataColumn(label: Text('Zodiac')),
+              DataColumn(label: Text('Degree')),
+              DataColumn(label: Text('Nakshatra')),
+              DataColumn(label: Text('Rasi No.')),
+              DataColumn(label: Text('House')),
+            ],
+            rows: [
+              for (var entry in boyDetails.entries) _buildDataRow(entry.value),
+              for (var entry in girlDetails.entries) _buildDataRow(entry.value),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   DataRow _buildDataRow(PlanetaryDetail planet) {
     return DataRow(
       cells: [
-        DataCell(Text(planet.name ?? 'N/A')), // Handle null
-        DataCell(Text(planet.fullName ?? 'N/A')),
-        DataCell(Text(planet.zodiac ?? 'N/A')), // Handle null
-        DataCell(Text(planet.localDegree?.toString() ?? 'N/A')), // Handle null
-        DataCell(Text(planet.zodiacLord ?? 'N/A')), // Handle null
-        DataCell(Text(planet.nakshatra ?? 'N/A')), // Handle null
-        DataCell(Text(planet.nakshatraLord ?? 'N/A')),
-        DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')), // Handle null
-        DataCell(Text(planet.house?.toString() ?? 'N/A')), // Handle null
+        DataCell(Text(planet.name ?? 'N/A')),
+        DataCell(Text(planet.zodiac ?? 'N/A')),
+        DataCell(Text((planet.localDegree != null)
+            ? planet.localDegree!.toStringAsFixed(2)
+            : 'N/A')),
+        DataCell(Text(planet.nakshatra ?? 'N/A')),
+        DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')),
+        DataCell(Text(planet.house?.toString() ?? 'N/A')),
       ],
     );
   }
@@ -157,256 +143,67 @@ class KundaliMilan extends StatelessWidget {
         return const Center(child: CircularProgressIndicator());
       } else {
         final response = kundaliController.northmatching.value.response;
-
         if (response == null) {
-          return const Center(child: Text('No data available.'));
+          return _buildNoDataMessage("No additional details available.");
         } else {
-          return Column(
-            children: [
-              DataRowWidget(label: "Score", value: response.score?.toString()),
-              DataRowWidget(
-                label: "Bot Response",
-                value: response.botResponse,
-              ),
-              // Display Tara
-              if (response.tara != null)
-                _buildDetailSection("Tara", response.tara!),
-
-              if (response.gana != null)
-                _buildDetailSection("Gana", response.gana!),
-
-              if (response.yoni != null)
-                _buildDetailSection("Yoni", response.yoni!),
-              // Display Bhakoot
-              if (response.bhakoot != null)
-                _buildDetailSection("Bhakoot", response.bhakoot!),
-              // Display Grahamaitri
-              if (response.grahamaitri != null)
-                _buildDetailSection("Grahamaitri", response.grahamaitri!),
-              // Display Vasya
-              if (response.vasya != null)
-                _buildDetailSection("Vasya", response.vasya!),
-              // Display Nadi
-              if (response.nadi != null)
-                _buildDetailSection("Nadi", response.nadi!),
-              // Display Varna
-              if (response.varna != null)
-                _buildDetailSection("Varna", response.varna!),
-              // Display Boy Astro Details
-              if (response.boyAstroDetails != null)
-                _buildAstroDetails(
-                    "Boy Astro Details", response.boyAstroDetails!),
-              // Display Girl Astro Details
-              if (response.girlAstroDetails != null)
-                _buildAstroDetails(
-                    "Girl Astro Details", response.girlAstroDetails!),
-            ],
-          );
+          return _buildDetailsSection(response);
         }
       }
     });
   }
 
-  Widget _buildDetailSection(String title, dynamic detail) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        DataRowWidget(label: "Description", value: detail.description),
-        DataRowWidget(label: "Full Score", value: detail.fullScore?.toString()),
-        // Add more fields as necessary
-      ],
-    );
-  }
-
-  Widget _buildAstroDetails(String title, AstroDetails details) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        DataRowWidget(label: "Gana", value: details.gana),
-        DataRowWidget(label: "Yoni", value: details.yoni),
-        DataRowWidget(label: "Vasya", value: details.vasya),
-        DataRowWidget(label: "Nadi", value: details.nadi),
-        DataRowWidget(label: "Varna", value: details.varna),
-        DataRowWidget(label: "Paya", value: details.paya),
-        DataRowWidget(label: "Tatva", value: details.tatva),
-        DataRowWidget(label: "Birth Dasa", value: details.birthDasa),
-        DataRowWidget(label: "Current Dasa", value: details.currentDasa),
-        DataRowWidget(label: "Birth Dasa Time", value: details.birthDasaTime),
-        DataRowWidget(
-            label: "Current Dasa Time", value: details.currentDasaTime),
-        DataRowWidget(label: "Rasi", value: details.rasi),
-        DataRowWidget(label: "Nakshatra", value: details.nakshatra),
-        DataRowWidget(
-          label: "Nakshatra Pada",
-          value: details.nakshatraPada.toString(),
+  Widget _buildDetailsSection(dynamic response) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DataRowWidget(label: "Score", value: response.score?.toString()),
+            DataRowWidget(label: "Bot Response", value: response.botResponse),
+            const SizedBox(height: 10),
+            if (response.tara != null) _buildDetailItem("Tara", response.tara!),
+            if (response.gana != null) _buildDetailItem("Gana", response.gana!),
+            if (response.nadi != null) _buildDetailItem("Nadi", response.nadi!),
+            if (response.bhakoot != null)
+              _buildDetailItem("Bhakoot", response.bhakoot!),
+            // Add more sections if necessary
+          ],
         ),
-
-        DataRowWidget(label: "Ascendant Sign", value: details.ascendantSign),
-        // Add more fields as necessary
-      ],
+      ),
     );
   }
 
-  Widget _buildSouthDetails() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Obx(() {
-            if (kundaliController.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              final response = kundaliController.southmatching.value.response;
-              if (response == null) {
-                return const Center(child: Text('No data available.'));
-              } else if (response.boyPlanetaryDetails.isEmpty &&
-                  response.girlPlanetaryDetails.isEmpty) {
-                return const Center(
-                    child: Text('No planetary details available.'));
-              } else {
-                final boyPlanetaryDetails = response.boyPlanetaryDetails;
-                final girlPlanetaryDetails = response.girlPlanetaryDetails;
-
-                return DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Name')),
-                    DataColumn(label: Text('Full Name')),
-                    DataColumn(label: Text('Zodiac')),
-                    DataColumn(label: Text('Degree')),
-                    DataColumn(label: Text('Zodiac Lord')),
-                    DataColumn(label: Text('Nakshatra')),
-                    DataColumn(label: Text('Nakshatra Lord')),
-                    DataColumn(label: Text('Rasi no.')),
-                    DataColumn(label: Text('House')),
-                  ],
-                  rows: [
-                    // Iterate through boyPlanetaryDetails map
-                    for (var entry in boyPlanetaryDetails.entries)
-                      _buildSouthDataRow(entry.value),
-                    // Iterate through girlPlanetaryDetails map
-                    for (var entry in girlPlanetaryDetails.entries)
-                      _buildSouthDataRow(entry.value),
-                  ],
-                );
-              }
-            }
-          })),
-    );
-  }
-
-  DataRow _buildSouthDataRow(PlanetarySouthDetail planet) {
-    return DataRow(
-      cells: [
-        DataCell(Text(planet.name ?? 'N/A')), // Handle null
-        DataCell(Text(planet.fullName ?? 'N/A')),
-        DataCell(Text(planet.zodiac ?? 'N/A')), // Handle null
-        DataCell(Text(planet.localDegree?.toString() ?? 'N/A')), // Handle null
-        DataCell(Text(planet.zodiacLord ?? 'N/A')), // Handle null
-        DataCell(Text(planet.nakshatra ?? 'N/A')), // Handle null
-        DataCell(Text(planet.nakshatraLord ?? 'N/A')),
-        DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')), // Handle null
-        DataCell(Text(planet.house?.toString() ?? 'N/A')), // Handle null
-      ],
-    );
-  }
-
-  Widget _buildSouthOtherDetails() {
-    return Obx(() {
-      if (kundaliController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      } else {
-        final response = kundaliController.southmatching.value.response;
-
-        if (response == null) {
-          return const Center(child: Text('No data available.'));
-        } else {
-          return Column(
-            children: [
-              DataRowWidget(label: "Score", value: response.score?.toString()),
-              DataRowWidget(
-                label: "Bot Response",
-                value: response.botResponse,
-              ),
-              // Display Tara
-              if (response.dina != null)
-                _buildDetailSouthSection("Dina", response.dina!),
-              // Display Gana
-              if (response.gana != null)
-                _buildDetailSouthSection("Gana", response.gana!),
-              // Display Yoni
-              if (response.yoni != null)
-                _buildDetailSouthSection("Yoni", response.yoni!),
-              // Display Bhakoot
-              if (response.mahendra != null)
-                _buildDetailSouthSection("Mahendra", response.mahendra!),
-              // Display Grahamaitri
-              if (response.sthree != null)
-                _buildDetailSouthSection("Sthree", response.sthree!),
-              // Display Vasya
-              if (response.vasya != null)
-                _buildDetailSouthSection("Vasya", response.vasya!),
-              // Display Nadi
-              if (response.rasi != null)
-                _buildDetailSouthSection("Rasi", response.rasi!),
-              // Display Varna
-              if (response.rasiathi != null)
-                _buildDetailSouthSection("Rasiathi", response.rasiathi!),
-              // Display Boy Astro Details
-              if (response.boyAstroDetails != null)
-                _buildAstroSouthDetails(
-                    "Boy Astro Details", response.boyAstroDetails!),
-              // Display Girl Astro Details
-              if (response.girlAstroDetails != null)
-                _buildAstroSouthDetails(
-                    "Girl Astro Details", response.girlAstroDetails!),
-            ],
-          );
-        }
-      }
-    });
-  }
-
-  Widget _buildDetailSouthSection(String title, dynamic detail) {
+  Widget _buildDetailItem(String title, dynamic detail) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        DataRowWidget(label: "Description", value: detail.description),
-        DataRowWidget(label: "Full Score", value: detail.fullScore?.toString()),
-        // Add more fields as necessary
-      ],
-    );
-  }
-
-  Widget _buildAstroSouthDetails(String title, AstroSouthDetails details) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        DataRowWidget(label: "Gana", value: details.gana),
-        DataRowWidget(label: "Yoni", value: details.yoni),
-        DataRowWidget(label: "Vasya", value: details.vasya),
-        DataRowWidget(label: "Nadi", value: details.nadi),
-        DataRowWidget(label: "Varna", value: details.varna),
-        DataRowWidget(label: "Paya", value: details.paya),
-        DataRowWidget(label: "Tatva", value: details.tatva),
-        DataRowWidget(label: "Birth Dasa", value: details.birthDasa),
-        DataRowWidget(label: "Current Dasa", value: details.currentDasa),
-        DataRowWidget(label: "Birth Dasa Time", value: details.birthDasaTime),
-        DataRowWidget(
-            label: "Current Dasa Time", value: details.currentDasaTime),
-        DataRowWidget(label: "Rasi", value: details.rasi),
-        DataRowWidget(label: "Nakshatra", value: details.nakshatra),
-        DataRowWidget(
-          label: "Nakshatra Pada",
-          value: details.nakshatraPada.toString(),
+        const SizedBox(height: 10),
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: AppColor.primary,
+          ),
         ),
-
-        DataRowWidget(label: "Ascendant Sign", value: details.ascendantSign),
-        // Add more fields as necessary
+        DataRowWidget(label: "Description", value: detail.description),
+        DataRowWidget(
+          label: "Full Score",
+          value: detail.fullScore?.toString(),
+        ),
       ],
+    );
+  }
+
+  Widget _buildNoDataMessage(String message) {
+    return Center(
+      child: Text(
+        message,
+        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
@@ -420,26 +217,21 @@ class DataRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 180, // Adjust the width as needed
+          Expanded(
+            flex: 1,
             child: Text(
               label,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-            child: Container(
-              // padding: const EdgeInsets.all(8.0),
-              child: Text(
-                value ?? 'N/A',
-                style: const TextStyle(
-                  color: AppColor.primary,
-                ),
-              ),
+            flex: 2,
+            child: Text(
+              value ?? 'N/A',
+              style: const TextStyle(color: AppColor.primary),
             ),
           ),
         ],
