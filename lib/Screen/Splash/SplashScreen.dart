@@ -89,30 +89,41 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> checkTokenAndNavigate() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    String? is_profile_created = prefs.getString('is_profile_created');
-    print("manjulika $is_profile_created");
+    final prefs = await SharedPreferences.getInstance();
+
+    // Retrieve stored values
+    final token = prefs.getString('token');
+    final isProfileCreated = prefs.getString('is_profile_created');
+
+    print("Token: $token");
+    print("Is Profile Created: $isProfileCreated");
 
     if (token == null || token.isEmpty) {
       await prefs.clear();
       await _deleteCacheDir();
       await _deleteAppDir();
-      Future.delayed(const Duration(seconds: 3), () {
-        Get.offAll(const LoginScreen());
-        // context.goTo(const LoginScreen());
-      });
-    } else {
-      if (is_profile_created == "false") {
-        Get.offAll(const LoginScreen());
-        // context.goTo(const LoginScreen());
-        // context.goTo(HomePage());
-      }
 
-      Future.delayed(const Duration(seconds: 2), () {
-        navigate.pushReplacement(routeMe(const HomePage()));
+      Future.delayed(const Duration(seconds: 3), () {
+        Get.offAll(() => const LoginScreen());
       });
+      return;
     }
+
+    // Check if profile is created
+    if (isProfileCreated == null || isProfileCreated == "false") {
+      await prefs.clear();
+      await _deleteCacheDir();
+      await _deleteAppDir();
+      Future.delayed(const Duration(seconds: 3), () {
+        Get.offAll(() => const LoginScreen());
+      });
+      return;
+    }
+
+    // Navigate to HomePage if everything is valid
+    Future.delayed(const Duration(seconds: 2), () {
+      Get.offAll(() => const HomePage());
+    });
   }
 
   Future<void> _deleteCacheDir() async {

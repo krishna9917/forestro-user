@@ -201,16 +201,18 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           method: ApiMethod.POST, body: body);
       Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        DateTime eventDate = DateTime(2024, 10, 3);
-        DateTime now = DateTime.now();
+        navigate.pushReplacement(routeMe(const HomePage()));
+        print("data____profile=======$data");
+        //   DateTime eventDate = DateTime(2024, 10, 3);
+        //   DateTime now = DateTime.now();
 
-        if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-          navigate.pushReplacement(routeMe(const HomePage()));
-        } else {
-          context.goTo(ComingSoonAstrologerPage());
-        }
-        showToast("Successful Profile Created");
-      } else {}
+        //   if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
+        //     navigate.pushReplacement(routeMe(const HomePage()));
+        //   } else {
+        //     context.goTo(ComingSoonAstrologerPage());
+        //   }
+        //   showToast("Successful Profile Created");
+      }
     } on DioException catch (e) {
       if (widget.email != null) {
         showToast(

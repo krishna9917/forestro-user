@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
         method: ApiMethod.POST,
         body: packFormData({
           "email": email,
-          "token": token, // Ensure token is valid here
+          "token": token,
         }),
       );
       Response res = await apiRequest.send<Map>();
@@ -223,6 +223,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (res.data['status'] == true) {
         String? resToken = res.data['token'];
+        bool isProfileCreated = res.data['is_profile_created'] ?? false;
+
+        localStorage.setString(
+            "is_profile_created", isProfileCreated.toString());
         if (resToken != null) {
           localStorage.setString("token", resToken);
         } else {
@@ -271,7 +275,8 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences localStorage = await LocalStorage.init();
 
       if (res.data['status'] == true) {
-        localStorage.setString("token", res.data['token']);
+        print("ssssssssss========>>>>${res.data}");
+
         int? userId = res.data['user_id'];
         if (userId != null) {
           localStorage.setString("user_id", userId.toString());
@@ -289,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
             email: email,
           )));
         }
-      } else {}
+      }
 
       setState(() {
         loading = false;
