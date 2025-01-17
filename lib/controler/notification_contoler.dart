@@ -14,6 +14,7 @@ class NotificationService {
     var name = profileController.profileDataList.first.name;
     var img = profileController.profileDataList.first.profileImg ?? '';
     var wallet = profileController.profileDataList.first.wallet ?? '0';
+    print(wallet);
 
     print("token==========$token");
 
@@ -47,15 +48,15 @@ class NotificationService {
               borderRadius: BorderRadius.circular(20),
             ),
             backgroundColor: Colors.white,
-            elevation: 10, 
+            elevation: 10,
             content: Container(
               padding: const EdgeInsets.all(16.0),
-              height: 160, 
+              height: 160,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: 50, 
+                    width: 50,
                     height: 5,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -81,7 +82,7 @@ class NotificationService {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: AppColor.primary, 
+                            color: AppColor.primary,
                           ),
                         ),
                         TextSpan(
@@ -97,7 +98,7 @@ class NotificationService {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: AppColor.primary, 
+                            color: AppColor.primary,
                           ),
                         ),
                         TextSpan(
@@ -111,7 +112,6 @@ class NotificationService {
                       ],
                     ),
                   ),
-                 
                 ],
               ),
             ),

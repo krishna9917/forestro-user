@@ -94,9 +94,19 @@ class SocketController extends GetxController {
                       'userId': data['userId'],
                       'userType': data['userType'],
                       'requestType': data['requestType'],
-                      'totalMinutes': data['totalMinutes'],
-                      'data': data,
+                      'data': {
+                        'walletAmount': wallet,
+                        ...data,
+                      }
                     });
+                    print("Emitting startSession with data: ${{
+                      'userId': data['userId'],
+                      'requestType': 'chat',
+                      'data': {
+                        'walletAmount': wallet,
+                        ...data,
+                      }
+                    }}");
                   }
                 },
                 child: const Text("Yes"),
@@ -123,7 +133,7 @@ class SocketController extends GetxController {
     });
 
     socket?.on('openSession', (data) {
-      print("datasesionstart======$data");
+      print("datasesionstart======${data}");
       if (data['requestType'] == 'chat') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
@@ -137,10 +147,20 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'chat',
-            'totalMinutes': totalMinutes,
-            'data': data,
+            'total': totalMinutes,
+            'data': {
+              'walletAmount': walletAmount,
+              ...data,
+            },
           });
-
+          print("Emitting startSession with data: ${{
+            'userId': data['userId'],
+            'requestType': 'chat',
+            'data': {
+              'walletAmount': walletAmount,
+              ...data,
+            }
+          }}");
           Get.off(ChatScreen(
             id: data['userId'] + "-astro",
             userId: data['userId'],
@@ -164,6 +184,7 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'video',
+            'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,
             'data': data,
           });
@@ -191,6 +212,7 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'audio',
+            'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,
             'data': data,
           });
@@ -243,6 +265,7 @@ class SocketController extends GetxController {
 
   void sendNewRequest(
       {required String userId, required String requestType, required data}) {
+    print("datatttt=======>>>$data");
     socket?.emit('newRequest', {
       'userId': userId,
       'userType': 'astro',
