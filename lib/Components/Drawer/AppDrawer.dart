@@ -20,6 +20,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -357,6 +358,35 @@ class _AppDrawerState extends State<AppDrawer> {
                     title: "Log Out",
                     onTap: () async {
                       logout();
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+                  FutureBuilder<PackageInfo>(
+                    future: PackageInfo.fromPlatform(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (snapshot.hasData) {
+                        final version = snapshot.data!.version;
+                        final buildNumber = snapshot.data!.buildNumber;
+                        return Text(
+                          "Version: $version ($buildNumber)",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        );
+                      } else {
+                        return const Text(
+                          "Version: N/A",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
