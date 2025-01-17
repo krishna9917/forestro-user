@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/bloc_detailes.dart';
 import 'package:foreastro/controler/bloc_controler.dart';
@@ -30,7 +32,28 @@ class _BlocViewAllState extends State<BlocViewAll> {
         builder: (controller) {
           return Obx(() {
             if (controller.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              // Shimmer effect while loading
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: GridView.builder(
+                    itemCount: 6, // Placeholder count for shimmer
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 3 / 2,
+                    ),
+                    itemBuilder: (context, index) => Container(
+                      margin: const EdgeInsets.all(8.0),
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
             } else {
               return RefreshIndicator(
                 onRefresh: _refreshData,
@@ -47,40 +70,58 @@ class _BlocViewAllState extends State<BlocViewAll> {
                       childAspectRatio: 3 / 2, // 2:2 ratio
                     ),
                     itemBuilder: (context, index) {
+                      final blocData = controller.blocDataList[index];
+                      final String id = blocData.id?.toString() ?? '';
+                      final String imageUrl = blocData.image ?? '';
+                      final String title = blocData.title ?? 'NA';
+
                       return GestureDetector(
                         onTap: () {
-                          var a = controller.blocDataList[index].id;
-
-                          String id = a.toString();
-                          navigate.push(routeMe(BlocDetailes(
-                            id: id,
-                          )));
+                          navigate.push(routeMe(BlocDetailes(id: id)));
                         },
                         child: Container(
-                          // margin: const EdgeInsets.all(8.0),
-                          width: 310,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                blurRadius: 5,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
-                                child: Image.network(
-                                  controller.blocDataList[index].image ?? 'NA',
+                                child: CachedNetworkImage(
+                                  imageUrl: imageUrl.isNotEmpty
+                                      ? imageUrl
+                                      : 'https://via.placeholder.com/450x140.png?text=No+Image',
                                   width: double.infinity,
                                   height: 90,
                                   fit: BoxFit.cover,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                               ),
-                              const SizedBox(height: 2),
-                              Text(
-                                controller.blocDataList[index].title ?? 'NA',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                              const SizedBox(height: 8),
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),

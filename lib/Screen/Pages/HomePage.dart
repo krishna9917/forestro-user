@@ -33,6 +33,7 @@ import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     fetchAndInitProfile();
     Get.find<ProfileList>().fetchProfileData();
-   
+
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
@@ -541,26 +542,46 @@ class _HomePageState extends State<HomePage> {
                     navigate.push(routeMe(const BlocViewAll()));
                   },
                 ),
+
                 GetBuilder<BlocList>(
                   builder: (controller) {
                     return Obx(() {
                       if (controller.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return Container(
+                        // Show shimmer effect while loading
+                        return SizedBox(
                           height: 210,
-                          child: ListView(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5, // Number of shimmer placeholders
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  width: 190,
+                                  color: Colors.white,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Show actual data once loaded
+                        return SizedBox(
+                          height: 210,
+                          child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            children: List.generate(
-                              controller.blocDataList.length,
-                              (index) => GestureDetector(
-                                onTap: () {
-                                  var a = controller.blocDataList[index].id;
+                            itemCount: controller.blocDataList.length,
+                            itemBuilder: (context, index) {
+                              final blocData = controller.blocDataList[index];
+                              final String id = blocData.id?.toString() ?? '';
+                              final String imageUrl = blocData.image ?? '';
+                              final String title = blocData.title ?? 'NA';
 
-                                  String id = a.toString();
-                                  navigate.push(routeMe(BlocDetailes(
-                                    id: id,
-                                  )));
+                              return GestureDetector(
+                                onTap: () {
+                                  navigate.push(routeMe(BlocDetailes(id: id)));
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.all(8.0),
@@ -571,38 +592,39 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(25),
-                                        child: Image.network(
-                                          controller
-                                                  .blocDataList[index].image ??
-                                              'NA',
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrl.isNotEmpty
+                                              ? imageUrl
+                                              : 'https://via.placeholder.com/450x140.png?text=No+Image',
                                           width: 450,
                                           height: 140,
                                           fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
                                       ),
-                                      // const SizedBox(height: 8),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(3.0),
-                                          child: Text(
-                                            controller.blocDataList[index]
-                                                    .title ??
-                                                'NA',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textAlign: TextAlign.start,
+                                      Padding(
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: Text(
+                                          title,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
                                           ),
+                                          textAlign: TextAlign.start,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
                         );
                       }
@@ -618,75 +640,173 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
 
+                // GetBuilder<CelibrityList>(
+                //   builder: (controller) {
+                //     return Obx(() {
+                //       if (controller.isLoading) {
+                //         return const Center(child: CircularProgressIndicator());
+                //       } else {
+                //         return Container(
+                //           height: 200,
+                //           child: ListView(
+                //             scrollDirection: Axis.horizontal,
+                //             children: List.generate(
+                //               controller.celibrityDataList.length,
+                //               (index) {
+                //                 final celebrity =
+                //                     controller.celibrityDataList[index];
+                //                 var videoUrl = celebrity.video.toString();
+                //                 print("videoUrl====$videoUrl");
+
+                //                 return Container(
+                //                   margin: const EdgeInsets.all(8.0),
+                //                   width: 210,
+                //                   child: Column(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       // const SizedBox(height: 8),
+                //                       ClipRRect(
+                //                         borderRadius: BorderRadius.circular(25),
+                //                         child: InkWell(
+                //                           onTap: () {
+                //                             if (videoUrl != null) {
+                //                               navigate.push(routeMe(VideoPlay(
+                //                                 videoUrl: videoUrl,
+                //                               )));
+                //                             } else {
+                //                               print(
+                //                                   'Video ID is null, cannot play video.');
+                //                             }
+                //                           },
+                //                           child: Image.network(
+                //                             celebrity.thumbnail ??
+                //                                 'https://via.placeholder.com/550x140.png?text=No+Image',
+                //                             width: 550,
+                //                             height: 140,
+                //                             fit: BoxFit.cover,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                       // const SizedBox(height: 8),
+                //                       Flexible(
+                //                         child: Padding(
+                //                           padding: const EdgeInsets.all(8.0),
+                //                           child: Text(
+                //                             celebrity.title ?? 'NA',
+                //                             maxLines: 2,
+                //                             overflow: TextOverflow.ellipsis,
+                //                             style: const TextStyle(
+                //                               fontSize: 14,
+                //                               fontWeight: FontWeight.w400,
+                //                             ),
+                //                             textAlign: TextAlign.center,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 );
+                //               },
+                //             ),
+                //           ),
+                //         );
+                //       }
+                //     });
+                //   },
+                // ),
+
                 GetBuilder<CelibrityList>(
+                  init: CelibrityList(),
                   builder: (controller) {
                     return Obx(() {
                       if (controller.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return Container(
+                        // Show shimmer loading effect while data is loading
+                        return SizedBox(
                           height: 200,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: List.generate(
-                              controller.celibrityDataList.length,
-                              (index) {
-                                final celebrity =
-                                    controller.celibrityDataList[index];
-                                var videoUrl = celebrity.video.toString();
-                                print("videoUrl====$videoUrl");
-
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5, // Number of shimmer placeholders
+                              itemBuilder: (context, index) {
                                 return Container(
                                   margin: const EdgeInsets.all(8.0),
                                   width: 210,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // const SizedBox(height: 8),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: InkWell(
-                                          onTap: () {
-                                            if (videoUrl != null) {
-                                              navigate.push(routeMe(VideoPlay(
-                                                videoUrl: videoUrl,
-                                              )));
-                                            } else {
-                                              print(
-                                                  'Video ID is null, cannot play video.');
-                                            }
-                                          },
-                                          child: Image.network(
-                                            celebrity.thumbnail ??
-                                                'https://via.placeholder.com/550x140.png?text=No+Image',
-                                            width: 550,
-                                            height: 140,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      // const SizedBox(height: 8),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            celebrity.title ?? 'NA',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  height: 140,
+                                  color: Colors.white,
                                 );
                               },
                             ),
+                          ),
+                        );
+                      } else {
+                        // Display the data once it's loaded
+                        return Container(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.celibrityDataList.length,
+                            itemBuilder: (context, index) {
+                              final celebrity =
+                                  controller.celibrityDataList[index];
+                              var videoUrl = celebrity.video?.toString() ?? '';
+                              print("videoUrl====$videoUrl");
+
+                              return Container(
+                                margin: const EdgeInsets.all(8.0),
+                                width: 210,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (videoUrl.isNotEmpty) {
+                                            // Navigate to video player screen
+                                            Get.to(() =>
+                                                VideoPlay(videoUrl: videoUrl));
+                                          } else {
+                                            print(
+                                                'Video URL is null, cannot play video.');
+                                          }
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl: celebrity.thumbnail ??
+                                              'https://via.placeholder.com/550x140.png?text=No+Image',
+                                          width: 550,
+                                          height: 140,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          celebrity.title ?? 'NA',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         );
                       }
