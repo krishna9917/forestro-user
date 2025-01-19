@@ -119,8 +119,6 @@ class _SplashScreenState extends State<SplashScreen>
       });
       return;
     }
-
-    // Navigate to HomePage if everything is valid
     Future.delayed(const Duration(seconds: 2), () {
       Get.offAll(() => const HomePage());
     });
