@@ -94,10 +94,6 @@ class _SplashScreenState extends State<SplashScreen>
     // Retrieve stored values
     final token = prefs.getString('token');
     final isProfileCreated = prefs.getString('is_profile_created');
-
-    print("Token: $token");
-    print("Is Profile Created: $isProfileCreated");
-
     if (token == null || token.isEmpty) {
       await prefs.clear();
       await _deleteCacheDir();
