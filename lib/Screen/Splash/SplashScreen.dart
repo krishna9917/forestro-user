@@ -108,8 +108,6 @@ class _SplashScreenState extends State<SplashScreen>
       });
       return;
     }
-
-    // Check if profile is created
     if (isProfileCreated == null || isProfileCreated == "false") {
       await prefs.clear();
       await _deleteCacheDir();
