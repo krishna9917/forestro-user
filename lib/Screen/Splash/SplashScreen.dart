@@ -102,7 +102,6 @@ class _SplashScreenState extends State<SplashScreen>
       await prefs.clear();
       await _deleteCacheDir();
       await _deleteAppDir();
-
       Future.delayed(const Duration(seconds: 3), () {
         Get.offAll(() => const LoginScreen());
       });
