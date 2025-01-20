@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
       await player.setAsset('assets/bg/beep.mp3');
       for (int i = 0; i < 3; i++) {
         await player.play();
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
     } catch (e) {
       print('Audio play error: $e');
@@ -83,7 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> endChatSession() async {
-    if (isSessionEnded) return; // Prevent multiple calls
+    if (isSessionEnded) return;
     isSessionEnded = true;
 
     sessionController.closeSession();

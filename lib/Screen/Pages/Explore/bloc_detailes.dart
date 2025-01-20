@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -16,6 +17,7 @@ class _BlocDetailesState extends State<BlocDetailes> {
   String? imageUrl;
   String? title;
   String? description;
+  bool isLoading = true;
 
   Future<void> blocdetailes() async {
     try {
@@ -23,9 +25,7 @@ class _BlocDetailesState extends State<BlocDetailes> {
         "$apiUrl/blog-details",
         method: ApiMethod.POST,
         body: packFormData(
-          {
-            'blog_id': widget.id,
-          },
+          {'blog_id': widget.id},
         ),
       );
       dio.Response data = await apiRequest.send();
@@ -34,12 +34,16 @@ class _BlocDetailesState extends State<BlocDetailes> {
           imageUrl = data.data['data']['image'];
           title = data.data['data']['title'];
           description = data.data['data']['description'];
+          isLoading = false;
         });
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }
     } catch (e) {
       showToast(tosteError);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -55,69 +59,40 @@ class _BlocDetailesState extends State<BlocDetailes> {
       appBar: AppBar(
         title: Text("Block Detail".toUpperCase()),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (imageUrl != null)
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Image.network(
-                        imageUrl!,
-                        fit: BoxFit.cover,
-                        height: MediaQuery.of(context).size.height * 0.23,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (imageUrl != null)
+                    CachedNetworkImage(
+                      imageUrl: imageUrl!,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height * 0.23,
+                    ),
+                  if (title != null)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        title!,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                if (title != null)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      title!,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  if (description != null)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: HtmlWidget(description!),
                     ),
-                  ),
-                if (description != null)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: HtmlWidget(
-                      description!,
-                    ),
-                  ),
-                // Spacer(),
-              ],
+                ],
+              ),
             ),
-          ),
-          // Spacer(),
-          // Positioned(
-          //   bottom: 16.0,
-          //   left: 0,
-          //   right: 0,
-          //   child: Center(
-          //     child: FloatingActionButton(
-          //       child: const Text(
-          //         "Call ",
-          //         style: TextStyle(
-          //           fontSize: 15,
-          //           color: Colors.white,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //       ),
-          //       onPressed: () {
-          //         navigate.push(routeMe(const ExploreAstroPage()));
-          //       },
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
     );
   }
 }
