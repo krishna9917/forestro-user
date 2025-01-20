@@ -42,19 +42,18 @@ class _AriesPageState extends State<AriesPage> {
   }
 
   void fetchHoroscope() {
-    DateTime currentDate = DateTime.now(); 
-    print("Current Date: $currentDate"); 
+    DateTime currentDate = DateTime.now();
+    print("Current Date: $currentDate");
 
-    int offset = dayIndex - 1; 
-    DateTime selectedDate = currentDate.add(
-        Duration(days: offset)); 
-    print(
-        "Selected Date: $selectedDate"); 
+    int offset = dayIndex - 1;
+    DateTime selectedDate = currentDate.add(Duration(days: offset));
+    print("Selected Date: $selectedDate");
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    String formattedDate =
-        dateFormat.format(selectedDate); 
-    controller.translatedText.value = ''; 
+    String formattedDate = dateFormat.format(selectedDate);
+    controller.translatedText.value = '';
     Get.find<HoroscopeControler>().horoscopeData(widget.zodiac, formattedDate);
+    Get.find<HoroscopeControler>()
+        .horoscopeDataen(widget.zodiac, formattedDate);
   }
 
   @override
@@ -182,31 +181,18 @@ class _AriesPageState extends State<AriesPage> {
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Obx(() {
-                          String originalText = controller.horoscopeDataList
-                                  .value.response?.botResponse ??
-                              'NA';
-
-                          if (originalText != 'NA' &&
-                              originalText.isNotEmpty &&
-                              controller.translatedText.isEmpty) {
-                            translator
-                                .translate(originalText, from: 'hi', to: 'en')
-                                .then((translatedText) {
-                              setState(() {
-                                controller.translatedText.value =
-                                    translatedText.text;
-                              });
-                            }).catchError((e) {});
+                          if (controller.horoscopeDataListen.value.response ==
+                              null) {
+                            return const CircularProgressIndicator();
+                          } else {
+                            return Text(
+                              controller.horoscopeDataListen.value.response
+                                      ?.botResponse ??
+                                  'NA',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(fontSize: 15),
+                            );
                           }
-                          String displayText =
-                              controller.translatedText.isNotEmpty
-                                  ? controller.translatedText.value
-                                  : originalText;
-
-                          return Text(
-                            displayText,
-                            style: const TextStyle(fontSize: 15),
-                          );
                         }),
                       ),
                       // Obx(() {

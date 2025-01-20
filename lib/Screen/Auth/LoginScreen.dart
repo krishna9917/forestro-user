@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> onClick() async {
     if (_phoneNum.length != 10) {
-      showToast("Enter a 10-digit Mobile Number");
+      showToast("Enter Mobile Number");
     } else {
       setState(() {
         loading = true;
