@@ -332,7 +332,7 @@ class KundaliController extends GetxController {
       final Map<String, dynamic> queryParams = {
         'boy_dob': dobBoy,
         'boy_tob': tobBoy,
-        'boy_tz': 5.5,
+        'boy_tz': '5.5',
         'boy_lat': latBoy,
         'boy_lon': lonBoy,
         'girl_dob': dobGirl,
@@ -353,8 +353,8 @@ class KundaliController extends GetxController {
 
         if (responseData != null) {
           northmatching.value = NorthModel.fromJson(responseData);
-        } else {}
-      } else {}
+        }
+      }
     } catch (e) {
       print("Fetch error: $e");
     } finally {
@@ -399,8 +399,7 @@ class KundaliController extends GetxController {
 
         if (responseData != null) {
           southmatching.value = SouthKundaliModel.fromJson(responseData);
-          // print(northmatching.value);
-        } else {}
+        }
       } else {}
     } catch (e) {
       print("Fetch error: $e");

@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     fetchAndInitProfile();
     Get.find<ProfileList>().fetchProfileData();
-
+    Get.put(BannerList()).fetchProfileData();
     Get.put(BlocList()).blocData();
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
