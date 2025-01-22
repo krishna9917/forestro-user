@@ -46,7 +46,7 @@ class Response {
   final Rasi? vasya;
   final Rajju? rajju;
   final Dina? vedha;
-  final int? score;
+  final dynamic? score;
   final String? botResponse;
   final Map<String, PlanetarySouthDetail> boyPlanetaryDetails;
   final Map<String, PlanetarySouthDetail> girlPlanetaryDetails;
@@ -148,7 +148,7 @@ class AstroSouthDetails {
           : List<String>.from(json["lucky_gem"]!.map((x) => x)),
       luckyNum: json["lucky_num"] == null
           ? []
-          : List<int>.from(json["lucky_num"]!.map((x) => x)),
+          : List<dynamic>.from(json["lucky_num"]!.map((x) => x)),
       luckyColors: json["lucky_colors"] == null
           ? []
           : List<String>.from(json["lucky_colors"]!.map((x) => x)),

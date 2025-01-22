@@ -118,41 +118,34 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
   void submitForm() async {
     if (formKey.currentState?.validate() ?? false) {
       try {
-        
         final coordinatesBoy =
             await fetchCoordinates(addressControllerBoy.text);
         final latBoy = coordinatesBoy['lat'] ?? 0;
         final lonBoy = coordinatesBoy['lng'] ?? 0;
-        
-        final dobBoy = birthBoy.text;
-        
-        final tobBoy =
-            birthtimeControllerBoy.text; 
-       
 
+        final dobBoy = birthBoy.text;
+
+        final tobBoy = birthtimeControllerBoy.text;
 
         final coordinatesGirl =
             await fetchCoordinates(addressControllerGirl.text);
         final latGirl = coordinatesGirl['lat'] ?? 0;
         final lonGirl = coordinatesGirl['lng'] ?? 0;
-        
+
         final dobGirl = birthGirl.text;
-       
+
         final tobGirl =
             birthtimeControllerGirl.text; // Use birthtimeControllerGirl
-        
 
         final lang = puja ?? 'en';
 
-        kundaliController.KundalimilanNorthData(dobBoy, tobBoy, latBoy, lonBoy,
-            dobGirl, tobGirl, latGirl, lonGirl, lang);
+        // kundaliController.KundalimilanNorthData(dobBoy, tobBoy, latBoy, lonBoy,
+        //     dobGirl, tobGirl, latGirl, lonGirl, lang);
         kundaliController.KundalimilanSouthData(dobBoy, tobBoy, latBoy, lonBoy,
             dobGirl, tobGirl, latGirl, lonGirl, lang);
 
         Get.to(() => KundaliMilan());
-      } catch (e) {
-        
-      }
+      } catch (e) {}
     }
   }
 

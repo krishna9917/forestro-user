@@ -396,6 +396,7 @@ class KundaliController extends GetxController {
 
       if (response.statusCode == 200) {
         final responseData = response.data;
+        print(responseData);
 
         if (responseData != null) {
           southmatching.value = SouthKundaliModel.fromJson(responseData);
