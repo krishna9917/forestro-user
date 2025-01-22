@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -842,99 +843,125 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
               child: Column(
                 children: [
                   for (var review in reviews)
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(
-                          width: 2,
-                          color: AppColor.primary.withOpacity(0.4),
-                        ),
+                    Card(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      elevation: 5, // Add shadow for better depth
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipOval(
-                                child: Image.network(
-                                  review.userImgUrl,
-                                  width: 50, // Adjust width as needed
-                                  height: 50, // Adjust height as needed
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.network(
-                                      'https://cdn-icons-png.flaticon.com/512/149/149071.png',
-                                      width: 55,
-                                      height: 55,
-                                      fit: BoxFit.fill,
-                                    );
-                                  },
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return const CircularProgressIndicator();
-                                  },
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.04),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: review.userImgUrl,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.14, // Adjusted for better visual appearance
+                                    height: MediaQuery.of(context).size.width *
+                                        0.14,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, error, stackTrace) {
+                                      return Image.network(
+                                        'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.14,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.14,
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                  ),
                                 ),
-                              ),
-                              // viewImage(
-                              //   boxDecoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.circular(100),
-                              //     color: Colors.orange,
-                              //   ),
-                              //   url: review.userImgUrl,
-                              // ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(review.userName ?? 'NA'),
-                                    // Text(review.rating != null ? '' : 'NA'),
-                                    if (review.rating != null)
-                                      Row(
-                                        children: List.generate(
-                                          double.parse(review.rating).toInt(),
-                                          (_) => const Icon(
-                                            Icons.star,
-                                            color: AppColor.primary,
-                                          ),
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.04),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        review.userName != null
+                                            ? review.userName
+                                                .split(' ')
+                                                .take(2)
+                                                .join(' ') // Limit to two words
+                                            : 'NA',
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
                                         ),
                                       ),
-                                  ],
+                                      if (review.rating != null)
+                                        Row(
+                                          children: List.generate(
+                                            double.parse(review.rating).toInt(),
+                                            (_) => const Icon(
+                                              Icons.star,
+                                              color: AppColor.primary,
+                                            ),
+                                          ),
+                                        ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        review.comment ??
+                                            'No comment provided.',
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04,
+                                          color: Colors.black54,
+                                        ),
+                                        maxLines:
+                                            3, // Allow text to wrap and limit the height
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Text(review.postDate != null
-                                  ? DateFormat('yyyy-MM-dd HH:mm')
-                                      .format(DateTime.parse(review.postDate))
-                                  : 'NA'),
-                            ],
-                          ),
-                          Text(review.comment ?? 'NA'),
-                        ],
+                                const SizedBox(width: 8),
+                                Text(
+                                  review.postDate != null
+                                      ? DateFormat('yyyy-MM-dd HH:mm').format(
+                                          DateTime.parse(review.postDate))
+                                      : 'NA',
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.04,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   if (reviews.isEmpty)
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(
-                          width: 2,
-                          color: AppColor.primary.withOpacity(0.4),
-                        ),
+                    const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColor.primary,
                       ),
-                      child: const Text('No reviews available'),
                     ),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),
