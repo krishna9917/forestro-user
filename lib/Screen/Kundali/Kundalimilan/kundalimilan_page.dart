@@ -148,35 +148,35 @@ class KundaliMilan extends StatelessWidget {
                 label: "Bot Response",
                 value: response.botResponse,
               ),
-              // Display Dina
+
               if (response.dina != null)
                 _buildDetailSouthSection("Dina", response.dina!),
-              // Display Gana
+
               if (response.gana != null)
                 _buildDetailSouthSection("Gana", response.gana!),
-              // Display Yoni
+
               if (response.yoni != null)
                 _buildDetailSouthSection("Yoni", response.yoni!),
-              // Display Mahendra
+
               if (response.mahendra != null)
                 _buildDetailSouthSection("Mahendra", response.mahendra!),
-              // Display Sthree
+
               if (response.sthree != null)
                 _buildDetailSouthSection("Sthree", response.sthree!),
-              // Display Vasya
+
               if (response.vasya != null)
                 _buildDetailSouthSection("Vasya", response.vasya!),
-              // Display Rasi
+
               if (response.rasi != null)
                 _buildDetailSouthSection("Rasi", response.rasi!),
-              // Display Rasiathi
+
               if (response.rasiathi != null)
                 _buildDetailSouthSection("Rasiathi", response.rasiathi!),
-              // Display Boy Astro Details
+
               if (response.boyAstroDetails != null)
                 _buildAstroSouthDetails(
                     "Boy Astro Details", response.boyAstroDetails!),
-              // Display Girl Astro Details
+
               if (response.girlAstroDetails != null)
                 _buildAstroSouthDetails(
                     "Girl Astro Details", response.girlAstroDetails!),
@@ -194,7 +194,6 @@ class KundaliMilan extends StatelessWidget {
         Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         DataRowWidget(label: "Description", value: detail.description),
         DataRowWidget(label: "Full Score", value: detail.fullScore?.toString()),
-        // Add more fields as necessary
       ],
     );
   }
