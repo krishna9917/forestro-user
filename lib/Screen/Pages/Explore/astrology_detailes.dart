@@ -901,7 +901,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                           fontSize: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.05,
+                                              0.03,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black87,
                                         ),

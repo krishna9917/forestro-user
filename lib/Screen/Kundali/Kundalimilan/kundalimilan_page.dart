@@ -138,35 +138,25 @@ class KundaliMilan extends StatelessWidget {
                 label: "Bot Response",
                 value: response.botResponse,
               ),
-
               if (response.dina != null)
                 _buildDetailSouthSection("Dina", response.dina!),
-
               if (response.gana != null)
                 _buildDetailSouthSection("Gana", response.gana!),
-
               if (response.yoni != null)
                 _buildDetailSouthSection("Yoni", response.yoni!),
-
               if (response.mahendra != null)
                 _buildDetailSouthSection("Mahendra", response.mahendra!),
-
               if (response.sthree != null)
                 _buildDetailSouthSection("Sthree", response.sthree!),
-
               if (response.vasya != null)
                 _buildDetailSouthSection("Vasya", response.vasya!),
-
               if (response.rasi != null)
                 _buildDetailSouthSection("Rasi", response.rasi!),
-
               if (response.rasiathi != null)
                 _buildDetailSouthSection("Rasiathi", response.rasiathi!),
-
               if (response.boyAstroDetails != null)
                 _buildAstroSouthDetails(
                     "Boy Astro Details", response.boyAstroDetails!),
-
               if (response.girlAstroDetails != null)
                 _buildAstroSouthDetails(
                     "Girl Astro Details", response.girlAstroDetails!),
