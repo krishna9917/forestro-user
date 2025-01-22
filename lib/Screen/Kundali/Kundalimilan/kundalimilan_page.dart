@@ -115,34 +115,35 @@ class KundaliMilan extends StatelessWidget {
         } else {
           return Column(
             children: [
-              PrimaryArcAnimationComponent(
-                score: response.score ?? "",
-                maxScore: 10,
-                arcHeight: 340,
-                arcWidth: 340,
-                backgroundArcStrokeThickness: 10,
-                progressArcStrokeThickness: 10,
-                enableStepperEffect: false,
-                isRoundEdges: false,
-                minScoreTextFontSize: 30,
-                maxScoreTextFontSize: 50,
-                isRoundOffScoreWhileProgress: true,
-                isRoundOffScore: true,
-                showOutOfScoreFormat: true,
-                isPrgressCurveFilled: false,
-                scoreAnimationDuration: Duration(seconds: 2),
-                scoreTextAnimationDuration: Duration(milliseconds: 500),
-                scoreTextStyle:
-                    TextStyle(fontWeight: FontWeight.normal, height: 1),
-                arcBackgroundColor: Colors.black12,
-                arcProgressGradientColors: [
-                  AppColor.peach,
-                  AppColor
-                      .primary, // Replace Colors.greenAccent with AppColor.primary
-                  // AppColor.,   // You can add a custom color or another AppColor property for the third color
-                ],
-              ),
-              // DataRowWidget(label: "Score", value: response.score?.toString()),
+              // PrimaryArcAnimationComponent(
+              //   score: (response.score is double)
+              //       ? response.score
+              //       : double.tryParse(response.score.toString()) ?? 0.0,
+              //   maxScore: 10,
+              //   arcHeight: 340,
+              //   arcWidth: 340,
+              //   backgroundArcStrokeThickness: 10,
+              //   progressArcStrokeThickness: 10,
+              //   enableStepperEffect: false,
+              //   isRoundEdges: false,
+              //   minScoreTextFontSize: 30,
+              //   maxScoreTextFontSize: 50,
+              //   isRoundOffScoreWhileProgress: true,
+              //   isRoundOffScore: true,
+              //   showOutOfScoreFormat: true,
+              //   isPrgressCurveFilled: false,
+              //   scoreAnimationDuration: const Duration(seconds: 2),
+              //   scoreTextAnimationDuration: const Duration(milliseconds: 500),
+              //   scoreTextStyle:
+              //       const TextStyle(fontWeight: FontWeight.normal, height: 1),
+              //   arcBackgroundColor: Colors.black12,
+              //   arcProgressGradientColors: const [
+              //     AppColor.peach,
+              //     AppColor.primary,
+              //     AppColor.primary,
+              //   ],
+              // ),
+              DataRowWidget(label: "Score", value: response.score?.toString()),
               DataRowWidget(
                 label: "Bot Response",
                 value: response.botResponse,
