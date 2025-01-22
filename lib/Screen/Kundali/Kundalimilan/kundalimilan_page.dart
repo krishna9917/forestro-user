@@ -5,6 +5,7 @@ import 'package:foreastro/Screen/Kundali/CombinedDetailsView.dart';
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart'; // Import the SouthKundaliModel
 import 'package:get/get.dart';
+import 'package:score_progress_pretty_display/score_progress_pretty_display.dart';
 
 class KundaliMilan extends StatelessWidget {
   final KundaliController kundaliController = Get.put(KundaliController());
@@ -21,17 +22,11 @@ class KundaliMilan extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              // _buildHeader(context, "Kundali North Details"),
-              // _buildPlanetDetails(),
+              const SizedBox(height: 20),
+
               // const SizedBox(height: 20),
-              // _buildHeader(context, "Kundali Matching North Details"),
+              // // _buildSouthDetails(), // Add South Details
               // const SizedBox(height: 20),
-              // _buildOtherDetails(),
-              const SizedBox(height: 20),
-              // _buildHeader(context, "Kundali South Details"),
-              const SizedBox(height: 20),
-              _buildSouthDetails(), // Add South Details
-              const SizedBox(height: 20),
               // _buildHeader(context, "Kundali Matching South Details"),
               const SizedBox(height: 20),
               _buildSouthOtherDetails(), // Add South Other Details
@@ -44,69 +39,69 @@ class KundaliMilan extends StatelessWidget {
 
   // Existing methods...
 
-  Widget _buildSouthDetails() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Obx(() {
-          if (kundaliController.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            final response = kundaliController.southmatching.value.response;
-            if (response == null) {
-              return const Center(child: Text('No data available.'));
-            } else if (response.boyPlanetaryDetails.isEmpty &&
-                response.girlPlanetaryDetails.isEmpty) {
-              return const Center(
-                  child: Text('No planetary details available.'));
-            } else {
-              final boyPlanetaryDetails = response.boyPlanetaryDetails;
-              final girlPlanetaryDetails = response.girlPlanetaryDetails;
+  // Widget _buildSouthDetails() {
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.horizontal,
+  //     child: SingleChildScrollView(
+  //       scrollDirection: Axis.vertical,
+  //       child: Obx(() {
+  //         if (kundaliController.isLoading.value) {
+  //           return const Center(child: CircularProgressIndicator());
+  //         } else {
+  //           final response = kundaliController.southmatching.value.response;
+  //           if (response == null) {
+  //             return const Center(child: Text('No data available.'));
+  //           } else if (response.boyPlanetaryDetails.isEmpty &&
+  //               response.girlPlanetaryDetails.isEmpty) {
+  //             return const Center(
+  //                 child: Text('No planetary details available.'));
+  //           } else {
+  //             final boyPlanetaryDetails = response.boyPlanetaryDetails;
+  //             final girlPlanetaryDetails = response.girlPlanetaryDetails;
 
-              return DataTable(
-                columns: const [
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Full Name')),
-                  DataColumn(label: Text('Zodiac')),
-                  DataColumn(label: Text('Degree')),
-                  DataColumn(label: Text('Zodiac Lord')),
-                  DataColumn(label: Text('Nakshatra')),
-                  DataColumn(label: Text('Nakshatra Lord')),
-                  DataColumn(label: Text('Rasi no.')),
-                  DataColumn(label: Text('House')),
-                ],
-                rows: [
-                  // Iterate through boyPlanetaryDetails map
-                  for (var entry in boyPlanetaryDetails.entries)
-                    _buildSouthDataRow(entry.value),
-                  // Iterate through girlPlanetaryDetails map
-                  for (var entry in girlPlanetaryDetails.entries)
-                    _buildSouthDataRow(entry.value),
-                ],
-              );
-            }
-          }
-        }),
-      ),
-    );
-  }
+  //             return DataTable(
+  //               columns: const [
+  //                 DataColumn(label: Text('Name')),
+  //                 DataColumn(label: Text('Full Name')),
+  //                 DataColumn(label: Text('Zodiac')),
+  //                 DataColumn(label: Text('Degree')),
+  //                 DataColumn(label: Text('Zodiac Lord')),
+  //                 DataColumn(label: Text('Nakshatra')),
+  //                 DataColumn(label: Text('Nakshatra Lord')),
+  //                 DataColumn(label: Text('Rasi no.')),
+  //                 DataColumn(label: Text('House')),
+  //               ],
+  //               rows: [
+  //                 // Iterate through boyPlanetaryDetails map
+  //                 for (var entry in boyPlanetaryDetails.entries)
+  //                   _buildSouthDataRow(entry.value),
+  //                 // Iterate through girlPlanetaryDetails map
+  //                 for (var entry in girlPlanetaryDetails.entries)
+  //                   _buildSouthDataRow(entry.value),
+  //               ],
+  //             );
+  //           }
+  //         }
+  //       }),
+  //     ),
+  //   );
+  // }
 
-  DataRow _buildSouthDataRow(PlanetarySouthDetail planet) {
-    return DataRow(
-      cells: [
-        DataCell(Text(planet.name ?? 'N/A')),
-        DataCell(Text(planet.fullName ?? 'N/A')),
-        DataCell(Text(planet.zodiac ?? 'N/A')),
-        DataCell(Text(planet.localDegree?.toString() ?? 'N/A')),
-        DataCell(Text(planet.zodiacLord ?? 'N/A')),
-        DataCell(Text(planet.nakshatra ?? 'N/A')),
-        DataCell(Text(planet.nakshatraLord ?? 'N/A')),
-        DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')),
-        DataCell(Text(planet.house?.toString() ?? 'N/A')),
-      ],
-    );
-  }
+  // DataRow _buildSouthDataRow(PlanetarySouthDetail planet) {
+  //   return DataRow(
+  //     cells: [
+  //       DataCell(Text(planet.name ?? 'N/A')),
+  //       DataCell(Text(planet.fullName ?? 'N/A')),
+  //       DataCell(Text(planet.zodiac ?? 'N/A')),
+  //       DataCell(Text(planet.localDegree?.toString() ?? 'N/A')),
+  //       DataCell(Text(planet.zodiacLord ?? 'N/A')),
+  //       DataCell(Text(planet.nakshatra ?? 'N/A')),
+  //       DataCell(Text(planet.nakshatraLord ?? 'N/A')),
+  //       DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')),
+  //       DataCell(Text(planet.house?.toString() ?? 'N/A')),
+  //     ],
+  //   );
+  // }
 
   Widget _buildSouthOtherDetails() {
     return Obx(() {
@@ -120,7 +115,34 @@ class KundaliMilan extends StatelessWidget {
         } else {
           return Column(
             children: [
-              DataRowWidget(label: "Score", value: response.score?.toString()),
+              PrimaryArcAnimationComponent(
+                score: response.score ?? "",
+                maxScore: 10,
+                arcHeight: 340,
+                arcWidth: 340,
+                backgroundArcStrokeThickness: 10,
+                progressArcStrokeThickness: 10,
+                enableStepperEffect: false,
+                isRoundEdges: false,
+                minScoreTextFontSize: 30,
+                maxScoreTextFontSize: 50,
+                isRoundOffScoreWhileProgress: true,
+                isRoundOffScore: true,
+                showOutOfScoreFormat: true,
+                isPrgressCurveFilled: false,
+                scoreAnimationDuration: Duration(seconds: 2),
+                scoreTextAnimationDuration: Duration(milliseconds: 500),
+                scoreTextStyle:
+                    TextStyle(fontWeight: FontWeight.normal, height: 1),
+                arcBackgroundColor: Colors.black12,
+                arcProgressGradientColors: [
+                  AppColor.peach,
+                  AppColor
+                      .primary, // Replace Colors.greenAccent with AppColor.primary
+                  // AppColor.,   // You can add a custom color or another AppColor property for the third color
+                ],
+              ),
+              // DataRowWidget(label: "Score", value: response.score?.toString()),
               DataRowWidget(
                 label: "Bot Response",
                 value: response.botResponse,
