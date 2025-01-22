@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Screen/Kundali/CombinedDetailsView.dart';
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
-import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart'; // Import the SouthKundaliModel
+import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:get/get.dart';
-import 'package:score_progress_pretty_display/score_progress_pretty_display.dart';
 
 class KundaliMilan extends StatelessWidget {
   final KundaliController kundaliController = Get.put(KundaliController());
@@ -23,13 +20,7 @@ class KundaliMilan extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-
-              // const SizedBox(height: 20),
-              // // _buildSouthDetails(), // Add South Details
-              // const SizedBox(height: 20),
-              // _buildHeader(context, "Kundali Matching South Details"),
-              const SizedBox(height: 20),
-              _buildSouthOtherDetails(), // Add South Other Details
+              _buildSouthOtherDetails(),
             ],
           ),
         ),
@@ -109,7 +100,6 @@ class KundaliMilan extends StatelessWidget {
         return const Center(child: CircularProgressIndicator());
       } else {
         final response = kundaliController.southmatching.value.response;
-
         if (response == null) {
           return const Center(child: Text('No data available.'));
         } else {
@@ -220,7 +210,6 @@ class KundaliMilan extends StatelessWidget {
         DataRowWidget(
             label: "Nakshatra Pada", value: details.nakshatraPada.toString()),
         DataRowWidget(label: "Ascendant Sign", value: details.ascendantSign),
-        // Add more fields as necessary
       ],
     );
   }
