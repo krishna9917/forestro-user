@@ -21,6 +21,7 @@ import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/firebase_options.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
@@ -134,8 +135,30 @@ class InitApp extends StatelessWidget {
           Get.lazyPut<CartImageControler>(() => CartImageControler());
           Get.lazyPut<KundaliController>(() => KundaliController());
         }),
+        builder: (context, child) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _checkForUpdate(context);
+          });
+          return child!;
+        },
         // home: HomePage(),
       );
     });
+  }
+
+  Future<void> _checkForUpdate(BuildContext context) async {
+    try {
+      AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        if (updateInfo.immediateUpdateAllowed) {
+          await InAppUpdate.performImmediateUpdate();
+        } else if (updateInfo.flexibleUpdateAllowed) {
+          await InAppUpdate.startFlexibleUpdate();
+          await InAppUpdate.completeFlexibleUpdate();
+        }
+      }
+    } catch (e) {
+      debugPrint("Error checking for updates: $e");
+    }
   }
 }
