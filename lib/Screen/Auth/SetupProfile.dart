@@ -174,6 +174,23 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? user_id = prefs.getString('user_id');
+      // Validate required fields
+      if (_phoneController.text.isEmpty) {
+        showToast("Mobile number is required.");
+        return;
+      }
+      if (_birthDateController.text.isEmpty) {
+        showToast("Date of birth is required.");
+        return;
+      }
+      if (_birthtimeController.text.isEmpty) {
+        showToast("Birth time is required.");
+        return;
+      }
+      if (state!.isEmpty) {
+        showToast("State is required.");
+        return;
+      }
 
       MultipartFile? image;
       if (_pickedImage != null && _pickedImage!.path.isNotEmpty) {
@@ -203,20 +220,26 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       if (data.statusCode == 201) {
         navigate.pushReplacement(routeMe(const HomePage()));
         print("data____profile=======$data");
-        //   DateTime eventDate = DateTime(2024, 10, 3);
-        //   DateTime now = DateTime.now();
-
-        //   if (now.isAfter(eventDate) || now.isAtSameMomentAs(eventDate)) {
-        //     navigate.pushReplacement(routeMe(const HomePage()));
-        //   } else {
-        //     context.goTo(ComingSoonAstrologerPage());
-        //   }
-        //   showToast("Successful Profile Created");
+      } else if (data.statusCode == 401) {
+        var errorMessage = data.data['error']['message'] ?? 'Validation error';
+        showToast(errorMessage);
+        // Optionally, you can handle individual field errors here
+        var errorData = data.data['data'];
+        if (errorData != null) {
+          for (var field in errorData.keys) {
+            var errors = errorData[field];
+            if (errors != null && errors.isNotEmpty) {
+              showToast(
+                  "${field.replaceAll('_', ' ').capitalize()}: ${errors.join(', ')}");
+            }
+          }
+        }
       }
     } on DioException catch (e) {
+      print(e.message);
       if (widget.email != null) {
-        showToast(
-            "This mobile number is already registered. Please try a different mobile number. ");
+        // showToast(
+        //     "This mobile number is already registered. Please try a different mobile number. ");
       } else {
         showToast(
             "This email ID is already registered. Please try a different email ID.");
@@ -224,7 +247,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
 
       // showToast(e.message.toString());
     } catch (e) {
-      showToast("An unexpected error occurred. Please try again later.");
+      // showToast("An unexpected error occurred. Please try again later.");
     } finally {
       setState(() {
         loading = false;
@@ -340,24 +363,26 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                               controller: name,
                               readOnly: widget.name != null,
                               validator: (inp) {
-                                if (inp!.isEmpty) {
-                                  return "Enter Your Name";
+                                if (inp == null || inp.isEmpty) {
+                                  return "Please enter your name.";
                                 }
                                 return null;
                               },
+                              hintText: "Enter your full name",
                             ),
                             InputBox(
                               controller: email,
                               title: "Email",
                               readOnly: widget.email != null,
                               validator: (inp) {
-                                if (inp!.isEmpty) {
-                                  return "Enter Your Email ID";
+                                if (inp == null || inp.isEmpty) {
+                                  return "Please enter your email address.";
                                 } else if (!validateEmail(inp)) {
-                                  return "Enter Valid Email ID";
+                                  return "Please enter a valid email address.";
                                 }
                                 return null;
                               },
+                              hintText: "example@example.com",
                             ),
                             widget.phone.isNotEmpty
                                 ? TitleWidget(

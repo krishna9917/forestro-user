@@ -70,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+
   Future<void> playBeepSound() async {
     try {
       await player.setAsset('assets/bg/beep.mp3');
@@ -110,6 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
   }
+
 
   Future<void> calculatePrice(String totaltime) async {
     print(totaltime);
