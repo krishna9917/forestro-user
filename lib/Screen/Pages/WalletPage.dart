@@ -354,6 +354,9 @@ class _WalletPageState extends State<WalletPage> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
