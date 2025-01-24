@@ -928,7 +928,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                           color: Colors.black54,
                                         ),
                                         maxLines:
-                                            3, // Allow text to wrap and limit the height
+                                            3, 
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
