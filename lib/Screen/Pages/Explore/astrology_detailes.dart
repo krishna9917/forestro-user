@@ -845,7 +845,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                   for (var review in reviews)
                     Card(
                       margin: const EdgeInsets.only(bottom: 16),
-                      elevation: 5, // Add shadow for better depth
+                      elevation: 5,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
