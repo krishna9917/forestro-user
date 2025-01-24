@@ -862,7 +862,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                   child: CachedNetworkImage(
                                     imageUrl: review.userImgUrl,
                                     width: MediaQuery.of(context).size.width *
-                                        0.14, // Adjusted for better visual appearance
+                                        0.14,
                                     height: MediaQuery.of(context).size.width *
                                         0.14,
                                     fit: BoxFit.cover,
