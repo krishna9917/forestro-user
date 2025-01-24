@@ -33,7 +33,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final SocketController socketController = Get.find<SocketController>();
   late SessionController sessionController;
   late DateTime startTime;
@@ -44,10 +44,12 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isBeeping = false;
   Color countdownColor = Colors.white;
   final AudioPlayer player = AudioPlayer();
+  bool _isAppActive = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     sessionController = Get.put(SessionController());
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
@@ -70,13 +72,12 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-
   Future<void> playBeepSound() async {
     try {
       await player.setAsset('assets/bg/beep.mp3');
       for (int i = 0; i < 3; i++) {
         await player.play();
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(Duration(milliseconds: 500));
       }
     } catch (e) {
       print('Audio play error: $e');
@@ -84,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> endChatSession() async {
-    if (isSessionEnded) return;
+    if (isSessionEnded) return; 
     isSessionEnded = true;
 
     sessionController.closeSession();
@@ -111,7 +112,6 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
   }
-
 
   Future<void> calculatePrice(String totaltime) async {
     print(totaltime);
@@ -144,12 +144,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     if (!isSessionEnded) {
       endChatSession();
     }
     player.dispose();
     _timer.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      
+      if (!isSessionEnded) {
+        endChatSession();
+      }
+    }
   }
 
   @override
