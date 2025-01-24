@@ -34,6 +34,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   String astroDetailsText = '';
   final GetAstrologerProfile blocListController =
       Get.put(GetAstrologerProfile());
+
   List<Review> reviews = [];
   String image = '';
 
