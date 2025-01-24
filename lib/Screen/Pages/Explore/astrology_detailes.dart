@@ -895,7 +895,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                             ? review.userName
                                                 .split(' ')
                                                 .take(2)
-                                                .join(' ') // Limit to two words
+                                                .join(' ')
                                             : 'NA',
                                         style: TextStyle(
                                           fontSize: MediaQuery.of(context)
@@ -927,8 +927,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                               0.04,
                                           color: Colors.black54,
                                         ),
-                                        maxLines:
-                                            3, 
+                                        maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
