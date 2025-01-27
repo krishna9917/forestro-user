@@ -42,7 +42,7 @@ class Response {
   final Vasya? vasya;
   final Nadi? nadi;
   final Varna? varna;
-  final int? score;
+  final dynamic? score;
   final String? botResponse;
   final Map<String, PlanetaryDetail> boyPlanetaryDetails;
   final Map<String, PlanetaryDetail> girlPlanetaryDetails;

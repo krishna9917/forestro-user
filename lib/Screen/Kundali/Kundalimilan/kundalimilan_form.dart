@@ -139,8 +139,8 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
 
         final lang = puja ?? 'en';
 
-        // kundaliController.KundalimilanNorthData(dobBoy, tobBoy, latBoy, lonBoy,
-        //     dobGirl, tobGirl, latGirl, lonGirl, lang);
+        kundaliController.KundalimilanNorthData(dobBoy, tobBoy, latBoy, lonBoy,
+            dobGirl, tobGirl, latGirl, lonGirl, lang);
         kundaliController.KundalimilanSouthData(dobBoy, tobBoy, latBoy, lonBoy,
             dobGirl, tobGirl, latGirl, lonGirl, lang);
 
