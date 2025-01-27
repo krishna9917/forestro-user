@@ -234,6 +234,35 @@ class KundaliMilan extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
+
+                  // SizedBox(
+                  //   height: 50,
+                  //   child: CircleProgressBar(
+                  //     foregroundColor: double.parse(score) >= maxScore * 0.75
+                  //         ? Colors.green // Green for high score
+                  //         : double.parse(score) >= maxScore * 0.5
+                  //             ? Colors.orange // Orange for medium score
+                  //             : Colors.red, // Red for low score
+                  //     backgroundColor: Colors.black12,
+                  //     value: double.parse(score),
+                  //     child: Center(
+                  //       child: Text(
+                  //         "$score/$maxScore",
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: double.parse(score) >= maxScore * 0.75
+                  //               ? Colors.green
+                  //               : double.parse(score) >= maxScore * 0.5
+                  //                   ? Colors.orange
+                  //                   : Colors
+                  //                       .red, // Adjust text color the same way
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
+
                   CircleAvatar(
                     radius: 25,
                     backgroundColor: color.withOpacity(0.2),
