@@ -83,7 +83,7 @@ class KundaliMilan extends StatelessWidget {
           return const Center(child: Text('No data available.'));
         } else {
           return SizedBox(
-            height: 650,
+            height: 850,
             child: ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
@@ -205,15 +205,17 @@ class KundaliMilan extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16.0),
       decoration: BoxDecoration(
-        // border: Border.all(color: color, width: 2), // Add border with color
+        // color: color,
+        border: Border.all(color: color, width: 2), 
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColor.primary,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
+
+        // boxShadow: const [
+        //   BoxShadow(
+        //     color: AppColor.primary,
+        //     blurRadius: 4,
+        //     offset: Offset(0, 2),
+        //   ),
+        // ],
       ),
       child: Card(
         elevation: 0, // Remove the default card shadow if necessary
