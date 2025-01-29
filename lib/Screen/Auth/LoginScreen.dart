@@ -22,6 +22,7 @@ import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:phone_input/phone_input_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
   PhoneNumber? phoneNumber;
   bool loading = false;
   bool _isLoading = false;
-
+  String _version = '';
+  String _buildNumber = '';
   String _dialCode = '91';
   String _phoneNum = '';
 
@@ -62,14 +64,32 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _loadPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;
+      _buildNumber = packageInfo.buildNumber;
+    });
+    print("build version number =======>>>>>>>>>>>>$_version $_buildNumber");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPackageInfo();
+  }
+
   Future Sendotp() async {
+    print("build version number =======>>>>>>>>>>>>$_version $_buildNumber");
     try {
       ApiRequest apiRequest = ApiRequest('$apiUrl/user-login',
           method: ApiMethod.POST,
           body: packFormData({
             "phone": _phoneNum,
+            "version": "$_version $_buildNumber",
           }));
       Response res = await apiRequest.send<Map>();
+      print("respons===========$res");
       SharedPreferences localStorage = await LocalStorage.init();
 
       if (res.data['status'] == true) {
@@ -77,13 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
         if (userId != null) {
           localStorage.setString("user_id", userId.toString());
         } else {
-          showToast("Error: 'user_id' is null");
+          // showToast("Error: 'user_id' is null");
         }
 
         navigate.push(routeMe(OtpScreen(
           phone: _phoneNum,
         )));
-      } else {}
+      }
       setState(() {
         loading = false;
       });

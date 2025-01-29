@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
@@ -31,6 +30,7 @@ class AustrologyDetailes extends StatefulWidget {
 
 class _AustrologyDetailesState extends State<AustrologyDetailes> {
   bool loading = false;
+  bool isLoading = true;
   String astroDetailsText = '';
   final GetAstrologerProfile blocListController =
       Get.put(GetAstrologerProfile());
@@ -48,40 +48,80 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   }
 
   Future<void> review() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       ApiRequest apiRequest = ApiRequest(
         "$apiUrl/astrologer-details",
         method: ApiMethod.POST,
-        body: packFormData(
-          {
-            "astro_id": widget.astrologer?.id.toString(),
-          },
-        ),
+        body: packFormData({
+          "astro_id": widget.astrologer?.id.toString(),
+        }),
       );
       dio.Response data = await apiRequest.send();
 
       if (data.statusCode == 201) {
         var responseData = jsonDecode(data.toString());
-
         if (responseData.containsKey('data')) {
           var dataObj = responseData['data'];
-
-          String description = dataObj.containsKey('description')
-              ? dataObj['description']
-              : "No description available";
+          String description =
+              dataObj['description'] ?? "No description available";
+          List<Review> fetchedReviews = (dataObj['reviews'] as List)
+              .map((review) => Review.fromJson(review))
+              .toList();
 
           setState(() {
             astroDetailsText = description;
+            reviews = fetchedReviews;
+            isLoading = false;
           });
-
-          reviews = (dataObj['reviews'] as List)
-              .map((review) => Review.fromJson(review))
-              .toList();
         }
+      } else {
+        setState(() => isLoading = false);
       }
-    } on DioException {
-    } catch (e) {}
+    } catch (e) {
+      setState(() => isLoading = false);
+    }
   }
+  // Future<void> review() async {
+  //   setState(() {
+  //   isLoading = true;
+  // });
+  //   try {
+  //     ApiRequest apiRequest = ApiRequest(
+  //       "$apiUrl/astrologer-details",
+  //       method: ApiMethod.POST,
+  //       body: packFormData(
+  //         {
+  //           "astro_id": widget.astrologer?.id.toString(),
+  //         },
+  //       ),
+  //     );
+  //     dio.Response data = await apiRequest.send();
+
+  //     if (data.statusCode == 201) {
+  //       var responseData = jsonDecode(data.toString());
+
+  //       if (responseData.containsKey('data')) {
+  //         var dataObj = responseData['data'];
+
+  //         String description = dataObj.containsKey('description')
+  //             ? dataObj['description']
+  //             : "No description available";
+
+  //         setState(() {
+  //           astroDetailsText = description;
+  //         });
+
+  //         reviews = (dataObj['reviews'] as List)
+  //             .map((review) => Review.fromJson(review))
+  //             .toList();
+  //       }
+  //     }
+  //   } on DioException {
+  //   } catch (e) {}
+  // }
 
   String generateRandomOrderId() {
     var random = Random();
@@ -336,7 +376,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             children: [
                               Text(
                                 addLineBreaks(
-                                    widget.astrologer?.name ?? 'No Name', 3),
+                                    widget.astrologer?.name ?? 'No Name', 2),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
@@ -843,122 +883,157 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  for (var review in reviews)
-                    Card(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  if (isLoading)
+                    const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColor.primary,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.04),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: review.userImgUrl,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.14,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.14,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, error, stackTrace) {
-                                      return Image.network(
-                                        'https://cdn-icons-png.flaticon.com/512/149/149071.png',
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.14,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.14,
-                                        fit: BoxFit.fill,
-                                      );
-                                    },
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                  ),
-                                ),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.04),
-                                Expanded(
-                                  child: Column(
+                    )
+                  else if (reviews.isEmpty)
+                    const Center(
+                      child: Text('No reviews available.',
+                          style: TextStyle(fontSize: 16)),
+                    )
+                  else
+                    ...reviews
+                        .map(
+                          (review) => Card(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width * 0.04),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl: review.userImgUrl,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.14,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.14,
+                                          fit: BoxFit.cover,
+                                          errorWidget:
+                                              (context, error, stackTrace) {
+                                            return Image.network(
+                                              'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.14,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.14,
+                                              fit: BoxFit.fill,
+                                            );
+                                          },
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.04),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              review.userName != null
+                                                  ? review.userName
+                                                      .split(' ')
+                                                      .take(2)
+                                                      .join(' ')
+                                                  : 'NA',
+                                              style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.03,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            if (review.rating != null)
+                                              Row(
+                                                children: List.generate(
+                                                  double.parse(review.rating)
+                                                      .toInt(),
+                                                  (_) => const Icon(
+                                                    Icons.star,
+                                                    color: AppColor.primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              review.comment ??
+                                                  'No comment provided.',
+                                              style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.04,
+                                                color: Colors.black54,
+                                              ),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
                                       Text(
-                                        review.userName != null
-                                            ? review.userName
-                                                .split(' ')
-                                                .take(2)
-                                                .join(' ')
+                                        review.postDate != null
+                                            ? DateFormat('yyyy-MM-dd HH:mm')
+                                                .format(DateTime.parse(
+                                                    review.postDate))
                                             : 'NA',
                                         style: TextStyle(
                                           fontSize: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.03,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      if (review.rating != null)
-                                        Row(
-                                          children: List.generate(
-                                            double.parse(review.rating).toInt(),
-                                            (_) => const Icon(
-                                              Icons.star,
-                                              color: AppColor.primary,
-                                            ),
-                                          ),
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        review.comment ??
-                                            'No comment provided.',
-                                        style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
                                               0.04,
-                                          color: Colors.black54,
+                                          color: Colors.black45,
                                         ),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  review.postDate != null
-                                      ? DateFormat('yyyy-MM-dd HH:mm').format(
-                                          DateTime.parse(review.postDate))
-                                      : 'NA',
-                                  style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.04,
-                                    color: Colors.black45,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (reviews.isEmpty)
-                    const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColor.primary,
-                      ),
-                    ),
+                          ),
+                        )
+                        .toList(),
+                  // if (reviews.isEmpty)
+                  //   const Center(
+                  //     child: Text(
+                  //       'No reviews available.',
+                  //       style: TextStyle(fontSize: 16),
+                  //     ),
+                  //   )
+                  // if (reviews.isEmpty)
+                  //   const Center(
+                  //     child: CircularProgressIndicator(
+                  //       color: AppColor.primary,
+                  //     ),
+                  //   ),
                 ],
               ),
             )
