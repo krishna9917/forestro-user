@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:foreastro/theme/export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SendRequest {
@@ -41,10 +45,19 @@ class SendRequest {
           showToast("Video Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
           NotificationService.sendNotifications(servicetype, signalId);
+        } else if (data.statusCode == 203) {
+          final message = data.data['message'];
+          Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: AppColor.primary,
+              textColor: Colors.white,
+              fontSize: 16.0);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } 
+      }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
     }
@@ -73,14 +86,23 @@ class SendRequest {
         );
 
         dio.Response data = await apiRequest.send();
-        print("data========${data.data}");
+
+        print("manjulika========${data.data['status']}");
+
         if (data.statusCode == 201) {
           showToast("Chat Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
           NotificationService.sendNotifications(servicetype, signalId);
-        } else {
-          showToast("Failed to complete profile. Please try again later.");
-        }
+        } else if (data.statusCode == 203) {
+          final message = data.data['message'];
+          Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: AppColor.primary,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        } else {}
       }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
@@ -115,10 +137,19 @@ class SendRequest {
           showToast("Audio Call Request sent");
           NotificationService.sendNotification(token, title, id, servicetype);
           NotificationService.sendNotifications(servicetype, signalId);
+        } else if (data.statusCode == 203) {
+          final message = data.data['message'];
+          Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: AppColor.primary,
+              textColor: Colors.white,
+              fontSize: 16.0);
         } else {
           showToast("Failed to complete profile. Please try again later.");
         }
-      } 
+      }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
     }

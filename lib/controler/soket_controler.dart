@@ -42,6 +42,10 @@ class SocketController extends GetxController {
 
     socket?.on('accepted', (data) {
       print(data);
+      if (_iAmWorkScreen) {
+        print("User is busy, ignoring accepted request.");
+        return;
+      }
       final profileController = Get.find<ProfileList>();
       try {
         var profileimage = data['data']['astroData']['profile_img'] ??
@@ -133,6 +137,8 @@ class SocketController extends GetxController {
     });
 
     socket?.on('openSession', (data) {
+      _iAmWorkScreen = true;
+      update();
       print("datasesionstart======${data}");
       if (data['requestType'] == 'chat') {
         final profileController = Get.find<ProfileList>();
@@ -246,6 +252,8 @@ class SocketController extends GetxController {
 
     socket?.on("closeSession", (data) {
       print("chat================handel$data");
+      _iAmWorkScreen = false;
+      update();
       // var price = data['chat_charges_per_min'];
       if (data['requestType'] == "chat") {
         Get.offAll(const HomePage());

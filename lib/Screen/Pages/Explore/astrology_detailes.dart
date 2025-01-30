@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:foreastro/Screen/Pages/Explore/rating_page.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
-import 'package:foreastro/controler/notification_contoler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
@@ -34,7 +32,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   String astroDetailsText = '';
   final GetAstrologerProfile blocListController =
       Get.put(GetAstrologerProfile());
-
   List<Review> reviews = [];
   String image = '';
 
@@ -42,7 +39,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   initState() {
     super.initState();
     Get.find<GetAstrologerProfile>().astroData();
-
     Get.find<ProfileList>().fetchProfileData();
     review();
   }
@@ -84,6 +80,30 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
       setState(() => isLoading = false);
     }
   }
+
+  String addLineBreaks(String text, int wordLimit) {
+    StringBuffer buffer = StringBuffer();
+    int wordCount = 0;
+
+    List<String> words = text.split(' ');
+
+    for (int i = 0; i < words.length; i++) {
+      buffer.write(words[i]);
+
+      if (i < words.length - 1) {
+        buffer.write(' ');
+      }
+
+      wordCount++;
+
+      if (wordCount % wordLimit == 0 && i != words.length - 1) {
+        buffer.write('\n');
+      }
+    }
+
+    return buffer.toString();
+  }
+
   // Future<void> review() async {
   //   setState(() {
   //   isLoading = true;
@@ -123,138 +143,112 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   //   } catch (e) {}
   // }
 
-  String generateRandomOrderId() {
-    var random = Random();
-    int randomNumber = 10000 + random.nextInt(90000);
-    return '$randomNumber';
-  }
+  // String generateRandomOrderId() {
+  //   var random = Random();
+  //   int randomNumber = 10000 + random.nextInt(90000);
+  //   return '$randomNumber';
+  // }
+  // Future sendrequestchat(String? id, token) async {
+  //   try {
+  //     if (id != null) {
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       var servicetype = "Chat";
+  //       String? user_id = prefs.getString('user_id');
+  //       var title = "New  chat Request";
+  //       String chatId = generateRandomOrderId();
 
-  Future sendrequestchat(String? id, token) async {
-    try {
-      if (id != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var servicetype = "Chat";
-        String? user_id = prefs.getString('user_id');
-        var title = "New  chat Request";
-        String chatId = generateRandomOrderId();
+  //       ApiRequest apiRequest = ApiRequest(
+  //         "$apiUrl/send-communication-request",
+  //         method: ApiMethod.POST,
+  //         body: packFormData(
+  //           {
+  //             'user_id': user_id,
+  //             'astro_id': id,
+  //             'type': 'chat',
+  //             'status': 'pending',
+  //             'communication_id': 'chat$chatId',
+  //           },
+  //         ),
+  //       );
+  //       dio.Response data = await apiRequest.send();
+  //       if (data.statusCode == 201) {
+  //         showToast("Chat Request send");
+  //         NotificationService.sendNotification(token, title, id, servicetype);
+  //       } else {}
+  //     } else {}
+  //   } catch (e) {
+  //     showToast(tosteError);
+  //   }
+  // }
+  // Future sendrequestvideo(String? id, token) async {
+  //   try {
+  //     if (id != null) {
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       var servicetype = "Video";
+  //       String? user_id = prefs.getString('user_id');
+  //       var title = "New  Video Call Request";
+  //       String videocallId = generateRandomOrderId();
 
-        ApiRequest apiRequest = ApiRequest(
-          "$apiUrl/send-communication-request",
-          method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'chat',
-              'status': 'pending',
-              'communication_id': 'chat$chatId',
-            },
-          ),
-        );
-        dio.Response data = await apiRequest.send();
-        if (data.statusCode == 201) {
-          showToast("Chat Request send");
-          NotificationService.sendNotification(token, title, id, servicetype);
-        } else {}
-      } else {}
-    } catch (e) {
-      showToast(tosteError);
-    }
-  }
+  //       ApiRequest apiRequest = ApiRequest(
+  //         "$apiUrl/send-communication-request",
+  //         method: ApiMethod.POST,
+  //         body: packFormData(
+  //           {
+  //             'user_id': user_id,
+  //             'astro_id': id,
+  //             'type': 'video',
+  //             'status': 'pending',
+  //             'communication_id': 'video$videocallId',
+  //           },
+  //         ),
+  //       );
+  //       dio.Response data = await apiRequest.send();
+  //       if (data.statusCode == 201) {
+  //         showToast("Video Call Request send");
+  //         NotificationService.sendNotification(token, title, id, servicetype);
+  //       } else {
+  //         showToast("Failed to complete profile. Please try again later.");
+  //       }
+  //     } else {}
+  //   } catch (e) {
+  //     showToast(tosteError);
+  //   }
+  // }
+  // Future sendrequestaudio(String? id, token) async {
+  //   try {
+  //     if (id != null) {
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       var title = "New  Audio Call Request";
+  //       var servicetype = "Audio";
+  //       String? user_id = prefs.getString('user_id');
 
-  String addLineBreaks(String text, int wordLimit) {
-    StringBuffer buffer = StringBuffer();
-    int wordCount = 0;
+  //       String audiocallId = generateRandomOrderId();
 
-    List<String> words = text.split(' ');
-
-    for (int i = 0; i < words.length; i++) {
-      buffer.write(words[i]);
-
-      if (i < words.length - 1) {
-        buffer.write(' ');
-      }
-
-      wordCount++;
-
-      if (wordCount % wordLimit == 0 && i != words.length - 1) {
-        buffer.write('\n');
-      }
-    }
-
-    return buffer.toString();
-  }
-
-  Future sendrequestvideo(String? id, token) async {
-    try {
-      if (id != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var servicetype = "Video";
-        String? user_id = prefs.getString('user_id');
-        var title = "New  Video Call Request";
-        String videocallId = generateRandomOrderId();
-
-        ApiRequest apiRequest = ApiRequest(
-          "$apiUrl/send-communication-request",
-          method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'video',
-              'status': 'pending',
-              'communication_id': 'video$videocallId',
-            },
-          ),
-        );
-        dio.Response data = await apiRequest.send();
-        if (data.statusCode == 201) {
-          showToast("Video Call Request send");
-          NotificationService.sendNotification(token, title, id, servicetype);
-        } else {
-          showToast("Failed to complete profile. Please try again later.");
-        }
-      } else {}
-    } catch (e) {
-      showToast(tosteError);
-    }
-  }
-
-  Future sendrequestaudio(String? id, token) async {
-    try {
-      if (id != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        var title = "New  Audio Call Request";
-        var servicetype = "Audio";
-        String? user_id = prefs.getString('user_id');
-
-        String audiocallId = generateRandomOrderId();
-
-        ApiRequest apiRequest = ApiRequest(
-          "$apiUrl/send-communication-request",
-          method: ApiMethod.POST,
-          body: packFormData(
-            {
-              'user_id': user_id,
-              'astro_id': id,
-              'type': 'audio',
-              'status': 'pending',
-              'communication_id': 'audio$audiocallId',
-            },
-          ),
-        );
-        dio.Response data = await apiRequest.send();
-        if (data.statusCode == 201) {
-          showToast("Audio Call Request send");
-          NotificationService.sendNotification(token, title, id, servicetype);
-        } else {
-          showToast("Failed to complete profile. Please try again later.");
-        }
-      } else {}
-    } catch (e) {
-      showToast(tosteError);
-    }
-  }
+  //       ApiRequest apiRequest = ApiRequest(
+  //         "$apiUrl/send-communication-request",
+  //         method: ApiMethod.POST,
+  //         body: packFormData(
+  //           {
+  //             'user_id': user_id,
+  //             'astro_id': id,
+  //             'type': 'audio',
+  //             'status': 'pending',
+  //             'communication_id': 'audio$audiocallId',
+  //           },
+  //         ),
+  //       );
+  //       dio.Response data = await apiRequest.send();
+  //       if (data.statusCode == 201) {
+  //         showToast("Audio Call Request send");
+  //         NotificationService.sendNotification(token, title, id, servicetype);
+  //       } else {
+  //         showToast("Failed to complete profile. Please try again later.");
+  //       }
+  //     } else {}
+  //   } catch (e) {
+  //     showToast(tosteError);
+  //   }
+  // }
 
   Future folllow(String? id) async {
     try {
@@ -287,7 +281,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
           });
           showToast("Follow successful.");
         } else {
-          showToast("Failed to complete profile. Please try again later.");
+          showToast("Some t");
         }
       }
     } catch (e) {
@@ -298,7 +292,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
   @override
   Widget build(BuildContext context) {
     final profileController = Get.find<ProfileList>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Astrologer Detail ".toUpperCase()),
@@ -1021,19 +1014,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                           ),
                         )
                         .toList(),
-                  // if (reviews.isEmpty)
-                  //   const Center(
-                  //     child: Text(
-                  //       'No reviews available.',
-                  //       style: TextStyle(fontSize: 16),
-                  //     ),
-                  //   )
-                  // if (reviews.isEmpty)
-                  //   const Center(
-                  //     child: CircularProgressIndicator(
-                  //       color: AppColor.primary,
-                  //     ),
-                  //   ),
                 ],
               ),
             )
