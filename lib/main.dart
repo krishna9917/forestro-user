@@ -15,6 +15,7 @@ import 'package:foreastro/controler/horoscope_kundali/chart_image_controler.dart
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
+import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
@@ -134,6 +135,7 @@ class InitApp extends StatelessWidget {
           Get.lazyPut<HoroscopeControler>(() => HoroscopeControler());
           Get.lazyPut<CartImageControler>(() => CartImageControler());
           Get.lazyPut<KundaliController>(() => KundaliController());
+           Get.lazyPut<PendingRequest>(() => PendingRequest());
         }),
         builder: (context, child) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -19,6 +19,7 @@ import 'package:foreastro/Screen/Pages/innerpage/bloc_viewall.dart';
 import 'package:foreastro/Screen/Pages/innerpage/celeb_insights.dart';
 import 'package:foreastro/Screen/Pages/innerpage/our_client_says.dart';
 import 'package:foreastro/Screen/Pages/innerpage/youtub_play.dart';
+import 'package:foreastro/Screen/Pages/pending_request.dart';
 import 'package:foreastro/Screen/Pages/service_page.dart';
 import 'package:foreastro/Screen/Profile/profilepage.dart';
 import 'package:foreastro/Utils/Quick.dart';
@@ -250,7 +251,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
-                  navigate.push(routeMe(const NotificationPage()));
+                  navigate.push(routeMe(const PendingRequestScreen()));
                 },
                 child: Badge(
                   backgroundColor: AppColor.primary,
