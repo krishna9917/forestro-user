@@ -102,7 +102,7 @@ class SendRequest {
               backgroundColor: AppColor.primary,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else {}
+        } 
       }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
