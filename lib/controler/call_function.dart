@@ -54,9 +54,7 @@ class SendRequest {
               backgroundColor: AppColor.primary,
               textColor: Colors.white,
               fontSize: 16.0);
-        } else {
-          showToast("Failed to complete profile. Please try again later.");
-        }
+        } 
       }
     } catch (e) {
       // showToast("Error: ${e.toString()}");
