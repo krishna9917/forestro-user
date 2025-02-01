@@ -135,7 +135,7 @@ class InitApp extends StatelessWidget {
           Get.lazyPut<HoroscopeControler>(() => HoroscopeControler());
           Get.lazyPut<CartImageControler>(() => CartImageControler());
           Get.lazyPut<KundaliController>(() => KundaliController());
-           Get.lazyPut<PendingRequest>(() => PendingRequest());
+          Get.lazyPut<PendingRequest>(() => PendingRequest());
         }),
         builder: (context, child) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
