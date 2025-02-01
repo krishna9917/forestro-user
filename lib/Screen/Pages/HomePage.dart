@@ -33,6 +33,7 @@ import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
+import 'package:interactive_bottom_sheet/interactive_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -162,6 +163,10 @@ class _HomePageState extends State<HomePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+          // bottomSheet: const InteractiveBottomSheet(
+          //   options: InteractiveBottomSheetOptions(),
+          //   child: PendingRequestScreen(),
+          // ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: AppColor.bgcolor,
