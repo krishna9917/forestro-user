@@ -7,6 +7,7 @@ import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/baner_controler.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
+import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
     )..repeat();
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       Get.find<GetAstrologerProfile>().astroData();
+      Get.find<PendingRequest>().pendingRequestData();
     });
 
     checkTokenAndNavigate();

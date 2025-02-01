@@ -390,6 +390,20 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                const SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: PendingRequestScreen(),
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                ),
+
                 const SizedBox(height: 20),
                 TaskTabs(),
                 ////////////////////////////////////////////////////////////////////////////////////////////////////
