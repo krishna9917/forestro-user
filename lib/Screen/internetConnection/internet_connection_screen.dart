@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
-import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,14 +23,22 @@ class _NoInternetPageState extends State<NoInternetPage> {
   }
 
   Future<void> checkConnection() async {
-    setState(() => isChecking = true);
-
+    setState(() {
+      isChecking = true;
+    });
     var connectivityResult = await Connectivity().checkConnectivity();
-    bool hasInternet = false;
-
     if (connectivityResult != ConnectivityResult.none) {
-      showToast("Plese chek Your Internet Connection Restart The App");
-      // hasInternet = await hasInternetAccess(); // Check actual internet
+      setState(() {
+        isConnected = true;
+        isChecking = false;
+      });
+      // Delay for a smooth transition, then navigate to the splash screen
+      await Future.delayed(Duration(seconds: 2));
+      Get.offAll(const SplashScreen());
+    } else {
+      setState(() {
+        isChecking = false;
+      });
     }
   }
 

@@ -56,6 +56,15 @@ class _MyCallState extends State<MyCall> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.isNotEmpty && results.first == ConnectivityResult.none) {
+        socketController.closeSession(
+          senderId: widget.userid,
+          requestType: "video",
+          message: "User Cancel Can",
+          data: {
+            "userId": widget.userid,
+            'communication_id': widget.callID,
+          },
+        );
         print("No internet connection detected. Ending call...");
         endChatSession();
         Get.offAll(const NoInternetPage());

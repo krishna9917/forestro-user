@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/baner_controler.dart';
@@ -26,25 +28,73 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final profileController = Get.find<ProfileList>();
+  bool _isInternetChecked = false;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
-    Get.put(BannerList()).fetchProfileData();
-    // Get.find<BannerList>().fetchProfileData();
-    chatzegocloud();
-    Get.find<ProfileList>().fetchProfileData();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 60),
     )..repeat();
+
+    // Check initial internet connection
+    _checkInternetAndInitialize();
+    // Get.put(BannerList()).fetchProfileData();
+    // // Get.find<BannerList>().fetchProfileData();
+    // chatzegocloud();
+    // Get.find<ProfileList>().fetchProfileData();
+    // _controller = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 60),
+    // )..repeat();
+    // Timer.periodic(const Duration(seconds: 1), (timer) async {
+    //   Get.find<GetAstrologerProfile>().astroData();
+    //   Get.find<PendingRequest>().pendingRequestData();
+    // });
+
+    // checkTokenAndNavigate();
+    // requestPermissions();
+  }
+
+  Future<void> _checkInternetAndInitialize() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      showToast("Chek Your Internet Conection");
+      // No internet: Navigate to InternetConnectionScreen and stop here
+      // Get.offAll(() => const NoInternetPage());
+      return;
+    }
+
+    // Internet available: Proceed with initialization
+    _isInternetChecked = true;
+    _setupConnectivityListener();
+    await _initializeAppComponents();
+  }
+
+  void _setupConnectivityListener() {
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.contains(ConnectivityResult.none)) {
+        showToast("Chek Your Internet Conection");
+        // Get.offAll(() => const NoInternetPage());
+      }
+    });
+  }
+
+  Future<void> _initializeAppComponents() async {
+    Get.put(BannerList()).fetchProfileData();
+    await chatzegocloud();
+    Get.find<ProfileList>().fetchProfileData();
+
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       Get.find<GetAstrologerProfile>().astroData();
       Get.find<PendingRequest>().pendingRequestData();
     });
 
-    checkTokenAndNavigate();
-    requestPermissions();
+    await checkTokenAndNavigate();
   }
 
   Future<void> chatzegocloud() async {
