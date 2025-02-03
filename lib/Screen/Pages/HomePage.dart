@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
+import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
@@ -38,6 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:dio/dio.dart' as dio;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,6 +70,7 @@ class _HomePageState extends State<HomePage> {
     Get.put(ClientSays()).clientsaysData();
     Get.put(GetAstrologerProfile()).astroData();
     socketController.initSocketConnection();
+    calculatePrice();
     _searchController.addListener(_onSearchChanged);
     super.initState();
   }
@@ -76,6 +80,49 @@ class _HomePageState extends State<HomePage> {
       _filterAstrologers(_searchController.text);
     } else {
       _astrologers.clear();
+    }
+  }
+
+  Future<void> calculatePrice() async {
+    try {
+      // Retrieve session data from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? sessionData = prefs.getString('active_call');
+
+      if (sessionData == null) {
+        print("No session data found");
+        return;
+      }
+
+      // Decode the stored session JSON
+      Map<String, dynamic> sessionMap = jsonDecode(sessionData);
+
+      // Extract values
+      String callId = sessionMap['call_id'] ?? "";
+      String astroPerMinPrice = sessionMap['astro_per_min_price'] ?? "";
+      String totalTime = sessionMap['totaltime'] ?? "";
+
+      // Prepare API request
+      ApiRequest apiRequest = ApiRequest(
+        "$apiUrl/communication-charges",
+        method: ApiMethod.POST,
+        body: packFormData({
+          'communication_id': callId,
+          'astro_per_min_price': astroPerMinPrice,
+          'time': totalTime,
+        }),
+      );
+
+      // Send API request
+      dio.Response data = await apiRequest.send();
+      print("API Response: $data");
+
+      if (data.statusCode == 201) {
+        await prefs.remove('active_call');
+        print("Cleared active_call from storage");
+      }
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
