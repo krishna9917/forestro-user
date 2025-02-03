@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
@@ -59,7 +60,7 @@ class _AudioCallState extends State<AudioCall> {
       if (results.isNotEmpty && results.first == ConnectivityResult.none) {
         print("No internet connection detected. Ending call...");
         endChatSession();
-        Get.offAll(const SplashScreen());
+        Get.offAll(const NoInternetPage());
       }
     });
 

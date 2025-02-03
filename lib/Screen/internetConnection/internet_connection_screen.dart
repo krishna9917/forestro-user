@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:foreastro/Screen/Splash/SplashScreen.dart';
+import 'package:foreastro/Utils/Quick.dart';
+import 'package:foreastro/theme/Colors.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+
+class NoInternetPage extends StatefulWidget {
+  const NoInternetPage({super.key});
+
+  @override
+  _NoInternetPageState createState() => _NoInternetPageState();
+}
+
+class _NoInternetPageState extends State<NoInternetPage> {
+  bool isConnected = false;
+  bool isChecking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkConnection();
+  }
+
+  Future<void> checkConnection() async {
+  setState(() => isChecking = true);
+  
+  var connectivityResult = await Connectivity().checkConnectivity();
+  bool hasInternet = false;
+  
+  if (connectivityResult != ConnectivityResult.none) {
+    showToast("");
+    // hasInternet = await hasInternetAccess(); // Check actual internet
+  }
+
+  if (hasInternet) {
+    Get.offAll(const SplashScreen());
+  } else {
+    setState(() => isChecking = false);
+  }
+}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: isChecking
+            ? CircularProgressIndicator(
+                color: AppColor.primary,
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.signal_wifi_off,
+                    size: 60,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "No Internet Connection",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Please check your network settings.",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: checkConnection,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      backgroundColor: AppColor.primary,
+                    ),
+                    child: const Text(
+                      "Retry",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

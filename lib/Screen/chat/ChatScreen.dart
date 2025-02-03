@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
@@ -10,6 +13,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quickalert/models/quickalert_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -45,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Color countdownColor = Colors.white;
   final AudioPlayer player = AudioPlayer();
   bool _isAppActive = true;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
   void initState() {
@@ -54,7 +59,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
-
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.isNotEmpty && results.first == ConnectivityResult.none) {
+        print("No internet connection detected. Ending call...");
+        endChatSession();
+        Get.offAll(const NoInternetPage());
+      }
+    });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds > 60) {
         setState(() {
@@ -85,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> endChatSession() async {
-    if (isSessionEnded) return; 
+    if (isSessionEnded) return;
     isSessionEnded = true;
 
     sessionController.closeSession();
@@ -99,6 +112,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
+    await SharedPreferences.getInstance().then((prefs) {
+      // Store the session
+      String sessionData = jsonEncode({
+        'call_id': widget.callID,
+        'astro_per_min_price': widget.price,
+        'totaltime': totaltime,
+      });
+      prefs.setString('active_call', sessionData).then((_) {
+        // Retrieve and print the stored session
+        String? storedSession = prefs.getString('active_call');
+        print("Stored Session: $storedSession");
+      });
+    });
 
     await calculatePrice(totaltime);
 
@@ -114,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> calculatePrice(String totaltime) async {
+    final prefs = await SharedPreferences.getInstance();
     print(totaltime);
     try {
       ApiRequest apiRequest = ApiRequest(
@@ -129,6 +156,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       dio.Response data = await apiRequest.send();
       print("dataprice===========$data");
       if (data.statusCode == 201) {
+        await prefs.remove('active_call');
         await Get.find<ProfileList>().fetchProfileData();
       }
     } catch (e) {
@@ -159,7 +187,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
-      
       if (!isSessionEnded) {
         endChatSession();
       }
