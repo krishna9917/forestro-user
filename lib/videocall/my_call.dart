@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
@@ -9,6 +12,7 @@ import 'package:foreastro/videocall/const.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class MyCall extends StatefulWidget {
@@ -40,6 +44,7 @@ class _MyCallState extends State<MyCall> {
   Color countdownColor = Colors.white;
   final AudioPlayer _audioPlayer = AudioPlayer();
   AudioPlayer player = AudioPlayer();
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
   void initState() {
@@ -47,6 +52,15 @@ class _MyCallState extends State<MyCall> {
 
     startTime = DateTime.now();
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.isNotEmpty && results.first == ConnectivityResult.none) {
+        print("No internet connection detected. Ending call...");
+        endChatSession();
+        Get.offAll(const NoInternetPage());
+      }
+    });
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds > 60) {
@@ -99,6 +113,19 @@ class _MyCallState extends State<MyCall> {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
     await calculateprice(totaltime);
+    await SharedPreferences.getInstance().then((prefs) {
+      // Store the session
+      String sessionData = jsonEncode({
+        'call_id': widget.callID,
+        'astro_per_min_price': widget.price,
+        'totaltime': totaltime,
+      });
+      prefs.setString('active_call', sessionData).then((_) {
+        // Retrieve and print the stored session
+        String? storedSession = prefs.getString('active_call');
+        print("Stored Session: $storedSession");
+      });
+    });
     // socketController.closeSession(
     //   senderId: widget.userid,
     //   requestType: "chat",
@@ -111,6 +138,7 @@ class _MyCallState extends State<MyCall> {
   }
 
   Future calculateprice(String totaltime) async {
+    final prefs = await SharedPreferences.getInstance();
 
     try {
       ApiRequest apiRequest = ApiRequest(
@@ -130,6 +158,8 @@ class _MyCallState extends State<MyCall> {
         setState(() {
           _isLoading = false;
         });
+        await prefs.remove('active_call');
+        print("Cleared active_call from storage");
 
         // socketController.closeSession(
         //   senderId: widget.userid,

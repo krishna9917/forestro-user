@@ -24,22 +24,16 @@ class _NoInternetPageState extends State<NoInternetPage> {
   }
 
   Future<void> checkConnection() async {
-  setState(() => isChecking = true);
-  
-  var connectivityResult = await Connectivity().checkConnectivity();
-  bool hasInternet = false;
-  
-  if (connectivityResult != ConnectivityResult.none) {
-    showToast("");
-    // hasInternet = await hasInternetAccess(); // Check actual internet
-  }
+    setState(() => isChecking = true);
 
-  if (hasInternet) {
-    Get.offAll(const SplashScreen());
-  } else {
-    setState(() => isChecking = false);
+    var connectivityResult = await Connectivity().checkConnectivity();
+    bool hasInternet = false;
+
+    if (connectivityResult != ConnectivityResult.none) {
+      showToast("Plese chek Your Internet Connection Restart The App");
+      // hasInternet = await hasInternetAccess(); // Check actual internet
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
