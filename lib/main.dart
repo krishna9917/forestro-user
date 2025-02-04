@@ -85,7 +85,7 @@ void _handleGetExternalId() async {
     print('IDSIGNAL: $externalId');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('externalId', externalId ?? '');
-    // await NotificationRepo.sendsignal();
+    
   }
 }
 
