@@ -422,6 +422,35 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  child: Text(
+                    "pending reques".toUpperCase(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                // HomeTitleBar(
+                //   title: "pending request",
+                //   // onClick: () {
+                //   //   // navigate.push(routeMe(const ExploreAstroPage()));
+                //   // },
+                // ),
+                const SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: PendingRequestScreen(),
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                ),
                 HomeTitleBar(
                   title: "Astrologer",
                   onClick: () {

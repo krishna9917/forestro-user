@@ -80,7 +80,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                   ),
                   elevation: 3,
                   child: Container(
-                    width: 400, 
+                    width: 330,
                     child: ListTile(
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(40),
@@ -129,7 +129,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                               Icon(Icons.block, color: Colors.white, size: 18),
                               SizedBox(width: 8),
                               Text(
-                                "Request Cancel",
+                                "Cancel",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
