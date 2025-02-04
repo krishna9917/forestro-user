@@ -41,6 +41,16 @@ class BlocList extends GetxController {
             _blocDataList.value = parsedDataList;
           }
         }
+        // else
+        //  if (responseData != null && responseData['status'] == false) {
+        //   final dataList = responseData['error']['message'];
+        //   if (dataList != null && dataList is List) {
+        //     List<Data> parsedDataList =
+        //         dataList.map((item) => Data.fromJson(item)).toList();
+        //     _blocDataList.value = parsedDataList;
+        //   }
+        // }
+        
       }
     } catch (e) {
       print("featchthe error Bloc list $e");

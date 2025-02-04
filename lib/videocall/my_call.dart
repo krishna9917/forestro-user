@@ -217,7 +217,7 @@ class _MyCallState extends State<MyCall> {
             ),
             onCallEnd: (event, defaultAction) async {
               await endChatSession();
-              Get.offAll(const HomePage());
+              // Get.offAll(const HomePage());
 
               // socketController.closeSession(
               //   senderId: widget.userid,
