@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult.contains(ConnectivityResult.none)) {
       showToast("Chek Your Internet Conection");
-      // No internet: Navigate to InternetConnectionScreen and stop here
+     
       // Get.offAll(() => const NoInternetPage());
       return;
     }
