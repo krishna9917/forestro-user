@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
       return;
     }
 
-    // Internet available: Proceed with initialization
+   
     _isInternetChecked = true;
     _setupConnectivityListener();
     await _initializeAppComponents();
