@@ -142,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> checkTokenAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Retrieve stored values
+    
     final token = prefs.getString('token');
     final isProfileCreated = prefs.getString('is_profile_created');
     if (token == null || token.isEmpty) {
