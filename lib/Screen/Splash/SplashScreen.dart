@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(seconds: 60),
     )..repeat();
 
-    // Check initial internet connection
+    
     _checkInternetAndInitialize();
     // Get.put(BannerList()).fetchProfileData();
     // // Get.find<BannerList>().fetchProfileData();
