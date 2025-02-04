@@ -39,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(seconds: 60),
     )..repeat();
 
-    
     _checkInternetAndInitialize();
     // Get.put(BannerList()).fetchProfileData();
     // // Get.find<BannerList>().fetchProfileData();
@@ -67,7 +66,6 @@ class _SplashScreenState extends State<SplashScreen>
       return;
     }
 
-   
     _isInternetChecked = true;
     _setupConnectivityListener();
     await _initializeAppComponents();
@@ -79,7 +77,6 @@ class _SplashScreenState extends State<SplashScreen>
         .listen((List<ConnectivityResult> results) {
       if (results.contains(ConnectivityResult.none)) {
         showToast("Chek Your Internet Conection");
-        // Get.offAll(() => const NoInternetPage());
       }
     });
   }
@@ -142,7 +139,6 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> checkTokenAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
 
-    
     final token = prefs.getString('token');
     final isProfileCreated = prefs.getString('is_profile_created');
     if (token == null || token.isEmpty) {
