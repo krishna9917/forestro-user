@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
@@ -167,7 +168,7 @@ class _AudioCallState extends State<AudioCall> {
         });
         await prefs.remove('active_call');
         print("Cleared active_call from storage");
-        Get.offAll(const HomePage());
+        Get.offAll(const WalletPage());
       }
     } catch (e) {
       print(e);
@@ -204,7 +205,7 @@ class _AudioCallState extends State<AudioCall> {
             events: ZegoUIKitPrebuiltCallEvents(
               onCallEnd: (event, defaultAction) async {
                 await endChatSession();
-                Get.offAll(const HomePage());
+                // Get.offAll(const HomePage());
               },
               onError: (error) {
                 print("Error: $error");
