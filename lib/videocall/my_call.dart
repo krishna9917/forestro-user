@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -56,15 +57,15 @@ class _MyCallState extends State<MyCall> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.isNotEmpty && results.first == ConnectivityResult.none) {
-        socketController.closeSession(
-          senderId: widget.userid,
-          requestType: "video",
-          message: "User Cancel Can",
-          data: {
-            "userId": widget.userid,
-            'communication_id': widget.callID,
-          },
-        );
+        // socketController.closeSession(
+        //   senderId: widget.userid,
+        //   requestType: "video",
+        //   message: "User Cancel Can",
+        //   data: {
+        //     "userId": widget.userid,
+        //     'communication_id': widget.callID,
+        //   },
+        // );
         print("No internet connection detected. Ending call...");
         endChatSession();
         Get.offAll(const NoInternetPage());
@@ -107,9 +108,9 @@ class _MyCallState extends State<MyCall> {
   }
 
   Future<void> endChatSession() async {
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
 
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
@@ -121,7 +122,7 @@ class _MyCallState extends State<MyCall> {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
-    await calculateprice(totaltime);
+   
     await SharedPreferences.getInstance().then((prefs) {
       // Store the session
       String sessionData = jsonEncode({
@@ -135,6 +136,7 @@ class _MyCallState extends State<MyCall> {
         print("Stored Session: $storedSession");
       });
     });
+     await calculateprice(totaltime);
     // socketController.closeSession(
     //   senderId: widget.userid,
     //   requestType: "chat",
@@ -163,13 +165,14 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        await Get.find<ProfileList>().fetchProfileData();
-        setState(() {
-          _isLoading = false;
-        });
         await prefs.remove('active_call');
-        print("Cleared active_call from storage");
+        await Get.find<ProfileList>().fetchProfileData();
+        // setState(() {
+        //   _isLoading = false;
+        // });
 
+        print("Cleared active_call from storage");
+        Get.offAll(const HomePage());
         // socketController.closeSession(
         //   senderId: widget.userid,
         //   requestType: "video",
@@ -179,7 +182,6 @@ class _MyCallState extends State<MyCall> {
         //     'communication_id': widget.callID,
         //   },
         // );
-        Get.offAll(const HomePage());
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }

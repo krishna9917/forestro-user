@@ -190,174 +190,179 @@ class _WalletPageState extends State<WalletPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("Wallet Recharge".toUpperCase()),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              width: scrWeight(context),
-              height: 200,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromARGB(255, 239, 239, 239),
-                      blurRadius: 5.0,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text("Wallet Recharge".toUpperCase()),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                width: scrWeight(context),
+                height: 200,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 239, 239, 239),
+                        blurRadius: 5.0,
+                      ),
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/icons/wallet-icon.png",
+                      width: 80,
+                      height: 80,
                     ),
-                  ]),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/icons/wallet-icon.png",
-                    width: 80,
-                    height: 80,
-                  ),
-                  Text(
-                    "Balance".toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      "Balance".toUpperCase(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Obx(
-                    () {
-                      if (profileController.profileDataList != null &&
-                          profileController.profileDataList.isNotEmpty) {
-                        String wallet =
-                            profileController.profileDataList.first.wallet ??
-                                'NA';
-                        String formattedWallet = 'NA';
-                        if (wallet != 'NA') {
-                          try {
-                            formattedWallet =
-                                double.parse(wallet).toStringAsFixed(2);
-                          } catch (e) {
-                            print("Error parsing wallet value: $e");
+                    Obx(
+                      () {
+                        if (profileController.profileDataList != null &&
+                            profileController.profileDataList.isNotEmpty) {
+                          String wallet =
+                              profileController.profileDataList.first.wallet ??
+                                  'NA';
+                          String formattedWallet = 'NA';
+                          if (wallet != 'NA') {
+                            try {
+                              formattedWallet =
+                                  double.parse(wallet).toStringAsFixed(2);
+                            } catch (e) {
+                              print("Error parsing wallet value: $e");
+                            }
                           }
-                        }
 
-                        return Text(
-                          "₹ $formattedWallet",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                          return Text(
+                            "₹ $formattedWallet",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                            ),
+                          );
+                        } else {
+                          if (profileController.profileDataList == null) {
+                          } else if (profileController
+                              .profileDataList.isEmpty) {}
+                          return Text(
+                            'NA',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(fontWeight: FontWeight.w500),
+                          );
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Recharge Wallet",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  const Text("Choose from the available quick recharge packs"),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: _amountController,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 20),
+                      border: InputBorder.none,
+                      focusedBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  Gap(3.h),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 1.9,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: List.generate(amountList.length, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              amountIndex = index;
+                              _amountController.text =
+                                  amountList[amountIndex].toString();
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: amountIndex == index
+                                  ? AppColor.primary
+                                  : Colors.white,
+                              border: Border.all(
+                                  width: 2,
+                                  color: AppColor.primary.withOpacity(0.4)),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Center(
+                                child: Text(
+                              "₹ ${amountList[index]}",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: amountIndex == index
+                                    ? Colors.white
+                                    : const Color.fromARGB(255, 42, 42, 42),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )),
                           ),
                         );
-                      } else {
-                        if (profileController.profileDataList == null) {
-                        } else if (profileController.profileDataList.isEmpty) {}
-                        return Text(
-                          'NA',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.w500),
-                        );
-                      }
-                    },
-                  )
+                      })),
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Recharge Wallet",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            const Spacer(),
+            Center(
+              child: SizedBox(
+                width: scrWeight(context) - 40,
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: () {
+                    createOrderAndOpenCheckout();
+                  },
+                  child: const Text("Add To Wallet"),
                 ),
-                const Text("Choose from the available quick recharge packs"),
-                const SizedBox(height: 30),
-                TextField(
-                  controller: _amountController,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                    border: InputBorder.none,
-                    focusedBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                    ),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-                Gap(3.h),
-                GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 15,
-                    childAspectRatio: 1.9,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: List.generate(amountList.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            amountIndex = index;
-                            _amountController.text =
-                                amountList[amountIndex].toString();
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: amountIndex == index
-                                ? AppColor.primary
-                                : Colors.white,
-                            border: Border.all(
-                                width: 2,
-                                color: AppColor.primary.withOpacity(0.4)),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.only(top: 2),
-                          child: Center(
-                              child: Text(
-                            "₹ ${amountList[index]}",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: amountIndex == index
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 42, 42, 42),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                        ),
-                      );
-                    })),
-              ],
-            ),
-          ),
-          const Spacer(),
-          Center(
-            child: SizedBox(
-              width: scrWeight(context) - 40,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {
-                  createOrderAndOpenCheckout();
-                },
-                child: const Text("Add To Wallet"),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,9 +1,9 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/chat/privew_screen.dart';
 import 'package:foreastro/model/profile_model.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
-
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class PreviewChatScreen extends StatelessWidget {
@@ -22,6 +22,12 @@ class PreviewChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final player = AudioPlayer();
+
+    void playAudio(String url) async {
+      await player.play(UrlSource(url));
+    }
+
     // print(id);
     return Theme(
       data: appTheme.copyWith(),
@@ -34,6 +40,7 @@ class PreviewChatScreen extends StatelessWidget {
         inputBackgroundDecoration: const BoxDecoration(
           color: Colors.transparent,
         ),
+
         // messageListBackgroundBuilder: (context, defaultWidget) {
         //   return Image.asset(
         //     AssetsPath.chatBgSvg,
@@ -59,9 +66,15 @@ class PreviewChatScreen extends StatelessWidget {
                 ),
               ),
             );
+          } else if (message.type == ZIMMessageType.audio) {
+            print(
+                "Playing audio from URL: ${message.audioContent!.fileDownloadUrl}");
+            playAudio(message.audioContent!.fileDownloadUrl);
           }
         },
-        onMessageSent: (e) {},
+        onMessageSent: (e) {
+          print(e);
+        },
         inputDecoration: const InputDecoration(
           border: InputBorder.none,
           errorBorder: InputBorder.none,

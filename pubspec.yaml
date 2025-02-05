@@ -79,6 +79,7 @@ dependencies:
   in_app_update: ^4.2.3
   interactive_bottom_sheet: ^1.0.0
   connectivity_plus: ^6.1.2
+  audioplayers: ^6.1.0 
   
   
   
