@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
+import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
@@ -209,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             setState(() {
               isSessionEnded = true;
             });
-            Get.offAll(const HomePage());
+            Get.offAll(const WalletPage());
           },
         );
         return false;
