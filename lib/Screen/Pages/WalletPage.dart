@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
@@ -196,6 +197,12 @@ class _WalletPageState extends State<WalletPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text("Wallet Recharge".toUpperCase()),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.offAll(const HomePage());
+            },
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,

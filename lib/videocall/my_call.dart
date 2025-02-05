@@ -122,7 +122,7 @@ class _MyCallState extends State<MyCall> {
     String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
-   
+
     await SharedPreferences.getInstance().then((prefs) {
       // Store the session
       String sessionData = jsonEncode({
@@ -136,7 +136,7 @@ class _MyCallState extends State<MyCall> {
         print("Stored Session: $storedSession");
       });
     });
-     await calculateprice(totaltime);
+    await calculateprice(totaltime);
     // socketController.closeSession(
     //   senderId: widget.userid,
     //   requestType: "chat",
@@ -172,7 +172,7 @@ class _MyCallState extends State<MyCall> {
         // });
 
         print("Cleared active_call from storage");
-        Get.offAll(const HomePage());
+        Get.offAll(const WalletPage());
         // socketController.closeSession(
         //   senderId: widget.userid,
         //   requestType: "video",
