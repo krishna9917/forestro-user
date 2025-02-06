@@ -431,65 +431,65 @@ class _LoginScreenState extends State<LoginScreen> {
                               text: buttonText,
                             ),
                     ),
-
-                    Gap(5.h),
+                    // Spacer(),
+                    Gap(2.h),
 
                     /// Or SignUp with
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 7.w, right: 2.w),
-                            child: const Divider(
-                              height: 1,
-                              color: Colors.black45,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          "Or Sign Up With",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 7.w, left: 2.w),
-                            child: const Divider(
-                              height: 1,
-                              color: Colors.black45,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   children: [
+                    //     Flexible(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.only(left: 7.w, right: 2.w),
+                    //         child: const Divider(
+                    //           height: 1,
+                    //           color: Colors.black45,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Text(
+                    //       "Or Sign Up With",
+                    //       style:
+                    //           Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    //                 color: Colors.black45,
+                    //                 fontWeight: FontWeight.w500,
+                    //               ),
+                    //     ),
+                    //     Flexible(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.only(right: 7.w, left: 2.w),
+                    //         child: const Divider(
+                    //           height: 1,
+                    //           color: Colors.black45,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
 
-                    Gap(5.h),
+                    // Gap(5.h),
 
-                    /// Google Sign In
-                    Center(
-                      child: _isLoading
-                          ? CircularProgressIndicator()
-                          : CustomButton(
-                              onPressed: _googleSignIn,
-                              color: Theme.of(context).secondaryHeaderColor,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    Assets.logoGoogleSvg,
-                                    height: 3.h,
-                                  ),
-                                  Gap(5.w),
-                                  const Text(googleText),
-                                ],
-                              ),
-                            ),
-                    ),
+                    // /// Google Sign In
+                    // Center(
+                    //   child: _isLoading
+                    //       ? CircularProgressIndicator()
+                    //       : CustomButton(
+                    //           onPressed: _googleSignIn,
+                    //           color: Theme.of(context).secondaryHeaderColor,
+                    //           child: Row(
+                    //             mainAxisSize: MainAxisSize.min,
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               SvgPicture.asset(
+                    //                 Assets.logoGoogleSvg,
+                    //                 height: 3.h,
+                    //               ),
+                    //               Gap(5.w),
+                    //               const Text(googleText),
+                    //             ],
+                    //           ),
+                    //         ),
+                    // ),
 
                     Gap(5.h),
 
