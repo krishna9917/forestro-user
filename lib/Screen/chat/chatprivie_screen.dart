@@ -67,9 +67,12 @@ class PreviewChatScreen extends StatelessWidget {
               ),
             );
           } else if (message.type == ZIMMessageType.audio) {
-            print(
-                "Playing audio from URL: ${message.audioContent!.fileDownloadUrl}");
-            playAudio(message.audioContent!.fileDownloadUrl);
+            showDialog(
+              context: context,
+              builder: (context) => AudioPlayerDialog(
+                audioUrl: message.audioContent!.fileDownloadUrl,
+              ),
+            );
           }
         },
         onMessageSent: (e) {
@@ -87,6 +90,116 @@ class PreviewChatScreen extends StatelessWidget {
         conversationID: "${astroId}-astro",
         conversationType: ZIMConversationType.peer,
       ),
+    );
+  }
+}
+
+class AudioPlayerDialog extends StatefulWidget {
+  final String audioUrl;
+
+  const AudioPlayerDialog({super.key, required this.audioUrl});
+
+  @override
+  _AudioPlayerDialogState createState() => _AudioPlayerDialogState();
+}
+
+class _AudioPlayerDialogState extends State<AudioPlayerDialog> {
+  late AudioPlayer _audioPlayer;
+  PlayerState _playerState = PlayerState.stopped;
+  Duration _duration = Duration.zero;
+  Duration _position = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _setupAudioPlayer();
+  }
+
+  void _setupAudioPlayer() async {
+    _audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() => _playerState = state);
+    });
+
+    _audioPlayer.onDurationChanged.listen((duration) {
+      setState(() => _duration = duration);
+    });
+
+    _audioPlayer.onPositionChanged.listen((position) {
+      setState(() => _position = position);
+    });
+
+    await _audioPlayer.setSource(UrlSource(widget.audioUrl));
+  }
+
+  void _playPause() async {
+    if (_playerState == PlayerState.playing) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.resume();
+    }
+  }
+
+  void _stop() async {
+    await _audioPlayer.stop();
+  }
+
+  void _seek(Duration position) async {
+    await _audioPlayer.seek(position);
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  String _formatDuration(Duration d) {
+    return d.toString().split('.').first.padLeft(8, "0");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      // title: const Text('Audio Player'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(_playerState == PlayerState.playing
+                    ? Icons.pause
+                    : Icons.play_arrow),
+                onPressed: _playPause,
+                iconSize: 40,
+              ),
+              Slider(
+                min: 0,
+                max: _duration.inSeconds.toDouble(),
+                value: _position.inSeconds.toDouble(),
+                onChanged: (value) => _seek(Duration(seconds: value.toInt())),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(_formatDuration(_position)),
+              Text(_formatDuration(_duration - _position)),
+            ],
+          ),
+        ],
+      ),
+      // actions: [
+      //   TextButton(
+      //     child: const Text('Close'),
+      //     onPressed: () {
+      //       _stop();
+      //       Navigator.of(context).pop();
+      //     },
+      //   ),
+      // ],
     );
   }
 }
