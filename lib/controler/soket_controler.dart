@@ -38,7 +38,7 @@ class SocketController extends GetxController {
     });
     socket?.on("wettingDecline", (data) {
       Fluttertoast.showToast(msg: "Request Cancel");
-      Get.back();
+      // Get.back();
     });
 
     socket?.on('accepted', (data) {

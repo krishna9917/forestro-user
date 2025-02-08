@@ -3,7 +3,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Screen/Kundali/CombinedDetailsView.dart';
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
-import 'package:foreastro/model/kundali/matchkundali/northkundali_model.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:get/get.dart';
 import 'package:score_progress_pretty_display/score_progress_pretty_display.dart';
@@ -29,10 +28,9 @@ class KundaliMilan extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              // _buildHeader(context, "Kundali North Details"),
+            
               _buildResponseDetails(),
-              // const SizedBox(height: 20),
-              // _buildSouthOtherDetails(),
+           
             ],
           ),
         ),
@@ -83,7 +81,7 @@ class KundaliMilan extends StatelessWidget {
           return const Center(child: Text('No data available.'));
         } else {
           return SizedBox(
-            height: 850,
+            height: 90.h,
             child: ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
@@ -206,16 +204,8 @@ class KundaliMilan extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16.0),
       decoration: BoxDecoration(
         // color: color,
-        border: Border.all(color: color, width: 2), 
+        border: Border.all(color: color, width: 2),
         borderRadius: BorderRadius.circular(12.0),
-
-        // boxShadow: const [
-        //   BoxShadow(
-        //     color: AppColor.primary,
-        //     blurRadius: 4,
-        //     offset: Offset(0, 2),
-        //   ),
-        // ],
       ),
       child: Card(
         elevation: 0, // Remove the default card shadow if necessary
@@ -236,35 +226,6 @@ class KundaliMilan extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-
-                  // SizedBox(
-                  //   height: 50,
-                  //   child: CircleProgressBar(
-                  //     foregroundColor: double.parse(score) >= maxScore * 0.75
-                  //         ? Colors.green // Green for high score
-                  //         : double.parse(score) >= maxScore * 0.5
-                  //             ? Colors.orange // Orange for medium score
-                  //             : Colors.red, // Red for low score
-                  //     backgroundColor: Colors.black12,
-                  //     value: double.parse(score),
-                  //     child: Center(
-                  //       child: Text(
-                  //         "$score/$maxScore",
-                  //         style: TextStyle(
-                  //           fontSize: 16,
-                  //           fontWeight: FontWeight.bold,
-                  //           color: double.parse(score) >= maxScore * 0.75
-                  //               ? Colors.green
-                  //               : double.parse(score) >= maxScore * 0.5
-                  //                   ? Colors.orange
-                  //                   : Colors
-                  //                       .red, // Adjust text color the same way
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-
                   CircleAvatar(
                     radius: 25,
                     backgroundColor: color.withOpacity(0.2),
@@ -283,18 +244,6 @@ class KundaliMilan extends StatelessWidget {
                 description,
                 style: const TextStyle(fontSize: 14),
               ),
-              // const SizedBox(height: 16),
-              // CircleAvatar(
-              //   radius: 25,
-              //   backgroundColor: color.withOpacity(0.2),
-              //   child: Text(
-              //     "$score/$maxScore",
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //       color: color,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -314,71 +263,6 @@ class KundaliMilan extends StatelessWidget {
       ),
     );
   }
-  // Existing methods...
-
-  // Widget _buildSouthDetails() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     child: SingleChildScrollView(
-  //       scrollDirection: Axis.vertical,
-  //       child: Obx(() {
-  //         if (kundaliController.isLoading.value) {
-  //           return const Center(child: CircularProgressIndicator());
-  //         } else {
-  //           final response = kundaliController.southmatching.value.response;
-  //           if (response == null) {
-  //             return const Center(child: Text('No data available.'));
-  //           } else if (response.boyPlanetaryDetails.isEmpty &&
-  //               response.girlPlanetaryDetails.isEmpty) {
-  //             return const Center(
-  //                 child: Text('No planetary details available.'));
-  //           } else {
-  //             final boyPlanetaryDetails = response.boyPlanetaryDetails;
-  //             final girlPlanetaryDetails = response.girlPlanetaryDetails;
-
-  //             return DataTable(
-  //               columns: const [
-  //                 DataColumn(label: Text('Name')),
-  //                 DataColumn(label: Text('Full Name')),
-  //                 DataColumn(label: Text('Zodiac')),
-  //                 DataColumn(label: Text('Degree')),
-  //                 DataColumn(label: Text('Zodiac Lord')),
-  //                 DataColumn(label: Text('Nakshatra')),
-  //                 DataColumn(label: Text('Nakshatra Lord')),
-  //                 DataColumn(label: Text('Rasi no.')),
-  //                 DataColumn(label: Text('House')),
-  //               ],
-  //               rows: [
-  //                 // Iterate through boyPlanetaryDetails map
-  //                 for (var entry in boyPlanetaryDetails.entries)
-  //                   _buildSouthDataRow(entry.value),
-  //                 // Iterate through girlPlanetaryDetails map
-  //                 for (var entry in girlPlanetaryDetails.entries)
-  //                   _buildSouthDataRow(entry.value),
-  //               ],
-  //             );
-  //           }
-  //         }
-  //       }),
-  //     ),
-  //   );
-  // }
-
-  // DataRow _buildSouthDataRow(PlanetarySouthDetail planet) {
-  //   return DataRow(
-  //     cells: [
-  //       DataCell(Text(planet.name ?? 'N/A')),
-  //       DataCell(Text(planet.fullName ?? 'N/A')),
-  //       DataCell(Text(planet.zodiac ?? 'N/A')),
-  //       DataCell(Text(planet.localDegree?.toString() ?? 'N/A')),
-  //       DataCell(Text(planet.zodiacLord ?? 'N/A')),
-  //       DataCell(Text(planet.nakshatra ?? 'N/A')),
-  //       DataCell(Text(planet.nakshatraLord ?? 'N/A')),
-  //       DataCell(Text(planet.rasiNo?.toString() ?? 'N/A')),
-  //       DataCell(Text(planet.house?.toString() ?? 'N/A')),
-  //     ],
-  //   );
-  // }
 
   Widget _buildSouthOtherDetails() {
     return Obx(() {
@@ -391,34 +275,6 @@ class KundaliMilan extends StatelessWidget {
         } else {
           return Column(
             children: [
-              // PrimaryArcAnimationComponent(
-              //   score: (response.score is double)
-              //       ? response.score
-              //       : double.tryParse(response.score.toString()) ?? 0.0,
-              //   maxScore: 10,
-              //   arcHeight: 340,
-              //   arcWidth: 340,
-              //   backgroundArcStrokeThickness: 10,
-              //   progressArcStrokeThickness: 10,
-              //   enableStepperEffect: false,
-              //   isRoundEdges: false,
-              //   minScoreTextFontSize: 30,
-              //   maxScoreTextFontSize: 50,
-              //   isRoundOffScoreWhileProgress: true,
-              //   isRoundOffScore: true,
-              //   showOutOfScoreFormat: true,
-              //   isPrgressCurveFilled: false,
-              //   scoreAnimationDuration: const Duration(seconds: 2),
-              //   scoreTextAnimationDuration: const Duration(milliseconds: 500),
-              //   scoreTextStyle:
-              //       const TextStyle(fontWeight: FontWeight.normal, height: 1),
-              //   arcBackgroundColor: Colors.black12,
-              //   arcProgressGradientColors: const [
-              //     AppColor.peach,
-              //     AppColor.primary,
-              //     AppColor.primary,
-              //   ],
-              // ),
               DataRowWidget(label: "Score", value: response.score?.toString()),
               DataRowWidget(
                 label: "Bot Response",

@@ -58,94 +58,107 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
         final requestP =
             pendingRequestController.pendingRequestDataList.toList();
 
-        print("================$requestP");
-
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: requestP.map((astrologer) {
-              final nameWords =
-                  (astrologer.astroName ?? "Astrologer Name").split(' ');
-              final displayName = nameWords.length > 2
-                  ? '${nameWords[0]} ${nameWords[1]}'
-                  : astrologer.astroName ?? "Astrologer Name";
-              return Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 3,
-                  child: Container(
-                    width: 330,
-                    child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: viewImage(
-                          boxDecoration: BoxDecoration(
+        return Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (requestP.isNotEmpty)
+              Text(
+                "pending request".toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: requestP.map((astrologer) {
+                  final nameWords =
+                      (astrologer.astroName ?? "Astrologer Name").split(' ');
+                  final displayName = nameWords.length > 2
+                      ? '${nameWords[0]} ${nameWords[1]}'
+                      : astrologer.astroName ?? "Astrologer Name";
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 3,
+                      child: Container(
+                        width: 280,
+                        child: ListTile(
+                          leading: ClipRRect(
                             borderRadius: BorderRadius.circular(40),
-                            color: Colors.orange,
-                          ),
-                          url: astrologer.astroProfileImage,
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                      title: Text(
-                        displayName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          int? ab = astrologer.id;
-                          var id = ab.toString();
-                          requestCancel(id);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: AppColor.primary,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 4,
-                                offset: const Offset(2, 2),
+                            child: viewImage(
+                              boxDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: Colors.orange,
                               ),
-                            ],
+                              url: astrologer.astroProfileImage,
+                              width: 50,
+                              height: 50,
+                            ),
                           ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.block, color: Colors.white, size: 18),
-                              SizedBox(width: 8),
-                              Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          title: Text(
+                            displayName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              int? ab = astrologer.id;
+                              var id = ab.toString();
+                              requestCancel(id);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: AppColor.primary,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(2, 2),
+                                  ),
+                                ],
                               ),
-                            ],
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.block,
+                                      color: Colors.white, size: 18),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
         );
       }),
     );
