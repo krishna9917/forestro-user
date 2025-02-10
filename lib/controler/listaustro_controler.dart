@@ -33,6 +33,7 @@ class GetAstrologerProfile extends GetxController {
         url,
       );
 
+      print("jjjjjjjjjj======${response.statusCode}");
       if (response.statusCode == 201) {
         final responseData = response.data;
         if (responseData != null && responseData['status'] == true) {
@@ -43,15 +44,11 @@ class GetAstrologerProfile extends GetxController {
             _austroDataList.value = parsedDataList;
           }
         }
-      } else if (response.statusCode == 401) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.clear();
-        await GoogleSignIn().signOut();
-        Get.offAll(() => const LoginScreen());
-        showToast("Plese Login");
       }
     } catch (e) {
-      print("featchthe error Astrology Data $e");
+     
+
+      print("featchthe error Astrology Data======> $e");
     } finally {
       _isLoading.value = false;
     }
