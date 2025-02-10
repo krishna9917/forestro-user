@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
-import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/controler/baner_controler.dart';

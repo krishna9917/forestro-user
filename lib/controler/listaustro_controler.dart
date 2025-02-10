@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:foreastro/Screen/Auth/LoginScreen.dart';
+import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetAstrologerProfile extends GetxController {
@@ -40,6 +43,12 @@ class GetAstrologerProfile extends GetxController {
             _austroDataList.value = parsedDataList;
           }
         }
+      } else if (response.statusCode == 401) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        await GoogleSignIn().signOut();
+        Get.offAll(() => const LoginScreen());
+        showToast("Plese Login");
       }
     } catch (e) {
       print("featchthe error Astrology Data $e");

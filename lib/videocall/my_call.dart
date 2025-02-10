@@ -57,15 +57,15 @@ class _MyCallState extends State<MyCall> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.isNotEmpty && results.first == ConnectivityResult.none) {
-        // socketController.closeSession(
-        //   senderId: widget.userid,
-        //   requestType: "video",
-        //   message: "User Cancel Can",
-        //   data: {
-        //     "userId": widget.userid,
-        //     'communication_id': widget.callID,
-        //   },
-        // );
+        socketController.closeSession(
+          senderId: widget.userid,
+          requestType: "video",
+          message: "User Cancel Can",
+          data: {
+            "userId": widget.userid,
+            'communication_id': widget.callID,
+          },
+        );
         print("No internet connection detected. Ending call...");
         endChatSession();
         Get.offAll(const NoInternetPage());
@@ -165,14 +165,6 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        await prefs.remove('active_call');
-        await Get.find<ProfileList>().fetchProfileData();
-        // setState(() {
-        //   _isLoading = false;
-        // });
-
-        print("Cleared active_call from storage");
-        Get.offAll(const WalletPage());
         // socketController.closeSession(
         //   senderId: widget.userid,
         //   requestType: "video",
@@ -182,6 +174,14 @@ class _MyCallState extends State<MyCall> {
         //     'communication_id': widget.callID,
         //   },
         // );
+        await prefs.remove('active_call');
+        await Get.find<ProfileList>().fetchProfileData();
+        // setState(() {
+        //   _isLoading = false;
+        // });
+
+        print("Cleared active_call from storage");
+        Get.offAll(const WalletPage());
       } else {
         showToast("Failed to complete profile. Please try again later.");
       }

@@ -157,6 +157,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       dio.Response data = await apiRequest.send();
       print("dataprice===========$data");
       if (data.statusCode == 201) {
+        // socketController.closeSession(
+        //   senderId: widget.userId,
+        //   requestType: "chat",
+        //   message: "User Cancel Can",
+        //   data: {
+        //     "userId": widget.userId,
+        //     'communication_id': widget.callID,
+        //   },
+        // );
         await prefs.remove('active_call');
         await Get.find<ProfileList>().fetchProfileData();
       }

@@ -44,8 +44,14 @@ class SocketController extends GetxController {
     socket?.on('accepted', (data) {
       print(data);
       if (_iAmWorkScreen) {
+        socket?.emit('closeSession', {
+          'userId': data['userId'],
+          'userType': data['userType'],
+          'requestType': data['requestType'],
+          'data': data,
+        });
         print("User is busy, ignoring accepted request.");
-        return;
+        // return;
       }
       final profileController = Get.find<ProfileList>();
       try {
@@ -126,6 +132,7 @@ class SocketController extends GetxController {
                     'requestType': data['requestType'],
                     'data': data,
                   });
+                  Get.back();
                 },
                 child: const Text("No"),
               ),
