@@ -161,15 +161,6 @@ class _AudioCallState extends State<AudioCall> {
       print("datatttttttttt$data");
       if (data.statusCode == 201) {
         print("Data sent successfully");
-        // socketController.closeSession(
-        //   senderId: widget.userid,
-        //   requestType: "audio",
-        //   message: "User Cancel Can",
-        //   data: {
-        //     "userId": widget.userid,
-        //     'communication_id': widget.callID,
-        //   },
-        // );
         await Get.find<ProfileList>().fetchProfileData();
         setState(() {
           isLoading = false;
