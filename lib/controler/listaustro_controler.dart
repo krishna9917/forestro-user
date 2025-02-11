@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:get/get.dart';
