@@ -165,15 +165,7 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-        // socketController.closeSession(
-        //   senderId: widget.userid,
-        //   requestType: "video",
-        //   message: "User Cancel Can",
-        //   data: {
-        //     "userId": widget.userid,
-        //     'communication_id': widget.callID,
-        //   },
-        // );
+       
         await prefs.remove('active_call');
         await Get.find<ProfileList>().fetchProfileData();
         // setState(() {
