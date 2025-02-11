@@ -114,7 +114,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
     await SharedPreferences.getInstance().then((prefs) {
-      // Store the session
       String sessionData = jsonEncode({
         'call_id': widget.callID,
         'astro_per_min_price': widget.price,
