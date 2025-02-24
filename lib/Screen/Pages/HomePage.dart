@@ -92,8 +92,6 @@ class _HomePageState extends State<HomePage> {
         print("No session data found");
         return;
       }
-
-      // Decode the stored session JSON
       Map<String, dynamic> sessionMap = jsonDecode(sessionData);
 
       // Extract values
