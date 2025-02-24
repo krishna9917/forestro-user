@@ -105,8 +105,6 @@ class _HomePageState extends State<HomePage> {
           'time': totalTime,
         }),
       );
-
-      // Send API request
       dio.Response data = await apiRequest.send();
       print("API Response: $data");
 
