@@ -74,9 +74,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                 );
               },
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             const Center(
               child: Text("Online Puja",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
@@ -97,31 +95,36 @@ class _OnlinePujaState extends State<OnlinePuja>
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Form(
               key: formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Name field
                   InputBox(
                     title: "Name",
                     controller: nameController,
-                    hintText: "Enter Name ",
+                    hintText: "Enter Name",
                     validator: (inp) {
-                      if (inp!.isEmpty) {
+                      if (inp == null || inp.isEmpty) {
                         return "Enter Your Name";
                       }
                       return null;
                     },
                   ),
+                  // Puja Date field
                   TitleWidget(
                     title: "Puja Date",
                     child: TextFormField(
                       controller: pujaDateController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a Puja date';
+                        }
+                        return null;
+                      },
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -129,7 +132,6 @@ class _OnlinePujaState extends State<OnlinePuja>
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100),
                         );
-
                         if (pickedDate != null) {
                           String formattedDate =
                               "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
@@ -149,11 +151,18 @@ class _OnlinePujaState extends State<OnlinePuja>
                     ),
                   ),
                   Gap(2.h),
+                  // Puja Time field
                   TitleWidget(
                     title: "Puja Time",
                     child: TextFormField(
                       controller: birthtimeController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a Puja time';
+                        }
+                        return null;
+                      },
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "12:00 PM",
@@ -166,7 +175,6 @@ class _OnlinePujaState extends State<OnlinePuja>
                               context: context,
                               initialTime: TimeOfDay.now(),
                             );
-
                             if (pickedTime != null) {
                               String formattedTime = pickedTime.format(context);
                               setState(() {
@@ -180,6 +188,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                     ),
                   ),
                   Gap(2.h),
+                  // Kind of Puja selection field wrapped in a FormField
                   const Padding(
                     padding: EdgeInsets.only(left: 20, bottom: 5),
                     child: Text(
@@ -187,39 +196,72 @@ class _OnlinePujaState extends State<OnlinePuja>
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
-                    height: 50,
-                    child: SelectBox(
-                      list: const [
-                        "Hindu Puja",
-                        "Havan",
-                        "Yagna",
-                        "Pitra Paksha",
-                        "Navratri",
-                        "Diwali",
-                        "Holi",
-                        "Makar Sankranti",
-                        "Kumbh Mela",
-                        "Rudra Abhisek",
-                        "Ganesh Chaturthi",
-                        "Durga Puja",
-                        "Janmashtami"
-                      ],
-                      onChanged: (e) {
-                        setState(() {
-                          puja = e;
-                        });
-                      },
-                      hint: "Select",
-                      initialItem: puja,
-                    ),
+                  FormField<String>(
+                    initialValue: puja,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a type of Puja';
+                      }
+                      return null;
+                    },
+                    builder: (state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            child: SelectBox(
+                              list: const [
+                                "Hindu Puja",
+                                "Havan",
+                                "Yagna",
+                                "Pitra Paksha",
+                                "Navratri",
+                                "Diwali",
+                                "Holi",
+                                "Makar Sankranti",
+                                "Kumbh Mela",
+                                "Rudra Abhisek",
+                                "Ganesh Chaturthi",
+                                "Durga Puja",
+                                "Janmashtami"
+                              ],
+                              onChanged: (e) {
+                                setState(() {
+                                  puja = e;
+                                  state.didChange(e);
+                                });
+                              },
+                              hint: "Select",
+                              initialItem: puja,
+                            ),
+                          ),
+                          if (state.hasError)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 5),
+                              child: Text(
+                                state.errorText!,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                   Gap(3.h),
+                  // Issue description field
                   InputBox(
                     title: "Please Write Your Issue",
                     hintText: "Write here...",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please describe your issue';
+                      }
+                      return null;
+                    },
                   ),
                   Gap(2.h),
+                  // Submit button
                   SizedBox(
                     width: scrWeight(context),
                     height: 52,

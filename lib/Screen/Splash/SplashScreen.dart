@@ -82,10 +82,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _initializeAppComponents() async {
     Get.put(BannerList()).fetchProfileData();
-    await chatzegocloud();
+
     Get.find<ProfileList>().fetchProfileData();
 
     Timer.periodic(const Duration(seconds: 1), (timer) async {
+      // await chatzegocloud();
       Get.find<GetAstrologerProfile>().astroData();
       Get.find<PendingRequest>().pendingRequestData();
     });
