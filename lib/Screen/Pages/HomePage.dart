@@ -85,7 +85,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> calculatePrice() async {
     try {
-      // Retrieve session data from SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? sessionData = prefs.getString('active_call');
 
