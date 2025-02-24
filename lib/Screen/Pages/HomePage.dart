@@ -93,8 +93,6 @@ class _HomePageState extends State<HomePage> {
         return;
       }
       Map<String, dynamic> sessionMap = jsonDecode(sessionData);
-
-      // Extract values
       String callId = sessionMap['call_id'] ?? "";
       String astroPerMinPrice = sessionMap['astro_per_min_price'] ?? "";
       String totalTime = sessionMap['totaltime'] ?? "";
