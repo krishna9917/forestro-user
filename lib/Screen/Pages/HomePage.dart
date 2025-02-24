@@ -96,8 +96,6 @@ class _HomePageState extends State<HomePage> {
       String callId = sessionMap['call_id'] ?? "";
       String astroPerMinPrice = sessionMap['astro_per_min_price'] ?? "";
       String totalTime = sessionMap['totaltime'] ?? "";
-
-      // Prepare API request
       ApiRequest apiRequest = ApiRequest(
         "$apiUrl/communication-charges",
         method: ApiMethod.POST,
