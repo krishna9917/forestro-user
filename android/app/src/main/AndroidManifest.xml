@@ -62,7 +62,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
+<meta-data
+  android:name="com.onesignal.NotificationChannel.DEFAULT"
+  android:value="c41dd894-ae72-4604-8be1-09070787599c"/>
             <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBXwHH1AuqJEY9yoxCPD_e04t9hEiYM9SQ"/>
 

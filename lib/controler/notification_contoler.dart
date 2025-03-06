@@ -28,7 +28,6 @@ class NotificationService {
             "body": "",
           },
           "data": {}
-          
         }),
       );
 
@@ -160,7 +159,9 @@ class NotificationService {
         'en':
             'New Session Alert: "You have a $servicetype request from ${profileController.profileDataList.first.name ?? 'NA'}. Respond now!'
       },
-      // 'android_sound': 'alert',
+      'sound': 'alert',
+      "android_sound": "abcd",
+      'android_channel_id': '85714e81-732c-4a19-8e48-c843dde6a9fa',
     });
 
     print("body=======$body");
