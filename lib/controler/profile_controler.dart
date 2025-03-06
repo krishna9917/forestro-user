@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:foreastro/Screen/Auth/LoginScreen.dart';
+import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/profile_model.dart';
 
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,6 +47,12 @@ class ProfileList extends GetxController {
         }
       }
     } catch (e) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      await GoogleSignIn().signOut();
+      Get.offAll(() => const LoginScreen());
+      showToast("Plese Login");
+      print("featchthe error Bloc list $e");
       print(e);
     } finally {
       _isLoading.value = false;

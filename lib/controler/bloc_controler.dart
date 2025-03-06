@@ -55,12 +55,12 @@ class BlocList extends GetxController {
         // }
       }
     } catch (e) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-      await GoogleSignIn().signOut();
-      Get.offAll(() => const LoginScreen());
-      showToast("Plese Login");
-      print("featchthe error Bloc list $e");
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.clear();
+      // await GoogleSignIn().signOut();
+      // Get.offAll(() => const LoginScreen());
+      // showToast("Plese Login");
+      // print("featchthe error Bloc list $e");
     } finally {
       _isLoading.value = false;
     }

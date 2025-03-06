@@ -198,7 +198,7 @@ class _WalletPageState extends State<WalletPage> {
         appBar: AppBar(
           title: Text("Wallet Recharge".toUpperCase()),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Get.offAll(const HomePage());
             },
