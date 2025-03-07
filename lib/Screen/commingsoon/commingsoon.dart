@@ -13,14 +13,13 @@ class ComingSoonAstrologerPage extends StatefulWidget {
 class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
     with SingleTickerProviderStateMixin {
   DateTime eventDate = DateTime(2024, 10, 3);
-  late AnimationController _controller; 
+  late AnimationController _controller;
   List<String> astrologerImages = [
     'assets/pandit.png',
     'assets/pandit.png',
     'assets/pandit.png',
-    
   ];
-  late Timer _timer; 
+  late Timer _timer;
   int daysLeft = 0;
   int hoursLeft = 0;
   int minutesLeft = 0;
@@ -37,7 +36,7 @@ class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
   }
 
   void _startCountdown() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateCountdown();
     });
   }
@@ -147,7 +146,7 @@ class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
 
 Widget _buildTimeBox(int timeValue, String label) {
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(12),
@@ -156,7 +155,7 @@ Widget _buildTimeBox(int timeValue, String label) {
           color: Colors.grey.withOpacity(0.3),
           spreadRadius: 2,
           blurRadius: 5,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ],
     ),
