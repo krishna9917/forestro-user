@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
-import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -16,7 +14,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'dart:async';
 
 class AudioCall extends StatefulWidget {
   const AudioCall(
