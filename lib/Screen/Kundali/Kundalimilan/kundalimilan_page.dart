@@ -28,9 +28,7 @@ class KundaliMilan extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-            
               _buildResponseDetails(),
-           
             ],
           ),
         ),
@@ -208,7 +206,7 @@ class KundaliMilan extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Card(
-        elevation: 0, // Remove the default card shadow if necessary
+        elevation: 0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         child: Padding(
