@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:foreastro/Components/Widgts/bg_gradient_widget.dart';
 import 'package:foreastro/Components/Widgts/custambutton.dart';
 import 'package:foreastro/Components/fairebase/initFirebase.dart';
