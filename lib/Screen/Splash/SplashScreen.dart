@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
@@ -10,7 +11,9 @@ import 'package:foreastro/controler/baner_controler.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,10 +32,13 @@ class _SplashScreenState extends State<SplashScreen>
   final profileController = Get.find<ProfileList>();
   bool _isInternetChecked = false;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  String _version = '';
+  String _buildNumber = '';
 
   @override
   void initState() {
     super.initState();
+    _loadPackageInfo();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 60),
@@ -56,6 +62,16 @@ class _SplashScreenState extends State<SplashScreen>
     // requestPermissions();
   }
 
+  Future<void> _loadPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;
+      _buildNumber = packageInfo.buildNumber;
+    });
+    await version();
+    print("build version number =======>>>>>>>>>>>>$_version $_buildNumber");
+  }
+
   Future<void> _checkInternetAndInitialize() async {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult.contains(ConnectivityResult.none)) {
@@ -68,6 +84,34 @@ class _SplashScreenState extends State<SplashScreen>
     _isInternetChecked = true;
     _setupConnectivityListener();
     await _initializeAppComponents();
+  }
+
+  Future version() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      String? user_id = prefs.getString('user_id');
+
+      ApiRequest apiRequest = ApiRequest(
+        "$apiUrl/user-version-update",
+        method: ApiMethod.POST,
+        body: packFormData(
+          {
+            'user_id': user_id,
+            "version": "$_version $_buildNumber",
+          },
+        ),
+      );
+      dio.Response data = await apiRequest.send();
+
+      if (data.statusCode == 201) {
+        // showToast("Follow successful.");
+      } else {
+        // showToast("Some t");
+      }
+    } catch (e) {
+      // showToast(tosteError);
+    }
   }
 
   void _setupConnectivityListener() {
