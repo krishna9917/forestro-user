@@ -12,6 +12,7 @@ import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:foreastro/videocall/const.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,7 +44,14 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 60),
     )..repeat();
-
+    Timer(const Duration(seconds: 1), () async {
+      await ZIMKit().init(
+          notificationConfig: ZegoZIMKitNotificationConfig(
+              androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(),
+              iosNotificationConfig: ZegoZIMKitIOSNotificationConfig()),
+          appID: MyConst.appId,
+          appSign: MyConst.appSign);
+    });
     _checkInternetAndInitialize();
     // Get.put(BannerList()).fetchProfileData();
     // // Get.find<BannerList>().fetchProfileData();
@@ -139,10 +147,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> chatzegocloud() async {
-    await ZIMKit().init(
-        appID: 2007373594,
-        appSign:
-            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 

@@ -120,17 +120,13 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchAndInitProfile() async {
     await chatzegocloud();
     await Get.find<ProfileList>().fetchProfileData();
+  }
+
+  Future<void> chatzegocloud() async {
     // await ZIMKit().init(
     //     appID: 2007373594,
     //     appSign:
     //         '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
-  }
-
-  Future<void> chatzegocloud() async {
-    await ZIMKit().init(
-        appID: 2007373594,
-        appSign:
-            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 
@@ -153,12 +149,15 @@ class _HomePageState extends State<HomePage> {
     }
 
     print("name=======$name $user_id $profile  --   $user_id-user");
-
-    await ZIMKit().connectUser(
-      id: "$user_id-user",
-      name: name,
-      avatarUrl: profile,
-    );
+    try {
+      await ZIMKit().connectUser(
+        id: "$user_id-user",
+        name: name,
+        avatarUrl: profile,
+      );
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   Future<void> _filterAstrologers(String query) async {
