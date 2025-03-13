@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     fetchAndInitProfile();
+
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BannerList()).fetchProfileData();
     Get.put(BlocList()).blocData();
@@ -413,7 +414,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
 
-                SingleChildScrollView(
+                const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [

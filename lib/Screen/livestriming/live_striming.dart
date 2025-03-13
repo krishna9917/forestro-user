@@ -23,14 +23,12 @@ class LivePage extends StatelessWidget {
 
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveStreaming(
-        appID:
-            2007373594, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
+        appID: 2007373594,
         appSign:
-            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
+            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae',
         userID: user_id.toString(),
         userName: name.toString(),
         liveID: liveID,
-
         config: isHost
             ? ZegoUIKitPrebuiltLiveStreamingConfig.host()
             : ZegoUIKitPrebuiltLiveStreamingConfig.audience(),

@@ -274,10 +274,16 @@ class SocketController extends GetxController {
     });
 
     socket?.on('liveFeeds', (data) {
+      print("liveAstrologers=====$data");
       liveAstrologers.assignAll(List<Map<String, dynamic>>.from(data));
+      // update();
     });
   }
 
+//  endLiveSession() {
+//     socket?.emit("endLiveSession");
+//     onWorkEnd();
+//   }
   void sendNewRequest(
       {required String userId, required String requestType, required data}) {
     print("datatttt=======>>>$data");

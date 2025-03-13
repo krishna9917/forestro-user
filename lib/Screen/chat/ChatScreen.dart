@@ -51,12 +51,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final AudioPlayer player = AudioPlayer();
   bool _isAppActive = true;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  final profileController = Get.find<ProfileList>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     sessionController = Get.put(SessionController());
+    chatzegocloud();
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
@@ -84,6 +86,43 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         _timer.cancel();
       }
     });
+  }
+
+  Future<void> chatzegocloud() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? user_id = prefs.getString('user_id');
+
+    if (user_id == null) {
+      print('User ID not found in SharedPreferences');
+      return;
+    }
+
+    String profile = profileController.profileDataList.isNotEmpty
+        ? profileController.profileDataList.first.profileImg
+        : '';
+
+    String name = profileController.profileDataList.isNotEmpty
+        ? profileController.profileDataList.first.name
+        : '';
+
+    if (name.isEmpty) {
+      print("Name not found");
+      return;
+    }
+
+    print("name=======$name $user_id $profile  --   $user_id-user");
+    var user = ZIMKit().currentUser;
+    if (user == null) {
+      try {
+        await ZIMKit().connectUser(
+          id: "$user_id-user",
+          name: name,
+          avatarUrl: profile,
+        );
+      } catch (e) {
+        print("Error: $e");
+      }
+    }
   }
 
   Future<void> playBeepSound() async {
@@ -182,6 +221,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    if (ZIMKit().currentUser != null) {
+      ZIMKit().disconnectUser();
+    }
     if (!isSessionEnded) {
       endChatSession();
     }

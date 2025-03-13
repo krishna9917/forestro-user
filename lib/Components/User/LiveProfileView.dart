@@ -17,6 +17,7 @@ class LiveProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final socketController = Get.find<SocketController>();
+    // Removed the clear() call here
 
     return Obx(() {
       final liveAstrologers = socketController.liveAstrologers;
