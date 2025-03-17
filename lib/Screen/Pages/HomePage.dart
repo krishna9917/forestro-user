@@ -35,7 +35,6 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
-import 'package:interactive_bottom_sheet/interactive_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -294,7 +293,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
-                  navigate.push(routeMe(const PendingRequestScreen()));
+                  navigate.push(routeMe(const NotificationPage()));
                 },
                 child: Badge(
                   backgroundColor: AppColor.primary,
