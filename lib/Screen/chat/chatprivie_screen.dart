@@ -34,9 +34,11 @@ class PreviewChatScreen extends StatelessWidget {
       child: ZIMKitMessageListPage(
         // showOnly: true,
         showPickMediaButton: false,
+
         showMoreButton: false,
         showPickFileButton: false,
         messageInputKeyboardType: TextInputType.none,
+
         inputBackgroundDecoration: const BoxDecoration(
           color: Colors.transparent,
         ),
@@ -84,6 +86,7 @@ class PreviewChatScreen extends StatelessWidget {
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
+          enabled: false,
           contentPadding: EdgeInsets.symmetric(horizontal: 0),
         ),
         showRecordButton: false,
