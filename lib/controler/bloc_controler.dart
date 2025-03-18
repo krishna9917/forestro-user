@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/block_model.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BlocList extends GetxController {
