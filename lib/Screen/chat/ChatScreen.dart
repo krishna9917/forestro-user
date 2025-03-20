@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/alertdilogbox.dart';
 import 'package:foreastro/Components/enum/enum.dart';
-import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/controler/profile_controler.dart';
@@ -235,8 +234,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused ||
+    print('AppLifecycleState changed to: $state');
+    if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
       if (!isSessionEnded) {
         endChatSession();
