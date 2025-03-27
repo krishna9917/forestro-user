@@ -154,7 +154,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           final Data? profileData;
           Get.find<ProfileList>().fetchProfileData();
         });
-        navigate.push(routeMe(ProfilePage()));
+        Get.off(() => const ProfilePage());
+        // navigate.pus(routeMe(const ProfilePage()));
         showToast("Profile Updated Successfully");
         print("API request successful: ${data.data}");
       } else {

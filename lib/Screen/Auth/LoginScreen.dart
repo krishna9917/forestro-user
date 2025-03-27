@@ -489,7 +489,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //         ),
                     // ),
 
-                    Gap(5.h),
+                    Gap(15.h),
 
                     /// Terms and Conditions
                     Padding(
