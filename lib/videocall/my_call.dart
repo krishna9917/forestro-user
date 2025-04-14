@@ -159,17 +159,11 @@ class _MyCallState extends State<MyCall> {
       );
       dio.Response data = await apiRequest.send();
       if (data.statusCode == 201) {
-       
         await prefs.remove('active_call');
         await Get.find<ProfileList>().fetchProfileData();
-        // setState(() {
-        //   _isLoading = false;
-        // });
-
-        print("Cleared active_call from storage");
         Get.offAll(const WalletPage());
       } else {
-        showToast("Failed to complete profile. Please try again later.");
+        // showToast("Failed to complete profile. Please try again later.");
       }
     } catch (e) {}
   }
