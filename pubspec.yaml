@@ -1,6 +1,6 @@
 name: foreastro
 description: "Fore Astro App Bonwic"
-publish_to: "none" 
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -79,13 +79,9 @@ dependencies:
   in_app_update: ^4.2.3
   interactive_bottom_sheet: ^1.0.0
   connectivity_plus: ^6.1.2
-  audioplayers: ^6.1.0 
-  
-  
-  
-  
-  
-  
+  audioplayers: ^6.1.0
+  flutter_volume_controller: ^1.2.0
+ 
 
 dev_dependencies:
   flutter_test:
@@ -93,8 +89,8 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   firebase_analytics: ^10.10.0
 flutter_icons:
-  android: "launcher_icon" 
-  image_path: "assets/astro.png" 
+  android: "launcher_icon"
+  image_path: "assets/astro.png"
   # android: true
   ios: true
 
@@ -108,6 +104,3 @@ flutter:
     - assets/logo/
     - assets/icons/tiny/
     - assets/icons/bottambar/
-    
-
-
