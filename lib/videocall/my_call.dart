@@ -108,10 +108,6 @@ class _MyCallState extends State<MyCall> {
   }
 
   Future<void> endChatSession() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
-
     endTime = DateTime.now();
     Duration duration = endTime.difference(startTime);
 
@@ -124,14 +120,12 @@ class _MyCallState extends State<MyCall> {
         "${seconds.toString().padLeft(2, '0')}";
 
     await SharedPreferences.getInstance().then((prefs) {
-      // Store the session
       String sessionData = jsonEncode({
         'call_id': widget.callID,
         'astro_per_min_price': widget.price,
         'totaltime': totaltime,
       });
       prefs.setString('active_call', sessionData).then((_) {
-        // Retrieve and print the stored session
         String? storedSession = prefs.getString('active_call');
         print("Stored Session: $storedSession");
       });
