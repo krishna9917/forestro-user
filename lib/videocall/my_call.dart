@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
 import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:foreastro/Utils/Quick.dart';
