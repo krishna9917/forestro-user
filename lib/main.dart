@@ -28,7 +28,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  
+}
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -44,7 +46,6 @@ Future<void> main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Notification();
-
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null) {}

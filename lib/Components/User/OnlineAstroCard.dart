@@ -122,7 +122,9 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          astrologer.name ?? 'No Name',
+                          (astrologer.name != null && astrologer.name!.isNotEmpty)
+                              ? '${astrologer.name![0].toUpperCase()}${astrologer.name!.substring(1)}'
+                              : 'No Name',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
@@ -131,6 +133,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+
                         // const SizedBox(height: 8),
                         Text(
                           astrologer.specialization ?? '',

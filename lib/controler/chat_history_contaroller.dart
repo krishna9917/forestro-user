@@ -32,9 +32,11 @@ class ChatHistory extends GetxController {
         final responseData = response.data;
         if (responseData != null && responseData['status'] == true) {
           final dataList = responseData['data'];
+          print("parse====$dataList");
           if (dataList != null && dataList is List) {
             List<Data> parsedDataList =
                 dataList.map((item) => Data.fromJson(item)).toList();
+
             chatHistoryDataList.value = parsedDataList;
           }
         }

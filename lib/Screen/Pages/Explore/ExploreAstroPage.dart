@@ -401,7 +401,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                           Column(children: [
                             const SizedBox(height: 5),
                             Text(
-                              addLineBreaks(astrologer.name ?? '', 1),
+                              addLineBreaks( (astrologer.name != null && astrologer.name!.isNotEmpty)
+                                  ? '${astrologer.name![0].toUpperCase()}${astrologer.name!.substring(1)}'
+                                  : 'No Name', 1),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,

@@ -224,7 +224,9 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             children: [
                               Text(
                                 addLineBreaks(
-                                    widget.astrologer?.name ?? 'No Name', 2),
+                                  (widget.astrologer!.name != null && widget. astrologer!.name!.isNotEmpty)
+                                      ? '${widget. astrologer!.name![0].toUpperCase()}${widget.astrologer!.name!.substring(1)}'
+                                      : 'No Name',2),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,

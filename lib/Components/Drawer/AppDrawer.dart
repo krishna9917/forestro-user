@@ -71,6 +71,12 @@ class _AppDrawerState extends State<AppDrawer> {
     }
   }
 
+  String capitalize(String text) {
+    if (text.isEmpty) return '';
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final profileController = Get.find<ProfileList>();
@@ -144,9 +150,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                 SizedBox(
                                   width: scrWeight(context) / 2 - 20,
                                   child: Text(
-                                    profileController
-                                            .profileDataList.first.name ??
-                                        'NA',
+                                    capitalize(profileController.profileDataList.first.name ?? 'NA'),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: const TextStyle(
@@ -155,6 +159,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                     ),
                                   ),
                                 ),
+
                                 //  Text(
                                 //  profileController
                                 //             .profileDataList.first. ??

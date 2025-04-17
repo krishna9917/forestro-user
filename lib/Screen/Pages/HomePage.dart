@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                       if (bannerList.isNotEmpty) {
                         return CarouselSlider(
                           options: CarouselOptions(
-                            height: 160.0,
+                            height: 175.0,
                             viewportFraction: 0.9,
                             autoPlay: true,
                           ),
@@ -491,7 +491,7 @@ class _HomePageState extends State<HomePage> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container(
-                          height: MediaQuery.of(context).size.height * 0.25,
+                          height: MediaQuery.of(context).size.height * 0.17,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: List.generate(
