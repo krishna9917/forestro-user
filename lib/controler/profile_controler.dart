@@ -43,6 +43,7 @@ class ProfileList extends GetxController {
           final data = responseData['data'];
           if (data != null) {
             _profileDataList.value = [Data.fromJson(data)];
+            print(_profileDataList.value);
           }
         }
       }

@@ -7,6 +7,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
@@ -280,40 +281,45 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+             Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                   Text(
                     "Recharge Wallet",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                     style: GoogleFonts.inter(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
                   ),
-                  const Text("Choose from the available quick recharge packs"),
-                  const SizedBox(height: 30),
-                  TextField(
-                    controller: _amountController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 20),
-                      border: InputBorder.none,
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
+                  Text("Choose from the available quick recharge packs",style: Theme.of(context).textTheme.titleSmall, ),
+
+                  // const SizedBox(height: 30),
+                  // TextField(
+                  //  enabled: false,
+                  //   controller: _amountController,
+                  //   decoration: InputDecoration(
+                  //     contentPadding:
+                  //         const EdgeInsets.symmetric(horizontal: 20),
+                  //     border: InputBorder.none,
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(0.0),
+                  //     ),
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(0.0),
+                  //     ),
+                  //   ),
+                  //   keyboardType: TextInputType.number,
+                  // ),
                   Gap(3.h),
                   GridView.count(
                       crossAxisCount: 3,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 15,
                       childAspectRatio: 1.9,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: List.generate(amountList.length, (index) {
                         return GestureDetector(

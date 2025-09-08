@@ -1,9 +1,9 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/bonwictechnologies/Documents/personal/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/bonwictechnologies/Documents/Bonwic/AstroUser_Bonwic-main"
+export "FLUTTER_ROOT=F:\flutter_windows_3.27.0-stable\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\user\Downloads\New folder (5)\AstroUser_Bonwic-main\AstroUser_Bonwic-main"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib/main.dart"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"

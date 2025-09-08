@@ -8,6 +8,7 @@ var outlineInputBorder = OutlineInputBorder(
 );
 
 ThemeData appTheme = ThemeData(
+    fontFamily: "inter",
     brightness: Brightness.light,
     useMaterial3: true,
     scaffoldBackgroundColor: AppColor.bgcolor,

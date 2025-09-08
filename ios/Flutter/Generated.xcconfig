@@ -1,12 +1,12 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/bonwictechnologies/Documents/personal/flutter
-FLUTTER_APPLICATION_PATH=/Users/bonwictechnologies/Documents/Bonwic/AstroUser_Bonwic-main
+FLUTTER_ROOT=F:\flutter_windows_3.27.0-stable\flutter
+FLUTTER_APPLICATION_PATH=C:\Users\user\Downloads\New folder (5)\AstroUser_Bonwic-main\AstroUser_Bonwic-main
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_TARGET=lib\main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
-EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 arm64
 EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true

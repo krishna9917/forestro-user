@@ -456,6 +456,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                   children: [
                                                     ElevatedButton(
                                                         onPressed: () {
+                                                          print(" data is ${profileController.profileDataList.first.status}");
                                                           if (profileController
                                                               .profileDataList
                                                               .isNotEmpty) {
@@ -471,7 +472,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                                         .astrologer!
                                                                         .videoChargesPerMin) ??
                                                                     0;
-
+                                                           print(videoChargesPerMin);
                                                             if (videoChargesPerMin >
                                                                 0) {
                                                               var totalMinutes =

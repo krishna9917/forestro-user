@@ -81,7 +81,7 @@ dependencies:
   connectivity_plus: ^6.1.2
   audioplayers: ^6.1.0
   flutter_volume_controller: ^1.2.0
- 
+  google_fonts:
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +96,7 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/
     - assets/icons/
@@ -104,3 +105,10 @@ flutter:
     - assets/logo/
     - assets/icons/tiny/
     - assets/icons/bottambar/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Inter_18pt-Regular.ttf
+
+
