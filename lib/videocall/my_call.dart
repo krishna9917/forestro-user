@@ -16,18 +16,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class MyCall extends StatefulWidget {
-  const MyCall(
-      {super.key,
-      required this.callID,
-      required this.userid,
-      required this.username,
-      required this.price,
-      required this.totalMinutes});
+  const MyCall({
+    super.key,
+    required this.callID,
+    required this.userid,
+    required this.username,
+    required this.price,
+    required this.totalMinutes,
+    this.isAstrologer = false, // <-- pass true if this widget represents the astrologer
+  });
+
   final String callID;
   final String userid;
   final String username;
   final String price;
   final double totalMinutes;
+  final bool isAstrologer;
 
   @override
   State<MyCall> createState() => _MyCallState();
@@ -35,15 +39,18 @@ class MyCall extends StatefulWidget {
 
 class _MyCallState extends State<MyCall> {
   final SocketController socketController = Get.find<SocketController>();
+
   late DateTime startTime;
   late DateTime endTime;
-  late Timer _timer;
-  late int _remainingSeconds;
+  Timer? _timer;
+  int _remainingSeconds = 0;
   bool _isLoading = false;
   bool _isBeeping = false;
   Color countdownColor = Colors.white;
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  AudioPlayer player = AudioPlayer();
+
+  // single audio player (used for beep)
+  final AudioPlayer _player = AudioPlayer();
+
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
@@ -52,132 +59,163 @@ class _MyCallState extends State<MyCall> {
 
     startTime = DateTime.now();
     _remainingSeconds = (widget.totalMinutes * 60).toInt();
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> results) {
-      if (results.isNotEmpty && results.first == ConnectivityResult.none) {
-        socketController.closeSession(
-          senderId: widget.userid,
-          requestType: "video",
-          message: "User Cancel Can",
-          data: {
-            "userId": widget.userid,
-            'communication_id': widget.callID,
-          },
-        );
-        print("No internet connection detected. Ending call...");
-        endChatSession();
-        Get.offAll(const NoInternetPage());
-      }
-    });
 
+    // Connectivity listener: only once, in initState
+    _connectivitySubscription =
+        Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> results) {
+          // when there's no connectivity (no active networks)
+          if (results.isEmpty || results.every((r) => r == ConnectivityResult.none)) {
+            debugPrint("No internet connection detected. Ending call...");
+            if (widget.isAstrologer) {
+              socketController.closeSession(
+                senderId: widget.userid,
+                requestType: "video",
+                message: "No Internet",
+                data: {
+                  "userId": widget.userid,
+                  "communication_id": widget.callID,
+                },
+              );
+            }
+            endChatSession();
+            if (mounted) {
+              Get.offAll(const NoInternetPage());
+            }
+          }
+        });
+
+
+    // Timer: counts down to 0 properly
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 60) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      if (_remainingSeconds > 0) {
         setState(() {
           _remainingSeconds--;
-
-          if (_remainingSeconds == 120 && !_isBeeping) {
-            // startBeeping();
-            countdownColor =
-                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
+          // Start beeping when 120 seconds left (2 minutes)
+          if (_remainingSeconds <= 120 && !_isBeeping) {
+            _isBeeping = true;
+            countdownColor = Colors.red;
+            // fire-and-forget beep (we await inside but don't block UI)
             playBeepSound();
           }
         });
-      } else if (_remainingSeconds == 60) {
-        if (_timer.isActive) {
-          _timer.cancel();
-        }
+      } else {
+        // time's up
+        timer.cancel();
         setState(() {
+          // call end session (it handles preferences and API)
           endChatSession();
         });
       }
     });
   }
 
+  /// Play a short beep sound up to 3 times.
+  /// Note: small, defensive implementation — retries setAsset only once.
   Future<void> playBeepSound() async {
     try {
-      await player.setAsset('assets/bg/beep.mp3');
+      await _player.setAsset('assets/bg/beep.mp3');
+      // play beep 3 times with short gap; ensure each play seeks to start
       for (int i = 0; i < 3; i++) {
-        await player.play();
-        await Future.delayed(Duration(milliseconds: 500));
+        if (!mounted) return;
+        await _player.seek(Duration.zero);
+        await _player.play();
+        // wait a short time; if beep is longer, this simply waits
+        await Future.delayed(const Duration(milliseconds: 600));
       }
     } catch (e) {
-      print('Audio play error: $e');
+      debugPrint('Audio play error: $e');
     }
   }
 
   Future<void> endChatSession() async {
+    // guard: avoid multiple calls
+    if (!mounted) {
+      // still want to compute price even if not mounted? we'll still run
+    }
+
+    // set endTime and compute elapsed
     endTime = DateTime.now();
-    Duration duration = endTime.difference(startTime);
+    final Duration duration = endTime.difference(startTime);
 
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes % 60;
-    int seconds = duration.inSeconds % 60;
+    final int hours = duration.inHours;
+    final int minutes = duration.inMinutes.remainder(60);
+    final int seconds = duration.inSeconds.remainder(60);
 
-    String totaltime = "${hours.toString().padLeft(2, '0')}:"
+    final String totaltime = "${hours.toString().padLeft(2, '0')}:"
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
 
-    await SharedPreferences.getInstance().then((prefs) {
-      String sessionData = jsonEncode({
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String sessionData = jsonEncode({
         'call_id': widget.callID,
         'astro_per_min_price': widget.price,
         'totaltime': totaltime,
       });
-      prefs.setString('active_call', sessionData).then((_) {
-        String? storedSession = prefs.getString('active_call');
-        print("Stored Session: $storedSession");
-      });
-    });
+      await prefs.setString('active_call', sessionData);
+      debugPrint("Stored Session: $sessionData");
+    } catch (e) {
+      debugPrint("Failed to store active_call: $e");
+    }
+
     await calculateprice(totaltime);
-    // socketController.closeSession(
-    //   senderId: widget.userid,
-    //   requestType: "chat",
-    //   message: "User Cancel Can",
-    //   data: {
-    //     "userId": widget.userid,
-    //     'communication_id': widget.callID,
-    //   },
-    // );
   }
 
-  Future calculateprice(String totaltime) async {
+  Future<void> calculateprice(String totaltime) async {
     final prefs = await SharedPreferences.getInstance();
+    setState(() => _isLoading = true);
 
     try {
       ApiRequest apiRequest = ApiRequest(
         "$apiUrl/communication-charges",
         method: ApiMethod.POST,
-        body: packFormData(
-          {
-            'communication_id': widget.callID,
-            'astro_per_min_price': widget.price,
-            'time': totaltime,
-          },
-        ),
+        body: packFormData({
+          'communication_id': widget.callID,
+          'astro_per_min_price': widget.price,
+          'time': totaltime,
+        }),
       );
+
       dio.Response data = await apiRequest.send();
+
       if (data.statusCode == 201) {
+        // success: remove stored active_call and refresh profile
         await prefs.remove('active_call');
         await Get.find<ProfileList>().fetchProfileData();
-        Get.offAll(const WalletPage());
+        if (mounted) {
+          Get.offAll(const WalletPage());
+        }
       } else {
-        // showToast("Failed to complete profile. Please try again later.");
+        debugPrint(
+            "Failed to complete compute price: ${data.statusCode} ${data.data}");
+        // optional: showToast("Failed to complete profile. Please try again later.");
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("calculateprice error: $e");
+      // optional: showToast("Network error while calculating price.");
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
-
-  // String formatTime(int seconds) {
-  //   final minutes = seconds ~/ 60;
-  //   final remainingSeconds = seconds % 60;
-  //   return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-  // }
 
   @override
   void dispose() {
-    _timer.cancel();
-    _audioPlayer.dispose();
+    _timer?.cancel();
+    _connectivitySubscription?.cancel();
+    _player.dispose();
     super.dispose();
+  }
+
+  String formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -193,77 +231,87 @@ class _MyCallState extends State<MyCall> {
           events: ZegoUIKitPrebuiltCallEvents(
             user: ZegoCallUserEvents(
               onEnter: (p) {
-                showToast("${p.name} join in call");
+                showToast("${p.name} joined the call");
+              },
+              onLeave: (p) {
+                showToast("${p.name} left the call");
+
+                // If only one user left in room -> end session
+                try {
+                  if (ZegoUIKit().getAllUsers().length <= 1) {
+                    endChatSession();
+                  }
+                } catch (e) {
+                  debugPrint("Error checking users on leave: $e");
+                }
               },
             ),
             onCallEnd: (event, defaultAction) async {
-              await endChatSession();
-              // Get.offAll(const HomePage());
-
-              // socketController.closeSession(
-              //   senderId: widget.userid,
-              //   requestType: "chat",
-              //   message: "User Cancel Can",
-              //   data: {
-              //     "userId": widget.userid,
-              //     'communication_id': widget.callID,
-              //   },
-              // );
+              // If astrologer hung up -> destroy session (caller should pass isAstrologer)
+              if (widget.isAstrologer &&
+                  event.reason == ZegoCallEndReason.localHangUp) {
+                await endChatSession();
+              } else {
+                // default behavior for other cases
+                defaultAction();
+              }
             },
           ),
-          config: ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+          config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
             ..layout = ZegoLayout.pictureInPicture(
               isSmallViewDraggable: true,
               switchLargeOrSmallViewByClick: true,
-            ),
+            )
+
         ),
+
         // Countdown Timer Positioned on the Right Corner
-        // Positioned(
-        //   top: 30,
-        //   left: 10,
-        //   child: Container(
-        //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        //     decoration: BoxDecoration(
-        //       gradient: const LinearGradient(
-        //         colors: [
-        //           Color.fromARGB(255, 125, 122, 122),
-        //           Color.fromARGB(151, 234, 231, 227)
-        //         ],
-        //         begin: Alignment.topLeft,
-        //         end: Alignment.bottomRight,
-        //       ),
-        //       borderRadius: BorderRadius.circular(15),
-        //       boxShadow: [
-        //         BoxShadow(
-        //           color: Colors.black.withOpacity(0.2),
-        //           offset: const Offset(2, 4),
-        //           blurRadius: 6,
-        //         ),
-        //       ],
-        //     ),
-        //     child: Row(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         const Icon(
-        //           Icons.timer_outlined,
-        //           color: Colors.white,
-        //           size: 24,
-        //         ),
-        //         const SizedBox(width: 8),
-        //         Text(
-        //           formatTime(_remainingSeconds),
-        //           style: TextStyle(
-        //             color: countdownColor,
-        //             fontSize: 24,
-        //             fontWeight: FontWeight.bold,
-        //             fontFamily: 'RobotoMono',
-        //             decoration: TextDecoration.none,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        Positioned(
+          top: 30,
+          left: 10,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 125, 122, 122),
+                  Color.fromARGB(151, 234, 231, 227)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(2, 4),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.timer_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  formatTime(_remainingSeconds),
+                  style: TextStyle(
+                    color: countdownColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'RobotoMono',
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
 
         if (_isLoading)
           const Center(
