@@ -218,52 +218,52 @@ class _MyCallState extends State<MyCall> {
             ),
         ),
         // Countdown Timer Positioned on the Right Corner
-        Positioned(
-          top: 30,
-          left: 10,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 125, 122, 122),
-                  Color.fromARGB(151, 234, 231, 227)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: const Offset(2, 4),
-                  blurRadius: 6,
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.timer_outlined,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  formatTime(_remainingSeconds),
-                  style: TextStyle(
-                    color: countdownColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'RobotoMono',
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // Positioned(
+        //   top: 30,
+        //   left: 10,
+        //   child: Container(
+        //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        //     decoration: BoxDecoration(
+        //       gradient: const LinearGradient(
+        //         colors: [
+        //           Color.fromARGB(255, 125, 122, 122),
+        //           Color.fromARGB(151, 234, 231, 227)
+        //         ],
+        //         begin: Alignment.topLeft,
+        //         end: Alignment.bottomRight,
+        //       ),
+        //       borderRadius: BorderRadius.circular(15),
+        //       boxShadow: [
+        //         BoxShadow(
+        //           color: Colors.black.withOpacity(0.2),
+        //           offset: const Offset(2, 4),
+        //           blurRadius: 6,
+        //         ),
+        //       ],
+        //     ),
+        //     child: Row(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         const Icon(
+        //           Icons.timer_outlined,
+        //           color: Colors.white,
+        //           size: 24,
+        //         ),
+        //         const SizedBox(width: 8),
+        //         Text(
+        //           formatTime(_remainingSeconds),
+        //           style: TextStyle(
+        //             color: countdownColor,
+        //             fontSize: 24,
+        //             fontWeight: FontWeight.bold,
+        //             fontFamily: 'RobotoMono',
+        //             decoration: TextDecoration.none,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
 
         if (_isLoading)
           const Center(
