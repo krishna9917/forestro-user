@@ -1110,19 +1110,16 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          " Birth State Birth State Birth State Birth State Birth State",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          " Birth State Birth State Birth State Birth State Birth State",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          )
+                        CountryStateCityPicker(
+                            country: country,
+                            state: state,
+                            city: city,
+                            dialogColor: Colors.grey.shade200,
+                            textFieldDecoration: InputDecoration(
+                                fillColor: Colors.blueGrey.shade100,
+                                filled: true,
+                                suffixIcon: const Icon(Icons.arrow_downward_rounded),
+                                border: const OutlineInputBorder(borderSide: BorderSide.none))
                         ),
 
                         // CSCPicker(
