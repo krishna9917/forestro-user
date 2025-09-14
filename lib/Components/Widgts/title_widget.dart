@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
@@ -35,7 +36,7 @@ class TitleWidget extends StatelessWidget {
           padding: EdgeInsets.only(left: 5.w),
           child: Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            style: GoogleFonts.inter(
                   fontWeight: FontWeight.w500,
                 ),
           ),
@@ -45,7 +46,7 @@ class TitleWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: 5.w, top: 0.5.h),
             child: Text(
               hintText!,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              style: GoogleFonts.inter(
                     color: Colors.grey,
                   ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 
@@ -33,7 +34,7 @@ BottomBarItem activeBottamBar(
               : EdgeInsets.only(top: 3, right: 0),
       child: Text(
         "$title",
-        style: TextStyle(
+        style: GoogleFonts.inter(
             fontWeight: FontWeight.w500,
             fontSize: 10,
             color: index == activeIndex

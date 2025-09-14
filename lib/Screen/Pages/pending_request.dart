@@ -7,6 +7,7 @@ import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:google_fonts/google_fonts.dart';
 
 class PendingRequestScreen extends StatefulWidget {
   const PendingRequestScreen({super.key});
@@ -65,7 +66,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
             if (requestP.isNotEmpty)
               Text(
                 "pending request".toUpperCase(),
-                style: const TextStyle(
+                style:  GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -106,7 +107,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                           ),
                           title: Text(
                             displayName,
-                            style: const TextStyle(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
                             ),
@@ -133,15 +134,15 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                                   ),
                                 ],
                               ),
-                              child: const Row(
+                              child:  Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.block,
+                                  const Icon(Icons.block,
                                       color: Colors.white, size: 18),
                                   SizedBox(width: 8),
                                   Text(
                                     "Cancel",
-                                    style: TextStyle(
+                                    style: GoogleFonts.inter(
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,

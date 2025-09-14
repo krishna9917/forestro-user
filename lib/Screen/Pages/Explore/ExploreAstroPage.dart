@@ -14,6 +14,7 @@ import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -407,14 +408,14 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               addLineBreaks(astrologer.specialization ?? '', 2),
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 fontSize: 9,
                                 color: Colors.black.withOpacity(0.6),
                               ),
@@ -431,7 +432,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                   children: [
                                     Text(
                                       astrologer.rating.toStringAsFixed(1),
-                                      style: const TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 13,
                                         color: Colors.black,
                                       ),
@@ -474,9 +475,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                   ),
                                 ),
                               ),
-                              child: const Text(
+                              child:  Text(
                                 "Follow",
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
@@ -505,7 +506,8 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                             image: "exp.svg",
                                             label: "Exp :",
                                             desc: Text(
-                                                "${astrologer.experience}"),
+                                                "${astrologer.experience}",style: GoogleFonts.inter(),),
+
                                           ),
                                           const SizedBox(width: 15),
                                           const SizedBox(width: 10),
@@ -516,7 +518,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                         label: "Language :",
                                         desc: Text(
                                             astrologer.languaage?.join(', ') ??
-                                                ""),
+                                                "", style: GoogleFonts.inter(),),
                                       ),
                                       InfoTask(
                                         image: "call.svg",
@@ -529,7 +531,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           "₹ ${astrologer.beforeCallChargesPerMin}/minute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.black,
                                                         decoration:
                                                             TextDecoration
@@ -539,7 +541,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           " ₹ ${astrologer.callChargesPerMin}/minute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.red,
                                                       ),
                                                     ),
@@ -560,7 +562,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           "₹ ${astrologer.beforVideoChargesPerMin}/mminute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.black,
                                                         decoration:
                                                             TextDecoration
@@ -570,7 +572,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           " ₹ ${astrologer.videoChargesPerMin}/minute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.red,
                                                       ),
                                                     ),
@@ -591,7 +593,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           "₹ ${astrologer.beforeChatDiscountPrice}/minute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.black,
                                                         decoration:
                                                             TextDecoration
@@ -601,7 +603,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                     TextSpan(
                                                       text:
                                                           " ₹ ${astrologer.chatChargesPerMin}/minute",
-                                                      style: const TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         color: Colors.red,
                                                       ),
                                                     ),
@@ -609,7 +611,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                 ),
                                               )
                                             : Text(
-                                                "₹ ${astrologer.chatChargesPerMin}/minute"),
+                                                "₹ ${astrologer.chatChargesPerMin}/minute",style: GoogleFonts.inter(),),
                                       ),
                                       const SizedBox(height: 10),
                                       Row(
@@ -620,10 +622,10 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                             onTap: () {
                                               Get.dialog(
                                                 AlertDialog(
-                                                  title: const Center(
+                                                  title:  Center(
                                                     child: Text(
                                                       'Do you want to send call request?',
-                                                      style: TextStyle(
+                                                      style: GoogleFonts.inter(
                                                         fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -708,9 +710,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                               }
                                                             }
                                                           },
-                                                          child: const Text(
+                                                          child:  Text(
                                                             "Video Call",
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.inter(
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
@@ -793,9 +795,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                               }
                                                             }
                                                           },
-                                                          child: const Text(
+                                                          child:  Text(
                                                             "Audio Call",
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.inter(
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
@@ -926,7 +928,7 @@ class ActionBtn extends StatelessWidget {
             const Spacer(),
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 12),
             ),
             const Spacer(),
           ],

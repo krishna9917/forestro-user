@@ -63,6 +63,7 @@ class _ContactVerifictionState extends State<ContactVerifiction> {
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           "Thank you for reaching out to us! \nWe have received your support request and our \nteam  already on it",
+
                           textAlign: TextAlign.center,
                         ),
                       ),

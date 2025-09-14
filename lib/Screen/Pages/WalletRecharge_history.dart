@@ -8,6 +8,7 @@ import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -138,7 +139,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
 
                                 return Text(
                                   "₹$wallet",
-                                  style: const TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                   ),
@@ -150,9 +151,9 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                     .profileDataList!.isEmpty) {
                                   print("Profile data list is empty");
                                 }
-                                return const Text(
+                                return  Text(
                                   '₹00.00',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                   ),
@@ -194,9 +195,9 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                     Text(
                                       "Wallet Recharge!",
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -208,7 +209,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                               "")),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
+                                      style:  GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -221,7 +222,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                   alignment: Alignment.topRight,
                                   child: Text(
                                     "₹${rechargeData[index]['amount'] ?? ""}",
-                                    style: const TextStyle(
+                                    style:  GoogleFonts.inter(
                                       color: Colors.green,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w900,

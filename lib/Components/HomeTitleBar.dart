@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeTitleBar extends StatelessWidget {
   final String title;
@@ -29,7 +30,7 @@ class HomeTitleBar extends StatelessWidget {
             children: [
               Text(
                 title.toUpperCase(),
-                style: const TextStyle(
+                style:  GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -42,7 +43,7 @@ class HomeTitleBar extends StatelessWidget {
                     width: scrWeight(context) - 140,
                     child: Text(
                       "$desc",
-                      style: const TextStyle(fontSize: 12),
+                      style:  GoogleFonts.inter(fontSize: 12),
                     ));
               }),
             ],
@@ -56,7 +57,7 @@ class HomeTitleBar extends StatelessWidget {
               onTap: onClick,
               child: Text(
                 "View All",
-                style: TextStyle(color: AppColor.primary),
+                style: GoogleFonts.inter(color: AppColor.primary),
               ),
             ),
           )

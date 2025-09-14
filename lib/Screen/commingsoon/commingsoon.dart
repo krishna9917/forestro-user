@@ -3,6 +3,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'dart:async';
 import 'package:foreastro/Utils/Quick.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ComingSoonAstrologerPage extends StatefulWidget {
   @override
@@ -113,11 +114,11 @@ class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
               ],
             ),
             const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+             Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Coming Soon...',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -163,14 +164,14 @@ Widget _buildTimeBox(int timeValue, String label) {
       children: [
         Text(
           '$timeValue',
-          style: const TextStyle(
+          style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.orangeAccent),
         ),
         Text(
           label,
-          style: const TextStyle(fontSize: 13, color: Colors.grey),
+          style:  GoogleFonts.inter(fontSize: 13, color: Colors.grey),
         ),
       ],
     ),

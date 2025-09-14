@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/controler/ramedy_controler.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RemedyScreen extends StatefulWidget {
   const RemedyScreen({super.key});
@@ -69,7 +70,7 @@ class _RemedyScreenState extends State<RemedyScreen> {
                       // const Spacer(),
                       Text(
                         remedy.astrologerName ?? '',
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -86,7 +87,7 @@ class _RemedyScreenState extends State<RemedyScreen> {
                                 content: Text(
                                   remedy.description ??
                                       'No description available',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),

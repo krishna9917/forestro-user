@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,8 +67,9 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
+        title:  Text(
           'Search Your places',
+         style: GoogleFonts.inter(),
         ),
       ),
       body: Column(
@@ -82,6 +84,7 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
                 decoration: InputDecoration(
                   hintText: "Search your location here",
                   focusColor: Colors.white,
+
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.cancel),
@@ -110,7 +113,7 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
                     // );
                   },
                   child: ListTile(
-                    title: Text(_placeList[index]["description"]),
+                    title: Text(_placeList[index]["description"],style: GoogleFonts.inter(),),
                   ),
                 );
               },

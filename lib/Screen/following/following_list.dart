@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FollowingList extends StatefulWidget {
@@ -99,7 +100,7 @@ class _FollowingListState extends State<FollowingList> {
               ? Center(
                   child: Text(
                     "You are not following anyastrologers.",
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    style: GoogleFonts.inter(fontSize: 16, color: Colors.grey[600]),
                   ),
                 )
               : ListView.builder(
@@ -125,14 +126,14 @@ class _FollowingListState extends State<FollowingList> {
                             followingData[index]['astrologier_name'] ?? "",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           subtitle: Text(
                             followingData[index]['specialization'] ?? "",
-                            style: TextStyle(color: Colors.grey[600]),
+                            style: GoogleFonts.inter(color: Colors.grey[600]),
                           ),
                           trailing: TextButton(
                             onPressed: () {
@@ -154,9 +155,9 @@ class _FollowingListState extends State<FollowingList> {
                                     vertical: 5, horizontal: 15),
                               ),
                             ),
-                            child: const Text(
+                            child:  Text(
                               "Unfollow",
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,

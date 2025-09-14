@@ -20,6 +20,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -153,10 +154,12 @@ class _AppDrawerState extends State<AppDrawer> {
                                     capitalize(profileController.profileDataList.first.name ?? 'NA'),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: const TextStyle(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                    ),
+                                    )
                                   ),
                                 ),
 
@@ -222,13 +225,19 @@ class _AppDrawerState extends State<AppDrawer> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
+                                         Text(
                                           "Balance",
-                                          style: TextStyle(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!.copyWith(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10,
-                                              color: Color.fromARGB(
-                                                  255, 81, 81, 81)),
+                                              color: const Color.fromARGB(
+                                                  255, 81, 81, 81)
+                                          )
+
+
+
                                         ),
                                         Obx(
                                           () {
@@ -255,7 +264,9 @@ class _AppDrawerState extends State<AppDrawer> {
 
                                               return Text(
                                                 "₹ $formattedWallet",
-                                                style: const TextStyle(
+                                                style:  Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium!.copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15,
                                                 ),
@@ -435,7 +446,7 @@ class DrawerTiles extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: const TextStyle(fontSize: 18),
+        style: GoogleFonts.inter(fontWeight: FontWeight.w400,fontSize: 18),
       ),
     );
   }

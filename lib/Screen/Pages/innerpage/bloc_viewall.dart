@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/bloc_detailes.dart';
@@ -117,7 +118,7 @@ class _BlocViewAllState extends State<BlocViewAll> {
                                   title,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
+                                  style:GoogleFonts.inter(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                   ),

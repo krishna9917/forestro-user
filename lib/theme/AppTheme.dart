@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 var outlineInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(50),
@@ -8,7 +9,7 @@ var outlineInputBorder = OutlineInputBorder(
 );
 
 ThemeData appTheme = ThemeData(
-    fontFamily: "inter",
+    fontFamily: "assets/fonts/Inter_18pt-Regular.ttf",
     brightness: Brightness.light,
     useMaterial3: true,
     scaffoldBackgroundColor: AppColor.bgcolor,
@@ -37,8 +38,8 @@ ThemeData appTheme = ThemeData(
             side: BorderSide.none,
           ),
         ),
-        textStyle: const WidgetStatePropertyAll(
-          TextStyle(
+        textStyle:  WidgetStatePropertyAll(
+          GoogleFonts.inter(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 15,

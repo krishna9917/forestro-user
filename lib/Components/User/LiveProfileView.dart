@@ -3,6 +3,7 @@ import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/Screen/livestriming/live_striming.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum ProfileType { Online, Live, Default }
 
@@ -22,10 +23,10 @@ class LiveProfileView extends StatelessWidget {
     return Obx(() {
       final liveAstrologers = socketController.liveAstrologers;
       if (liveAstrologers.isEmpty) {
-        return const Center(
+        return  Center(
           child: Text(
             "No astrologers are live",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         );
       }
@@ -92,10 +93,10 @@ class LiveProfileView extends StatelessWidget {
                                 color: Colors.red,
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child: const Center(
+                              child:  Center(
                                 child: Text(
                                   "⦿ Live",
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     fontSize: 7,
@@ -115,7 +116,7 @@ class LiveProfileView extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
+                            style:  GoogleFonts.inter(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
@@ -123,7 +124,7 @@ class LiveProfileView extends StatelessWidget {
                           Text(
                             astrologer['data']['specialization'] ?? 'NA',
                             textAlign: TextAlign.start,
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 9,
                               color: Colors.black.withOpacity(0.6),
                             ),

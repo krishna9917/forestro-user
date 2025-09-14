@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -53,10 +54,7 @@ class CustomButton extends StatelessWidget {
                   ))
               : Text(
                   text,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: textColor ?? Colors.white),
+                  style:GoogleFonts.inter(color: textColor ?? Colors.white),
                 )),
     );
   }

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BlocDetailes extends StatefulWidget {
   final String id;
@@ -79,7 +80,7 @@ class _BlocDetailesState extends State<BlocDetailes> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         title!,
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

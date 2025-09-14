@@ -5,6 +5,7 @@ import 'package:foreastro/controler/celebrity_controler.dart';
 import 'package:foreastro/core/function/navigation.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Celebinsights extends StatefulWidget {
@@ -99,7 +100,7 @@ class _CelebinsightsState extends State<Celebinsights> {
                                 celebrity.title ?? 'NA',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
+                                style: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                 ),

@@ -10,6 +10,7 @@ import 'package:foreastro/core/validation/validation.dart';
 import 'package:gap/gap.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class ContactSupport extends StatefulWidget {
@@ -135,9 +136,9 @@ class _ContactSupportState extends State<ContactSupport> {
                           contactsupport();
                         }
                       },
-                      child: const Text(
+                      child:  Text(
                         "Submit",
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.inter(color: Colors.white),
                       ),
                     ),
                   )

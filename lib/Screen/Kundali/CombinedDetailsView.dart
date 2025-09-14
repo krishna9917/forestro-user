@@ -8,6 +8,7 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/model/kundali/plannet_model.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CombinedDetailsView extends StatefulWidget {
   final String dob;
@@ -1847,6 +1848,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                     DataCell(
                       Text(
                         '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} - ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} - ${paryantardashaList.first.name!.substring(0, 2).toUpperCase()} - ${shookshamadasha.name!.substring(0, 2).toUpperCase()} ',
+                        style: GoogleFonts.inter(),
                       ),
                     ),
                     // DataCell(Text(shookshamadasha.name ?? 'N/A')),
@@ -1895,10 +1897,10 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
             navigationButtons(),
             DataTable(
               columnSpacing: 12,
-              columns: const [
-                DataColumn(label: Text('Planet')),
-                DataColumn(label: Text('Start Date')),
-                DataColumn(label: Text('End Date')),
+              columns:  [
+                DataColumn(label: Text('Planet', style: GoogleFonts.inter())),
+                DataColumn(label: Text('Start Date',style: GoogleFonts.inter())),
+                DataColumn(label: Text('End Date',style: GoogleFonts.inter())),
               ],
               rows: pranadashadashaList.map((pranadasha) {
                 return DataRow(
@@ -1906,7 +1908,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                     DataCell(
                       Text(
                         '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} - ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} - ${paryantardashaList.first.name!.substring(0, 2).toUpperCase()} - ${shookshamadashaList.first.name!.substring(0, 2).toUpperCase()} - ${pranadasha.name!.substring(0, 2).toUpperCase()}',
-                      ),
+                      style: GoogleFonts.inter(),),
                     ),
                     DataCell(Text(
                       pranadasha.start != null
@@ -1914,7 +1916,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${pranadasha.start!.substring(0, 16)}'
                               : pranadasha.start!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1924,7 +1926,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${pranadasha.end!.substring(0, 16)}'
                               : pranadasha.end!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1957,7 +1959,7 @@ class DataRowWidget extends StatelessWidget {
             width: 150, // Adjust the width as needed
             child: Text(
               label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: GoogleFonts.inter(fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
@@ -1967,7 +1969,7 @@ class DataRowWidget extends StatelessWidget {
               //   border: Border.all(color: Colors.grey),
               //   borderRadius: BorderRadius.circular(4.0),
               // ),
-              child: Text(value ?? 'N/A'),
+              child: Text(value ?? 'N/A',style: GoogleFonts.inter()),
             ),
           ),
         ],

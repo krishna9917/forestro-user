@@ -4,6 +4,7 @@ import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NoInternetPage extends StatefulWidget {
   const NoInternetPage({super.key});
@@ -60,9 +61,9 @@ class _NoInternetPageState extends State<NoInternetPage> {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 20),
-                  const Text(
+                   Text(
                     "No Internet Connection",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -71,7 +72,7 @@ class _NoInternetPageState extends State<NoInternetPage> {
                   const SizedBox(height: 10),
                   Text(
                     "Please check your network settings.",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       color: Colors.grey[700],
                     ),
@@ -87,9 +88,9 @@ class _NoInternetPageState extends State<NoInternetPage> {
                       ),
                       backgroundColor: AppColor.primary,
                     ),
-                    child: const Text(
+                    child:  Text(
                       "Retry",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
                     ),
                   ),
                 ],

@@ -7,6 +7,7 @@ import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
 import 'package:foreastro/Screen/Pages/Explore/online_puja.dart';
 import 'package:foreastro/core/function/navigation.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TaskTabs extends StatelessWidget {
   TaskTabs({
@@ -107,7 +108,7 @@ class TaskTabs extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style:  GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),

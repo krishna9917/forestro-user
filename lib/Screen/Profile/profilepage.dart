@@ -17,6 +17,7 @@ import 'package:foreastro/Components/Widgts/shadow_widget.dart';
 import 'package:foreastro/Components/Widgts/status_indicator_widget.dart';
 // Import the profile model
 import 'package:foreastro/Utils/assets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
@@ -116,10 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           .toUpperCase() +
                                       profileDataList.first.name!.substring(1)
                                   : 'NA',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(
+                              style: GoogleFonts.inter(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18.dp),
                             ),
@@ -145,6 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     horizontal: -4, vertical: -4),
                                 title: Text(
                                   "Personal Details",
+                                  style: GoogleFonts.inter(),
                                   // style: textStyle
                                 ),
                                 trailing: SvgPicture.asset(

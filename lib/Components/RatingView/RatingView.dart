@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:foreastro/Components/ViewImage.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget ViewRating({double initialRating = 0.0}) {
   return RatingBar.builder(
@@ -12,8 +13,8 @@ Widget ViewRating({double initialRating = 0.0}) {
     itemCount: 5,
     itemSize: 16,
     unratedColor: AppColor.primary.withOpacity(0.1),
-    itemPadding: EdgeInsets.symmetric(horizontal: 0),
-    itemBuilder: (context, _) => Icon(
+    itemPadding: const EdgeInsets.symmetric(horizontal: 0),
+    itemBuilder: (context, _) => const Icon(
       Icons.star,
       color: Colors.amber,
     ),
@@ -38,7 +39,7 @@ class _RatingReviewBoxState extends State<RatingReviewBox> {
     return Container(
       height: 240,
       width: 320,
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -51,30 +52,30 @@ class _RatingReviewBoxState extends State<RatingReviewBox> {
               viewImage(
                 url:
                     "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-                boxDecoration: BoxDecoration(),
+                boxDecoration: const BoxDecoration(),
                 width: 40,
                 height: 40,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Sourav Bapari",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   ViewRating()
                 ],
               )
             ],
           ),
-          SizedBox(height: 15),
-          Text(
+          const SizedBox(height: 15),
+          const Text(
             "There’s no other program that walks you through exactly what you need to know to start an online store fast, written by someone who has built several 7-figure ecommerce businesses from scratch. What’s more, everything has been broken down in step-by-step detail with real action plans including finding your niche0.",
             maxLines: 8,
             overflow: TextOverflow.ellipsis,

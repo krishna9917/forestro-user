@@ -3,6 +3,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StatusIndicatorWidget extends StatelessWidget {
   final bool? value;
@@ -41,7 +42,7 @@ class StatusIndicatorWidget extends StatelessWidget {
                   Gap(2.w),
                   Text(
                     index == 0 ? "online" : "offline",
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    style: GoogleFonts.inter(
                           color: index == 0 ? AppColor.primary : Colors.grey,
                           fontSize: 12.dp,
                         ),

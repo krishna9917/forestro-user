@@ -7,6 +7,7 @@ import 'package:foreastro/controler/call_function.dart';
 import 'package:foreastro/controler/listaustro_controler.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -37,9 +38,9 @@ class _ServicesPageState extends State<ServicesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Online Astrologers",
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.inter(color: Colors.white),
         ),
         backgroundColor: AppColor.primary,
         centerTitle: true,
@@ -57,7 +58,7 @@ class _ServicesPageState extends State<ServicesPage> {
             return Center(
               child: Text(
                 "No astrologers are online.",
-                style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                style: GoogleFonts.inter(fontSize: 16, color: Colors.grey.shade600),
               ),
             );
           }
@@ -92,7 +93,7 @@ class _ServicesPageState extends State<ServicesPage> {
                   ),
                   title: Text(
                     displayName,
-                    style: const TextStyle(
+                    style:  GoogleFonts.inter(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -104,15 +105,15 @@ class _ServicesPageState extends State<ServicesPage> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
+                               TextSpan(
                                 text: "Available now ",
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 14),
+                                GoogleFonts.inter(color: Colors.grey, fontSize: 14),
                               ),
                               TextSpan(
                                 text:
                                     "\u20B9${astrologer.chatChargesPerMin ?? 0}/min",
-                                style: const TextStyle(
+                                style: GoogleFonts.inter(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -185,9 +186,9 @@ class _ServicesPageState extends State<ServicesPage> {
                             height: 20,
                           ),
                           const SizedBox(width: 6),
-                          const Text(
+                           Text(
                             "Chat",
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

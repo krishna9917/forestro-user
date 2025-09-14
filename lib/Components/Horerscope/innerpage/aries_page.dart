@@ -7,6 +7,7 @@ import 'package:foreastro/controler/horoscope_controler.dart';
 import 'package:foreastro/controler/horoscope_kundali/chart_image_controler.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:translator/translator.dart';
 
@@ -75,14 +76,11 @@ class _AriesPageState extends State<AriesPage> {
                 height: 100,
               ),
             ),
-            Text(
-              widget.title,
-              style: TextStyle(
-                color: AppColor.primary,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(widget.title, style: GoogleFonts.inter(
+                 color: AppColor.primary,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            )),
             // Text(
             //   "${DateFormat('dd MMM').format(DateTime.now())} - ${DateFormat('dd MMM').format(DateTime.now().add(const Duration(days: 7)))}",
             //   style: const TextStyle(
@@ -124,8 +122,8 @@ class _AriesPageState extends State<AriesPage> {
                           child: Center(
                               child: Text(
                             "${dayList[index]}",
-                            style: TextStyle(
-                              fontSize: 12,
+                                style:GoogleFonts.inter(
+                                  fontSize: 12,
                               color: dayIndex == index
                                   ? Colors.white
                                   : const Color.fromARGB(255, 42, 42, 42),
@@ -145,11 +143,11 @@ class _AriesPageState extends State<AriesPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
                           "हिंदी",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -165,21 +163,21 @@ class _AriesPageState extends State<AriesPage> {
                                       ?.botResponse ??
                                   'NA',
                               textAlign: TextAlign.start,
-                              style: const TextStyle(fontSize: 15),
+                              style:  GoogleFonts.inter(fontSize: 15),
                             );
                           }
                         }),
                       ),
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
                           "English",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding:  EdgeInsets.all(5.0),
                         child: Obx(() {
                           if (controller.horoscopeDataListen.value.response ==
                               null) {
@@ -190,7 +188,7 @@ class _AriesPageState extends State<AriesPage> {
                                       ?.botResponse ??
                                   'NA',
                               textAlign: TextAlign.start,
-                              style: const TextStyle(fontSize: 15),
+                              style:  GoogleFonts.inter(fontSize: 15),
                             );
                           }
                         }),

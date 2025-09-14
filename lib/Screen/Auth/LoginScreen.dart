@@ -18,6 +18,7 @@ import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -344,10 +345,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final termsAndPrivacyTextStyle = Theme.of(context)
-        .textTheme
-        .titleSmall!
-        .copyWith(color: Colors.black45, fontWeight: FontWeight.w500);
+    final termsAndPrivacyTextStyle = GoogleFonts.inter(color: Colors.black45, fontWeight: FontWeight.w500);
 
     return Scaffold(
       extendBody: true,
@@ -375,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
               /// Greeting Text
               Text(
                 greetingTitle,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: GoogleFonts.inter(fontSize: 16),
               ),
 
               Gap(5.h),
@@ -389,7 +387,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Text(
                           "Phone No",
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: GoogleFonts.inter(fontSize: 16),
                         ),
                         Gap(1.h),
                         const SizedBox(height: 10),

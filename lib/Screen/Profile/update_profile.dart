@@ -24,6 +24,7 @@ import 'package:foreastro/model/profile_model.dart';
 
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:phone_input/phone_input_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -222,12 +223,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // const SizedBox(height: 30),
-                    const Center(
+                     Center(
                       child: Text(
                         "Complete your Profile",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
+                        style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold, fontSize: 25),),
                     ),
                     Gap(3.h),
                     Padding(
@@ -360,13 +361,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(
+                                           Padding(
+                                            padding: const EdgeInsets.only(
                                                 left: 20, bottom: 5),
                                             child: Text(
                                               "Gender",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                              style: GoogleFonts.inter(
+                                                  fontWeight: FontWeight.bold
+                                              )
                                             ),
                                           ),
                                           SizedBox(
@@ -396,13 +398,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(
+                                           Padding(
+                                            padding: const EdgeInsets.only(
                                                 left: 20, bottom: 5),
                                             child: Text(
                                               "Zodiac Sign",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                              style: GoogleFonts.inter(
+                                                  fontWeight: FontWeight.bold
+                                              )
+
+
                                             ),
                                           ),
                                           SizedBox(
@@ -445,11 +450,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(
+                                           Padding(
+                                            padding: const EdgeInsets.only(
                                                 left: 20, bottom: 5),
                                             child: Text(
-                                              "State",
+                                              "State",style:GoogleFonts.inter(
+                                                fontWeight: FontWeight.bold
+                                            )
                                             ),
                                           ),
                                           SizedBox(
@@ -531,7 +538,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 decoration: InputDecoration(
                                   hintText: widget.profileData!.birthTime,
                                   // prefix: const Text("Rs. "),
-                                  hintStyle: const TextStyle(
+                                  hintStyle: GoogleFonts.inter(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.normal),
                                   suffixIcon: IconButton(
@@ -585,7 +592,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 keyboardType: TextInputType.datetime,
                                 decoration: InputDecoration(
                                   hintText: widget.profileData!.dateOfBirth,
-                                  hintStyle: const TextStyle(
+                                  hintStyle: GoogleFonts.inter(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.normal),
                                   suffixIcon: Icon(Icons
@@ -612,9 +619,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         ),
                                       );
                                     }
-                                    return const Text(
+                                    return  Text(
                                       "Submit",
-                                      style: TextStyle(color: Colors.white),
+                                        style:GoogleFonts.inter(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white
+                                        )
+
                                     );
                                   })),
                             )

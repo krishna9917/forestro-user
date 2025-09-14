@@ -12,6 +12,7 @@ import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -215,13 +216,13 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
                       ),
                       SizedBox(
                         width: scrWeight(context) - 80,
-                        child: const ListTile(
-                          title: Text(
+                        child:  ListTile(
+                          title:  Text(
                             "Verify Your OTP",
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                          subtitle: Text("Enter Your OTP Sent On Your Mobile"),
+                          subtitle: Text("Enter Your OTP Sent On Your Mobile",style: GoogleFonts.inter(),),
                         ),
                       ),
                     ],
@@ -280,7 +281,7 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
                     onPressed: resendLoading ? null : resendOtp,
                     child: Text(
                       resendLoading ? "Resending Otp..." : "Resend OTP",
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
                         color: resendLoading
                             ? AppColor.primary.withOpacity(0.7)

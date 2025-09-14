@@ -7,6 +7,7 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/innerpage/contact%20_supportverifiy.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnlinePuja extends StatefulWidget {
   const OnlinePuja({super.key});
@@ -75,22 +76,23 @@ class _OnlinePujaState extends State<OnlinePuja>
               },
             ),
             const SizedBox(height: 10),
-            const Center(
+             Center(
               child: Text("Online Puja",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(fontSize: 25, fontWeight: FontWeight.w700)),
             ),
-            const Center(
+             Center(
               child: Text("Coming Soon",
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
                       color: AppColor.primary)),
             ),
-            const Center(
+             Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   "Welcome, Let's get started with your Online Puja. \nPlease provide some details about yourself",
+                  style: GoogleFonts.inter(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -141,9 +143,9 @@ class _OnlinePujaState extends State<OnlinePuja>
                         }
                       },
                       keyboardType: TextInputType.datetime,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         hintText: 'DD/MM/YYYY',
-                        hintStyle: TextStyle(
+                        hintStyle:GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
@@ -166,7 +168,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "12:00 PM",
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.access_time),
@@ -189,11 +191,11 @@ class _OnlinePujaState extends State<OnlinePuja>
                   ),
                   Gap(2.h),
                   // Kind of Puja selection field wrapped in a FormField
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 5),
+                   Padding(
+                    padding: const EdgeInsets.only(left: 20, bottom: 5),
                     child: Text(
                       "Kind of Puja",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: GoogleFonts.inter(fontWeight: FontWeight.bold),
                     ),
                   ),
                   FormField<String>(
@@ -241,7 +243,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                               padding: const EdgeInsets.only(left: 20, top: 5),
                               child: Text(
                                 state.errorText!,
-                                style: const TextStyle(color: Colors.red),
+                                style:GoogleFonts.inter(color: Colors.red),
                               ),
                             ),
                         ],
@@ -271,9 +273,9 @@ class _OnlinePujaState extends State<OnlinePuja>
                           navigate.push(routeMe(const ContactVerifiction()));
                         }
                       },
-                      child: const Text(
+                      child:  Text(
                         "Submit",
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.inter(color: Colors.white),
                       ),
                     ),
                   )

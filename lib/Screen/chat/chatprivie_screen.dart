@@ -4,6 +4,7 @@ import 'package:foreastro/Screen/chat/privew_screen.dart';
 import 'package:foreastro/model/profile_model.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class PreviewChatScreen extends StatelessWidget {
@@ -188,8 +189,8 @@ class _AudioPlayerDialogState extends State<AudioPlayerDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_formatDuration(_position)),
-              Text(_formatDuration(_duration - _position)),
+              Text(_formatDuration(_position),style: GoogleFonts.inter(),),
+              Text(_formatDuration(_duration - _position),style: GoogleFonts.inter()),
             ],
           ),
         ],

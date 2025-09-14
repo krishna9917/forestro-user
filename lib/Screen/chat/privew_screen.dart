@@ -3,6 +3,7 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/model/profile_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PreviewScreen extends StatelessWidget {
@@ -49,10 +50,10 @@ class PreviewScreen extends StatelessWidget {
                     ).cachedFromUrl(
                       certification.certificate.toString(),
                       placeholder: (progress) =>
-                          Center(child: Text('$progress %')),
+                          Center(child: Text('$progress %',style: GoogleFonts.inter())),
                       errorWidget: (error) => Center(
                         child: Text(
-                          error.toString(),
+                          error.toString(),style: GoogleFonts.inter()
                         ),
                       ),
                     );
@@ -73,7 +74,7 @@ class PreviewScreen extends StatelessWidget {
                           certification.certificate.toString() +
                               certification.certificate.toString(),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style:  GoogleFonts.inter(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),

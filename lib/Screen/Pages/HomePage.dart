@@ -10,7 +10,9 @@ import 'package:foreastro/Components/TaskTabs.dart';
 import 'package:foreastro/Components/User/LiveProfileView.dart';
 import 'package:foreastro/Components/User/OnlineAstroCard.dart';
 import 'package:foreastro/Components/Widgts/BottamBar.dart';
+import 'package:foreastro/Components/recharge_popup.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
+import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
 import 'package:foreastro/Screen/Pages/Explore/bloc_detailes.dart';
 import 'package:foreastro/Screen/Pages/Explore/search_astro.dart';
@@ -35,6 +37,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -59,6 +62,51 @@ class _HomePageState extends State<HomePage> {
   RxList<Data> _astrologers = RxList<Data>();
   final profileController = Get.find<ProfileList>();
 
+  List<Map<String, dynamic>> rechargeData = [];
+
+
+  Future<void> follow() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      String? user_id = prefs.getString('user_id');
+
+      ApiRequest apiRequest = ApiRequest(
+        "$apiUrl/user-wallet-history",
+        method: ApiMethod.POST,
+        body: packFormData(
+          {
+            "user_id": user_id,
+          },
+        ),
+      );
+      dio.Response data = await apiRequest.send();
+
+      if (data.statusCode == 201) {
+        rechargeData = List<Map<String, dynamic>>.from(data.data['data']);
+        if(rechargeData.isEmpty){
+        return homePopup(context);
+        }
+
+
+      } else {
+        // Failed API request
+        print("API request failed with status code: ${data.statusCode}");
+        showToast("Failed to complete profile. Please try again later.");
+      }
+    } on dio.DioError catch (e) {
+      // Handle DioError
+      print("DioError: ${e.message}");
+      showToast("Failed to complete profile. Please try again later.");
+    } catch (e) {
+      // Handle other exceptions
+      print("Error: $e");
+      showToast("An unexpected error occurred. Please try again later.");
+    } finally {
+
+    }
+  }
+
   @override
   void initState() {
     fetchAndInitProfile();
@@ -69,6 +117,7 @@ class _HomePageState extends State<HomePage> {
     Get.put(CelibrityList()).celibrityData();
     Get.put(ClientSays()).clientsaysData();
     Get.put(GetAstrologerProfile()).astroData();
+    follow();
     socketController.initSocketConnection();
     calculatePrice();
     _searchController.addListener(_onSearchChanged);
@@ -229,7 +278,8 @@ class _HomePageState extends State<HomePage> {
             actions: [
               IconButton(
                   onPressed: () {
-                    navigate.push(routeMe(const SearchPage()));
+                    navigate.push(routeMe( SetupProfileScreen(phone: '', userId: null,)));
+                    // navigate.push(routeMe(const SearchPage()));
                   },
                   icon: Icon(
                     Icons.search,
@@ -267,7 +317,7 @@ class _HomePageState extends State<HomePage> {
 
                           return Text(
                             "₹ $formattedWallet",
-                            style: const TextStyle(
+                            style:  GoogleFonts.inter(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 15,
@@ -279,10 +329,7 @@ class _HomePageState extends State<HomePage> {
                               .profileDataList.isEmpty) {}
                           return Text(
                             '0',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontWeight: FontWeight.w500),
+                            style:  GoogleFonts.inter(fontWeight: FontWeight.w500),
                           );
                         }
                       },
@@ -297,9 +344,9 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Badge(
                   backgroundColor: AppColor.primary,
-                  label: const Text(
+                  label:  Text(
                     "0",
-                    style: TextStyle(fontSize: 10),
+                    style:  GoogleFonts.inter(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
                     "assets/icons/notic.svg",
@@ -386,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         "Our Top Astrologers".toUpperCase(),
-                        style: const TextStyle(
+                        style:  GoogleFonts.inter(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
@@ -549,7 +596,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
+                                                    style:  GoogleFonts.inter(
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400,
@@ -597,7 +644,7 @@ class _HomePageState extends State<HomePage> {
                                                 chunkedText,
                                                 maxLines: null,
                                                 overflow: TextOverflow.visible,
-                                                style: const TextStyle(
+                                                style:  GoogleFonts.inter(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -695,7 +742,7 @@ class _HomePageState extends State<HomePage> {
                                           title,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style:  GoogleFonts.inter(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
                                           ),
@@ -877,7 +924,7 @@ class _HomePageState extends State<HomePage> {
                                           celebrity.title ?? 'NA',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style:  GoogleFonts.inter(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                           ),

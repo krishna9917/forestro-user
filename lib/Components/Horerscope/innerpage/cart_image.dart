@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/controler/horoscope_kundali/chart_image_controler.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SvgImageView extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class SvgImageView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('SVG Image'),
+        title: Text('SVG Image',style: GoogleFonts.inter()),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -24,7 +25,7 @@ class SvgImageView extends StatelessWidget {
             ),
           );
         } else {
-          return Center(child: Text('No SVG data available'));
+          return Center(child: Text('No SVG data available',style: GoogleFonts.inter()));
         }
       }),
     );

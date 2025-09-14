@@ -3,6 +3,7 @@ import 'package:foreastro/Components/Horerscope/innerpage/aries_page.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/theme/Colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Horoscope extends StatelessWidget {
   Horoscope({
@@ -118,7 +119,7 @@ class Horoscope extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style:  GoogleFonts.inter(
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
                           ),

@@ -4,6 +4,7 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HorerscopePage extends StatefulWidget {
   const HorerscopePage({super.key});
@@ -20,6 +21,7 @@ class _HorerscopePageState extends State<HorerscopePage> {
         appBar: AppBar(
           title: Text(
             "Horoscope".toUpperCase(),
+            style: GoogleFonts.inter(),
           ),
         ),
         body: Column(

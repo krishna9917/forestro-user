@@ -235,7 +235,7 @@ class _WalletPageState extends State<WalletPage> {
                     ),
                     Text(
                       "Balance".toUpperCase(),
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -258,7 +258,7 @@ class _WalletPageState extends State<WalletPage> {
 
                           return Text(
                             "₹ $formattedWallet",
-                            style: const TextStyle(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                             ),
@@ -269,10 +269,7 @@ class _WalletPageState extends State<WalletPage> {
                               .profileDataList.isEmpty) {}
                           return Text(
                             'NA',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontWeight: FontWeight.w500),
+                            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
                           );
                         }
                       },
@@ -294,7 +291,7 @@ class _WalletPageState extends State<WalletPage> {
                 fontSize: 20,
               ),
                   ),
-                  Text("Choose from the available quick recharge packs",style: Theme.of(context).textTheme.titleSmall, ),
+                  Text("Choose from the available quick recharge packs",style: GoogleFonts.inter(), ),
 
                   // const SizedBox(height: 30),
                   // TextField(
@@ -344,7 +341,7 @@ class _WalletPageState extends State<WalletPage> {
                             child: Center(
                                 child: Text(
                               "₹ ${amountList[index]}",
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 fontSize: 18,
                                 color: amountIndex == index
                                     ? Colors.white

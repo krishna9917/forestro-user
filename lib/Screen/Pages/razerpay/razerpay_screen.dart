@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RzerpayScreen extends StatefulWidget {
@@ -83,9 +84,9 @@ class _RzerpayScreenState extends State<RzerpayScreen> {
               height: 12,
             ),
             ElevatedButton(
-              child: const Text(
+              child:  Text(
                 "Donate Now",
-                style: TextStyle(color: Colors.white),
+                style:  GoogleFonts.inter(color: Colors.white),
               ),
               onPressed: () {
                 openCheckout();

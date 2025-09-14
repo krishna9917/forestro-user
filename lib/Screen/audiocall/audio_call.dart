@@ -10,6 +10,7 @@ import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/videocall/const.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
@@ -252,11 +253,10 @@ class _AudioCallState extends State<AudioCall> {
                   const SizedBox(width: 8),
                   Text(
                     formatTime(_remainingSeconds),
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       color: countdownColor,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'RobotoMono',
                       decoration: TextDecoration.none,
                     ),
                   ),

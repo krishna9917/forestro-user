@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatPopUpOptions extends StatefulWidget {
@@ -21,10 +22,10 @@ class _ChatPopUpOptionsState extends State<ChatPopUpOptions> {
         return [
           PopupMenuItem(
             value: 'New Chat',
-            child: const ListTile(
-              leading: Icon(CupertinoIcons.chat_bubble_2_fill),
+            child:  ListTile(
+              leading: const Icon(CupertinoIcons.chat_bubble_2_fill),
               title: Text(
-                'Create New Chat',
+                'Create New Chat',style: GoogleFonts.inter(),
                 maxLines: 1,
               ),
             ),

@@ -9,6 +9,7 @@ import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RatingPage extends StatefulWidget {
@@ -93,12 +94,12 @@ class _RatingPageState extends State<RatingPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
+             Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Rate",
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
               ),
             ),
             Gap(3.h),
@@ -119,12 +120,12 @@ class _RatingPageState extends State<RatingPage> {
               maxRating: 5,
             ),
             Gap(5.h),
-            const Center(
+             Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text("Write Your Review",
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
               ),
             ),
             Gap(2.h),

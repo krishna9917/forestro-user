@@ -82,6 +82,8 @@ dependencies:
   audioplayers: ^6.1.0
   flutter_volume_controller: ^1.2.0
   google_fonts:
+  country_state_city_pro:
+#  csc_picker:
 
 dev_dependencies:
   flutter_test:

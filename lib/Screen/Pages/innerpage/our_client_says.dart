@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/listof_termination_controler.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OurClientSays extends StatefulWidget {
   const OurClientSays({super.key});
@@ -68,7 +69,7 @@ class _OurClientSaysState extends State<OurClientSays> {
                                       data.name ?? 'NA',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -97,7 +98,7 @@ class _OurClientSaysState extends State<OurClientSays> {
                               data.comment ?? 'NA',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style:  GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),

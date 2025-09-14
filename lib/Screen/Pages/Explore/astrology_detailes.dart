@@ -14,6 +14,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/model/listaustro_model.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -230,7 +231,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
+                                style: GoogleFonts.inter(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -238,7 +239,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                               Text(
                                 addLineBreaks(
                                     widget.astrologer?.specialization ?? '', 2),
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                   fontSize: 9,
                                   color: Colors.black.withOpacity(0.6),
                                 ),
@@ -252,7 +253,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                     Text(
                                       widget.astrologer!.rating
                                           .toStringAsFixed(1),
-                                      style: const TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 13,
                                         color: Colors.black,
                                       ),
@@ -302,9 +303,9 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
+                                      child:  Text(
                                         "Follow",
-                                        style: TextStyle(
+                                        style: GoogleFonts.inter(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
@@ -352,7 +353,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       "₹ ${widget.astrologer?.beforeCallChargesPerMin}/minute ",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.black,
                                                     decoration: TextDecoration
                                                         .lineThrough,
@@ -361,7 +362,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       " ₹ ${widget.astrologer?.callChargesPerMin}/minute",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.red,
                                                   ),
                                                 ),
@@ -383,7 +384,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       "₹ ${widget.astrologer?.beforVideoChargesPerMin}/minute",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.black,
                                                     decoration: TextDecoration
                                                         .lineThrough,
@@ -392,7 +393,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       " ₹ ${widget.astrologer?.videoChargesPerMin}/minute",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.red,
                                                   ),
                                                 ),
@@ -414,7 +415,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       "₹ ${widget.astrologer?.beforeChatDiscountPrice}/minute",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.black,
                                                     decoration: TextDecoration
                                                         .lineThrough,
@@ -423,7 +424,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 TextSpan(
                                                   text:
                                                       " ₹ ${widget.astrologer?.chatChargesPerMin}/minute",
-                                                  style: const TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.red,
                                                   ),
                                                 ),
@@ -706,7 +707,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("About ${widget.astrologer?.name}",
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 15, fontWeight: FontWeight.w800)),
                       Text(
                         astroDetailsText,
@@ -714,10 +715,10 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                     ],
                   ),
                 )),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+             Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Text("Reviews",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

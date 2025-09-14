@@ -5,6 +5,7 @@ import 'package:foreastro/Screen/Kundali/CombinedDetailsView.dart';
 import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/model/kundali/matchkundali/southkundali_model.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:score_progress_pretty_display/score_progress_pretty_display.dart';
 
 class KundaliMilan extends StatelessWidget {
@@ -14,9 +15,9 @@ class KundaliMilan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Kundali Millan",
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.inter(color: Colors.white),
         ),
         backgroundColor: AppColor.primary,
         centerTitle: true,
@@ -51,7 +52,7 @@ class KundaliMilan extends StatelessWidget {
         ),
         Text(
           title,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          style: GoogleFonts.inter(
                 color: Colors.black,
                 fontWeight: FontWeight.w800,
               ),
@@ -105,7 +106,7 @@ class KundaliMilan extends StatelessWidget {
                     scoreAnimationDuration: const Duration(seconds: 2),
                     scoreTextAnimationDuration:
                         const Duration(milliseconds: 500),
-                    scoreTextStyle: const TextStyle(
+                    scoreTextStyle: GoogleFonts.inter(
                         fontWeight: FontWeight.normal, height: 1),
                     arcBackgroundColor: Colors.black12,
                     arcProgressGradientColors: const [
@@ -219,7 +220,7 @@ class KundaliMilan extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -229,7 +230,7 @@ class KundaliMilan extends StatelessWidget {
                     backgroundColor: color.withOpacity(0.2),
                     child: Text(
                       "$score/$maxScore",
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),
@@ -240,7 +241,7 @@ class KundaliMilan extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 description,
-                style: const TextStyle(fontSize: 14),
+                style: GoogleFonts.inter(fontSize: 14),
               ),
             ],
           ),
@@ -256,7 +257,7 @@ class KundaliMilan extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Flexible(child: Text(value)),
+          Flexible(child: Text(value,style: GoogleFonts.inter())),
         ],
       ),
     );
@@ -269,7 +270,7 @@ class KundaliMilan extends StatelessWidget {
       } else {
         final response = kundaliController.southmatching.value.response;
         if (response == null) {
-          return const Center(child: Text('No data available.'));
+          return  Center(child: Text('No data available.',style: GoogleFonts.inter()));
         } else {
           return Column(
             children: [

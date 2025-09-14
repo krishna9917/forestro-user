@@ -13,6 +13,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/function/navigation.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnlineAstroCard extends StatefulWidget {
   const OnlineAstroCard({
@@ -128,7 +129,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style:  GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
@@ -137,7 +138,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                         // const SizedBox(height: 8),
                         Text(
                           astrologer.specialization ?? '',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 10,
                               color: Colors.black.withOpacity(0.6)),
                         ),
@@ -160,7 +161,7 @@ class _OnlineAstroCardState extends State<OnlineAstroCard> {
                                 children: [
                                   Text(
                                     astrologer.rating.toStringAsFixed(1),
-                                    style: const TextStyle(
+                                    style:  GoogleFonts.inter(
                                       fontSize: 13,
                                       color: Colors.black,
                                     ),

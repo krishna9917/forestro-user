@@ -10,6 +10,7 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -204,15 +205,16 @@ class _KundaliFormState extends State<KundaliForm>
             const SizedBox(
               height: 10,
             ),
-            const Center(
+             Center(
               child: Text("Kundali",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(fontSize: 25, fontWeight: FontWeight.w700)),
             ),
-            const Center(
+             Center(
               child: Padding(
                 padding: EdgeInsets.all(4.0),
                 child: Text(
                   " Welcome \nPlease provide some details",
+                   style: GoogleFonts.inter(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -283,7 +285,7 @@ class _KundaliFormState extends State<KundaliForm>
                           },
                           icon: const Icon(Icons.calendar_month),
                         ),
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                       ),
                       readOnly: true,
@@ -298,7 +300,7 @@ class _KundaliFormState extends State<KundaliForm>
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "Enter Birth Time",
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.access_time),
@@ -352,11 +354,11 @@ class _KundaliFormState extends State<KundaliForm>
                   //   },
                   // ),
                   Gap(2.h),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 5),
+                   Padding(
+                    padding: const EdgeInsets.only(left: 20, bottom: 5),
                     child: Text(
                       "Language",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: GoogleFonts.inter(fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(
@@ -381,9 +383,9 @@ class _KundaliFormState extends State<KundaliForm>
                     height: 52,
                     child: ElevatedButton(
                       onPressed: submitForm,
-                      child: const Text(
+                      child:  Text(
                         "Submit",
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.inter(color: Colors.white),
                       ),
                     ),
                   )

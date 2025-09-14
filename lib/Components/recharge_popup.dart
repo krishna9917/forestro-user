@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -40,31 +41,31 @@ homePopup(context) async {
                           horizontal: 20, vertical: 30),
                       child: Column(
                         children: [
-                          const Text(
+                           Text(
                             "Recharge now of",
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Text(
-                            "Rs. 49",
-                            style: TextStyle(
+                           Text(
+                            "Rs. 9",
+                            style: GoogleFonts.inter(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                               color: Colors.orange,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Text(
+                          Text(
                             "and instantly get",
-                            style: TextStyle(fontSize: 16),
+                            style: GoogleFonts.inter(fontSize: 16),
                           ),
                           const SizedBox(height: 5),
-                          const Text(
+                          Text(
                             "Rs. 100 in Your Wallet",
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -82,9 +83,9 @@ homePopup(context) async {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text(
+                            child:  Text(
                               "Recharge Now",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: GoogleFonts.inter(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
@@ -15,14 +16,11 @@ class TitleWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(color: Colors.black54, fontWeight: FontWeight.w400),
+            style: GoogleFonts.inter(color: Colors.black54, fontWeight: FontWeight.w400),
           ),
           Text(
             subTitle,
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+            style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                 ),
           ),

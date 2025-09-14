@@ -11,6 +11,7 @@ import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -310,11 +311,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   const SizedBox(width: 8),
                   Text(
                     formatTime(_remainingSeconds),
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       color: countdownColor,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'RobotoMono',
                       decoration: TextDecoration.none,
                     ),
                   ),

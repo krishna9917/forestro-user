@@ -6,6 +6,7 @@ import 'package:foreastro/controler/chat_history_contaroller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/model/chat_history_model.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -141,7 +142,7 @@ class ChatListCard extends StatelessWidget {
               children: [
                 Text(
                   chatData.name ?? '',
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -149,7 +150,7 @@ class ChatListCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   "${chatData.date ?? ''} | ${chatData.time ?? ''}",
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.grey,
                   ),
@@ -157,14 +158,14 @@ class ChatListCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   "Duration: ${chatData.communicationTime ?? '0'} min",
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.black87,
                   ),
                 ),
                 Text(
                   "Amount: ₹${chatData.totalAmount ?? '0'}",
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: AppColor.primary,
@@ -177,7 +178,7 @@ class ChatListCard extends StatelessWidget {
             children: [
               Text(
                 (chatData.status ?? '').toUpperCase(),
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: (chatData.status?.toLowerCase() == 'accept')
@@ -202,9 +203,9 @@ class ChatListCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text(
+                child:  Text(
                   "View History",
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.white,
                   ),

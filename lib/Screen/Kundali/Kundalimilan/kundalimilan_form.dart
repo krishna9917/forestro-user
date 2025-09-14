@@ -9,6 +9,7 @@ import 'package:foreastro/controler/horoscope_kundali/kundali_horoscope.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -177,15 +178,15 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
             const SizedBox(
               height: 10,
             ),
-            const Center(
+             Center(
               child: Text("Kundali Milan",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w700)),
             ),
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  " Welcome \nPlease provide some details",
+                  " Welcome \nPlease provide some details",style: GoogleFonts.inter(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -213,7 +214,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       ),
                       Text(
                         "Boy",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: GoogleFonts.inter(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
                             ),
@@ -268,7 +269,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "Enter Birth Time",
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.access_time),
@@ -322,7 +323,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                           },
                           icon: const Icon(Icons.calendar_month),
                         ),
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                       ),
                       readOnly: true,
@@ -345,7 +346,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       ),
                       Text(
                         "Girl",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: GoogleFonts.inter(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
                             ),
@@ -400,7 +401,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "Enter Birth Time",
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.access_time),
@@ -454,7 +455,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                           },
                           icon: const Icon(Icons.calendar_month),
                         ),
-                        hintStyle: const TextStyle(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                       ),
                       readOnly: true,
@@ -467,11 +468,11 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
               ),
             ),
             Gap(2.h),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(left: 20, bottom: 5),
               child: Text(
                 "Language",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.inter(fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
@@ -492,7 +493,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
             Gap(3.h),
             ElevatedButton(
               onPressed: submitForm,
-              child: const Text("Submit"),
+              child:  Text("Submit",style:GoogleFonts.inter()),
             ),
           ],
         ),
