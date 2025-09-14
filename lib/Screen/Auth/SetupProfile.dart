@@ -1056,28 +1056,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             }
                           },
                         ),
-                        Text(
-                          " Birth State",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          " Birth State Birth State Birth State Birth State Birth State",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          )
-                        ),
-                        Text(
-                            " Birth State Birth State Birth State Birth State Birth State",
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            )
-                        ),
+
                         const SizedBox(height: 32),
                         ElevatedButton(
                           onPressed: nextPage,
