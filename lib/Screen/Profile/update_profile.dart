@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,25 +9,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foreastro/Components/PhoneInputBox.dart';
-import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Profile/profilepage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
-import 'package:foreastro/Utils/validate.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/core/function/pickimage.dart';
-import 'package:foreastro/core/validation/validation.dart';
 import 'package:foreastro/model/profile_model.dart';
+import 'package:foreastro/package/phoneinput/src/number_parser/models/iso_code.dart';
+import 'package:foreastro/package/phoneinput/src/number_parser/models/phone_number.dart';
 
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:phone_input/phone_input_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<String> zodiacSigns = [
@@ -58,16 +56,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool loading = false;
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController city = TextEditingController();
+  TextEditingController city=TextEditingController();
+  TextEditingController state=TextEditingController();
+  TextEditingController pin=TextEditingController();
   final _birthtimeController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _phoneController = TextEditingController();
   PhoneNumber? phoneNumber = const PhoneNumber(isoCode: IsoCode.IN, nsn: "");
   String? gender;
-  String? state;
+
   String? sign;
   // String city = "";
   File? _pickedImage;
+
 
   @override
   void initState() {
@@ -79,8 +80,74 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _birthtimeController.text = widget.profileData?.birthTime ?? '';
     _birthDateController.text = widget.profileData?.dateOfBirth ?? '';
     gender = widget.profileData?.gender;
-    state = widget.profileData?.state;
+    state.text = widget.profileData?.state;
     sign = widget.profileData?.sign;
+    pin.text = widget.profileData?.pinCode??"" ;
+
+
+    print("gender is $gender" );
+  }
+
+  Future<void> getStateCity() async {
+    try {
+      final dio = Dio();
+      final url = "https://api.postalpincode.in/pincode/${pin.text}";
+
+
+      final response = await dio.get(url);
+
+
+      if (response.statusCode == 200) {
+        final res = response.data is String
+            ? jsonDecode(response.data)
+            : response.data;
+
+        if (res is List && res.isNotEmpty) {
+          final postOffices = res[0]["PostOffice"] as List?;
+
+          if (postOffices != null && postOffices.isNotEmpty) {
+            final first = postOffices.first as Map<String, dynamic>;
+
+            final stateValue = first["State"] ?? "";
+            final blockValue = first["Block"] ?? "";
+
+
+
+            setState(() {
+              state.text = stateValue;
+              city.text = blockValue;
+
+            });
+          } else {
+            setState(() {
+              state.text = "";
+              city.text = "";
+
+            });
+
+            showToast("No post office details found for this pin code.");
+          }
+        } else {
+
+          showToast("Invalid response format from API.");
+        }
+      } else {
+        print("❌ Server error: ${response.statusCode}");
+        setState(() {
+          state.text = "";
+          city.text = "";
+
+        });
+        showToast("Server error: ${response.statusCode}");
+      }
+    } on DioException catch (e) {
+      print("❌ Dio error: ${e.message}");
+      showToast("This pin code is not valid. Please try a different pin code.");
+    } catch (e) {
+
+      print("❌ Unexpected error: $e");
+      showToast("An unexpected error occurred. Please try again later.");
+    }
   }
 
   void onSumbit() async {
@@ -126,8 +193,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ? _birthDateController.text
           : widget.profileData?.dateOfBirth ?? '';
       String? finalGender = gender ?? widget.profileData?.gender;
-      String? finalState = state ?? widget.profileData?.state;
+      String? finalState = state.text.isNotEmpty ? state.text : widget.profileData?.state ?? '';
+      String? finalPin = pin.text.isNotEmpty ? pin.text : widget.profileData?.pinCode ?? '';
       String? finalSign = sign ?? widget.profileData?.sign;
+
+      if(pin.text.length<6){
+        showToast("Enter Valid PinCode");
+        setState(() {
+          loading = false;
+        });
+        return;
+      }
+      if(finalState!.isEmpty || finalCity.isEmpty){
+        showToast("Enter Valid PinCode");
+        setState(() {
+          loading = false;
+        });
+        return;
+      }
 
       // Construct FormData
       ApiRequest apiRequest = ApiRequest(
@@ -144,6 +227,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             'city': finalCity[0].toUpperCase() + city.text.substring(1),
             'state': finalState,
             "user_id": user_id,
+            "pin_code": finalPin,
             if (image != null) "profile_image": image,
           },
         ),
@@ -377,7 +461,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                               list: const [
                                                 "Male",
                                                 "Female",
-                                                "Others"
+                                                "Other"
                                               ],
                                               onChanged: (e) {
                                                 setState(() {
@@ -429,102 +513,87 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                             ),
                             Gap(3.h),
-                            Theme(
-                              data: ThemeData(
-                                inputDecorationTheme:
-                                    const InputDecorationTheme(
-                                  contentPadding: EdgeInsets.all(0),
-                                  enabledBorder: InputBorder.none,
+                            const SizedBox(height: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("    Pin Code",style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                ),),
+                                const SizedBox(height: 10,),
+                                TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(6),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  controller: pin,
+                                  decoration: InputDecoration(
+
+                                    hintText: "Enter PinCode",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  onChanged: ((value) {
+                                    if (value.isNotEmpty && value.length > 5) {
+                                      getStateCity();
+                                    }
+                                  }),
                                 ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20, bottom: 5),
-                                            child: Text(
-                                              "State",style:GoogleFonts.inter(
-                                                fontWeight: FontWeight.bold
-                                            )
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 50,
-                                            child: SelectBox(
-                                              list: const [
-                                                "Andhra Pradesh",
-                                                "Arunachal Pradesh",
-                                                "Assam",
-                                                "Bihar",
-                                                "Chhattisgarh",
-                                                "Goa",
-                                                "Gujarat",
-                                                "Haryana",
-                                                "Himachal Pradesh",
-                                                "Jharkhand",
-                                                "Karnataka",
-                                                "Kerala",
-                                                "Madhya Pradesh",
-                                                "Maharashtra",
-                                                "Manipur",
-                                                "Meghalaya",
-                                                "Mizoram",
-                                                "Nagaland",
-                                                "Odisha",
-                                                "Punjab",
-                                                "Rajasthan",
-                                                "Sikkim",
-                                                "Tamil Nadu",
-                                                "Telangana",
-                                                "Tripura",
-                                                "Uttar Pradesh",
-                                                "Uttarakhand",
-                                                "West Bengal",
-                                                "Andaman and Nicobar Islands",
-                                                "Chandigarh",
-                                                "Dadra and Nagar Haveli",
-                                                "Daman and Diu",
-                                                "Delhi",
-                                                "Lakshadweep",
-                                                "Puducherry",
-                                              ],
-                                              onChanged: (e) {
-                                                setState(() {
-                                                  state = e;
-                                                });
-                                              },
-                                              hint: widget.profileData!.state,
-                                              initialItem: state,
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
+                                const SizedBox(height: 16),
+                                Text("    Birth State",style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                ),),
+                                const SizedBox(height: 10,),
+                                TextFormField(
+
+                                  enabled: false,
+                                  controller: state,
+                                  decoration: InputDecoration(
+                                    hintText: "Birth State",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text("    Birth City",style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                ),),
+                                const SizedBox(height: 10,),
+                                TextFormField(
+
+                                  enabled: false,
+                                  controller: city,
+                                  decoration: InputDecoration(
+                                    hintText: "Birth City",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Gap(3.h),
-                            InputBox(
-                              title: "City",
-                              controller: city,
-                              hintText: widget.profileData!.city,
-                              // validator: (inp) {
-                              //   if (inp!.isEmpty) {
-                              //     return "Enter Your City";
-                              //   }
-                              //   return null;
-                              // },
-                            ),
+                            const SizedBox(height: 10,),
+
 
                             TitleWidget(
                               title: "Enter Birth Time",

@@ -44,14 +44,14 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 60),
     )..repeat();
-    Timer(const Duration(seconds: 1), () async {
-      await ZIMKit().init(
-          notificationConfig: ZegoZIMKitNotificationConfig(
-              androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(),
-              iosNotificationConfig: ZegoZIMKitIOSNotificationConfig()),
-          appID: MyConst.appId,
-          appSign: MyConst.appSign);
-    });
+    // Timer(const Duration(seconds: 1), () async {
+    //   await ZIMKit().init(
+    //       notificationConfig: ZegoZIMKitNotificationConfig(
+    //           androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(),
+    //           iosNotificationConfig: ZegoZIMKitIOSNotificationConfig()),
+    //       appID: MyConst.appId,
+    //       appSign: MyConst.appSign);
+    // });
     _checkInternetAndInitialize();
     // Get.put(BannerList()).fetchProfileData();
     // // Get.find<BannerList>().fetchProfileData();
@@ -139,8 +139,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       // await chatzegocloud();
-      Get.find<GetAstrologerProfile>().astroData();
-      Get.find<PendingRequest>().pendingRequestData();
+      Get.put(GetAstrologerProfile()).astroData();
+      Get.put(PendingRequest()).pendingRequestData();
     });
 
     await checkTokenAndNavigate();

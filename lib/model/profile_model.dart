@@ -38,6 +38,7 @@ class Data {
   dynamic sign;
   dynamic wallet;
   dynamic createdAt;
+  dynamic pinCode;
 
   Data({
     this.userId,
@@ -56,6 +57,7 @@ class Data {
     this.sign,
     this.wallet,
     this.createdAt,
+    this.pinCode
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,8 @@ class Data {
       sign: json['sign'],
       wallet: json['wallet'],
       createdAt: json['created_at'],
+      pinCode: json["pin_code"]??""
+
     );
   }
 
@@ -97,6 +101,7 @@ class Data {
     data['sign'] = this.sign;
     data['wallet'] = this.wallet;
     data['created_at'] = this.createdAt;
+    data["pin_code"] = this.pinCode;
     return data;
   }
 }

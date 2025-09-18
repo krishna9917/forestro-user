@@ -5,6 +5,7 @@ import 'package:foreastro/model/profile_model.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class PreviewChatScreen extends StatelessWidget {

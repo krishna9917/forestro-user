@@ -16,13 +16,13 @@ import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/Utils/assets.dart';
 import 'package:foreastro/core/LocalStorage/UseLocalstorage.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:foreastro/package/phoneinput/src/number_parser/models/phone_number.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:phone_input/phone_input_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -107,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
         loading = false;
       });
     } catch (e) {
+      print(e);
       setState(() {
         loading = false;
       });
@@ -151,56 +152,56 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _googleSignIn() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser == null) {
-        setState(() {
-          _isLoading = false;
-        });
-        showToast("Google sign-in was canceled.");
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-
-      String userId = userCredential.user?.uid ?? "";
-      print("user============$userId");
-
-      if (googleUser.email != null && userCredential.user?.uid != null) {
-        email = googleUser.email!;
-        token = userCredential.user?.uid!;
-        String name = googleUser.displayName ?? "User";
-
-        await verifyProfilee(email!, name);
-      } else {
-        showToast("Login failed. Missing email or access token.");
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      }
-    } catch (e) {
-      showToast("An error occurred: $e");
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // Future<void> _googleSignIn() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //
+  //     if (googleUser == null) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //       showToast("Google sign-in was canceled.");
+  //       return;
+  //     }
+  //
+  //     final GoogleSignInAuthentication googleAuth =
+  //         await googleUser.authentication;
+  //
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+  //
+  //     final UserCredential userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+  //
+  //     String userId = userCredential.user?.uid ?? "";
+  //     print("user============$userId");
+  //
+  //     if (googleUser.email != null && userCredential.user?.uid != null) {
+  //       email = googleUser.email!;
+  //       token = userCredential.user?.uid!;
+  //       String name = googleUser.displayName ?? "User";
+  //
+  //       await verifyProfilee(email!, name);
+  //     } else {
+  //       showToast("Login failed. Missing email or access token.");
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     showToast("An error occurred: $e");
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   Future<void> _facebookSignIn() async {
     try {

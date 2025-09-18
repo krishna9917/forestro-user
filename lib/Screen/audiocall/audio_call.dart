@@ -195,10 +195,10 @@ class _AudioCallState extends State<AudioCall> {
       child: Stack(
         children: [
           ZegoUIKitPrebuiltCall(
-            appID: MyConst.appId,
-            appSign: MyConst.appSign,
+            appID: 844833851,
+            appSign: '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
             userID: widget.userid,
-            userName: widget.username,
+            userName: widget.username.split(' ').first,
             callID: widget.callID,
             events: ZegoUIKitPrebuiltCallEvents(
               onCallEnd: (event, defaultAction) async {

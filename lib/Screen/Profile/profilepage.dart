@@ -51,10 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context)
-        .textTheme
-        .titleMedium!
-        .copyWith(fontWeight: FontWeight.bold);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,

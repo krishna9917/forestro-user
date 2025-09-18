@@ -1,4 +1,3 @@
-import 'package:another_telephony/telephony.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -34,7 +33,6 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
   String otp = '';
   bool loading = false;
   bool resendLoading = false;
-  final Telephony telephony = Telephony.instance;
   TextEditingController otpController = TextEditingController();
   @override
   void initState() {
@@ -55,46 +53,6 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
     if (otp.length == 4) {
       _confirmOTP();
     }
-  }
-
-  void _listenForOTP() async {
-    await telephony.requestPhoneAndSmsPermissions;
-
-    telephony.listenIncomingSms(
-      onNewMessage: (SmsMessage message) {
-        try {
-          print('Received SMS: ${message.body}');
-          final otpRegex = RegExp(r'\b\d{4}\b');
-          final otpMatch = otpRegex.firstMatch(message.body ?? '');
-          if (otpMatch != null) {
-            setState(() {
-              otp = otpMatch.group(0)!;
-              otpController.text = otp;
-            });
-            _confirmOTP();
-          }
-        } catch (e) {
-          print("Error while processing SMS: $e");
-        }
-      },
-      onBackgroundMessage: (message) {
-        print(message);
-
-        try {
-          print('Received SMS: ${message.body}');
-          final otpRegex = RegExp(r'\b\d{4}\b');
-          final otpMatch = otpRegex.firstMatch(message.body ?? '');
-          if (otpMatch != null) {
-            setState(() {
-              otp = otpMatch.group(0)!;
-            });
-            _confirmOTP();
-          }
-        } catch (e) {
-          print("Error while processing SMS: $e");
-        }
-      },
-    );
   }
 
   void _confirmOTP() async {

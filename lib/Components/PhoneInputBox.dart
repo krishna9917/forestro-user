@@ -1,8 +1,11 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:foreastro/package/phoneinput/src/number_parser/models/iso_code.dart';
+import 'package:foreastro/package/phoneinput/src/number_parser/models/phone_number.dart';
+import 'package:foreastro/package/phoneinput/src/widgets/country_selector/country_selector_navigator.dart';
+import 'package:foreastro/package/phoneinput/src/widgets/phone_input.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:phone_input/phone_input_package.dart';
 
 Widget InputPhoneNo(
     {void Function(PhoneNumber?)? onChanged,

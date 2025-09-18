@@ -35,8 +35,12 @@ class ProfileList extends GetxController {
 
       final Dio dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
+      print("the token is $token");
+      print("the user id is $user_id");
 
       final response = await dio.get(url, queryParameters: queryParams);
+
+
       if (response.statusCode == 201) {
         final responseData = response.data;
         if (responseData != null) {
@@ -48,10 +52,10 @@ class ProfileList extends GetxController {
         }
       }
     } catch (e) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-      await GoogleSignIn().signOut();
-      Get.offAll(() => const LoginScreen());
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.clear();
+      // // await GoogleSignIn().signOut();
+      // Get.offAll(() => const LoginScreen());
       showToast("Plese Login");
       print("featchthe error Bloc list $e");
       print(e);

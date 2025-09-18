@@ -326,7 +326,7 @@ class SocketController extends GetxController {
     socket?.disconnect();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    await GoogleSignIn().signOut();
+    // await GoogleSignIn().signOut();
     Get.offAll(() => const LoginScreen());
     showToast('Logout successfully!');
   }

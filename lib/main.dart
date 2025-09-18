@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:another_telephony/telephony.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +31,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   
 }
 
-onBackgroundMessage(SmsMessage message) {
-  debugPrint("onBackgroundMessage called");
-}
-
 Future<void> main(List<String> args) async {
-  await ZIMKit().init(
-      appID: 2007373594,
-      appSign:
-          '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

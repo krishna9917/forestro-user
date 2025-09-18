@@ -28,9 +28,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> chatzegocloud() async {
     await ZIMKit().init(
-        appID: 2007373594,
+        appID: 1432355811,
         appSign:
-            '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
+            'fb0256f502da88184adb163037bd05d7d26bf3ac029ca9d38d4a071f3f52bdfd');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 

@@ -14,6 +14,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 class MyCall extends StatefulWidget {
   const MyCall(
@@ -185,12 +186,23 @@ class _MyCallState extends State<MyCall> {
     return Stack(
       children: [
         ZegoUIKitPrebuiltCall(
-          appID: MyConst.appId,
-          appSign: MyConst.appSign,
+          appID: 844833851,
+          appSign: '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
           userID: widget.userid,
-          userName: widget.username,
+          userName: widget.username.split(' ').first,
           callID: widget.callID,
           events: ZegoUIKitPrebuiltCallEvents(
+            onError: (e){
+              print("astro error{$e}");
+            },
+            room: ZegoCallRoomEvents(
+                onTokenExpired: (e){
+                  print("astro error{$e}");
+                },
+                onStateChanged: (e){
+                  print("astro error{$e}");
+                }
+            ),
             user: ZegoCallUserEvents(
               onEnter: (p) {
                 showToast("${p.name} join in call");
@@ -218,52 +230,52 @@ class _MyCallState extends State<MyCall> {
             ),
         ),
         // Countdown Timer Positioned on the Right Corner
-        // Positioned(
-        //   top: 30,
-        //   left: 10,
-        //   child: Container(
-        //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        //     decoration: BoxDecoration(
-        //       gradient: const LinearGradient(
-        //         colors: [
-        //           Color.fromARGB(255, 125, 122, 122),
-        //           Color.fromARGB(151, 234, 231, 227)
-        //         ],
-        //         begin: Alignment.topLeft,
-        //         end: Alignment.bottomRight,
-        //       ),
-        //       borderRadius: BorderRadius.circular(15),
-        //       boxShadow: [
-        //         BoxShadow(
-        //           color: Colors.black.withOpacity(0.2),
-        //           offset: const Offset(2, 4),
-        //           blurRadius: 6,
-        //         ),
-        //       ],
-        //     ),
-        //     child: Row(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         const Icon(
-        //           Icons.timer_outlined,
-        //           color: Colors.white,
-        //           size: 24,
-        //         ),
-        //         const SizedBox(width: 8),
-        //         Text(
-        //           formatTime(_remainingSeconds),
-        //           style: TextStyle(
-        //             color: countdownColor,
-        //             fontSize: 24,
-        //             fontWeight: FontWeight.bold,
-        //             fontFamily: 'RobotoMono',
-        //             decoration: TextDecoration.none,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        Positioned(
+          top: 30,
+          left: 10,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 125, 122, 122),
+                  Color.fromARGB(151, 234, 231, 227)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(2, 4),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.timer_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  formatTime(_remainingSeconds),
+                  style: TextStyle(
+                    color: countdownColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'RobotoMono',
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
 
         if (_isLoading)
           const Center(

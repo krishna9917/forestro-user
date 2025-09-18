@@ -38,11 +38,13 @@ import 'package:foreastro/model/listaustro_model.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -52,6 +54,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Razorpay razorpay;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final bannerController = Get.put(BannerList());
   final BlocList blocListController = Get.put(BlocList());
@@ -64,6 +67,64 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> rechargeData = [];
 
+  Future<void> createOrderAndOpenCheckout() async {
+    final profileController = Get.find<ProfileList>();
+    int baseAmount = 1;
+    double gst = baseAmount * 0.18;
+    int totalAmount = (baseAmount + gst).toInt() * 100;
+    String breakdownMessage =
+        "Base Amount: ₹$baseAmount\nGST (18%): ₹${gst.toStringAsFixed(2)}\nTotal Amount: ₹${(baseAmount + gst).toStringAsFixed(2)}";
+    showToast(breakdownMessage);
+    String userphone = profileController.profileDataList.first.phone ?? 'NA';
+    String useremail = profileController.profileDataList.first.email ?? 'NA';
+    print("userphone=================================$userphone,$useremail");
+    var orderResponse = await http.post(
+      Uri.parse("https://api.razorpay.com/v1/orders"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+        "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
+      },
+      body: jsonEncode({
+        "amount": totalAmount,
+        "currency": "INR",
+        "payment_capture": 1,
+      }),
+    );
+
+    if (orderResponse.statusCode == 200) {
+      var orderData = jsonDecode(orderResponse.body);
+      var orderId = orderData['id'];
+      print("ordrr=============$orderId");
+
+      var options = {
+        "key": "rzp_live_CJkLJpz9BeaRDw",
+        "amount": totalAmount,
+        "name": "For Astro App",
+        "description": "Payment for the some random product",
+        "order_id": orderId,
+        "prefill": {"contact": "$userphone", "email": "$useremail"},
+        "external": {
+          "wallets": ["paytm"],
+          "upi": {
+            "payeeName": "Payee Name",
+            "payeeVpa": "9886975566@okbizaxis",
+          },
+        },
+        "theme": {
+          "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
+        }
+      };
+
+      try {
+        razorpay.open(options);
+      } catch (e) {
+        print(e.toString());
+      }
+    } else {
+      print("Error creating order: ${orderResponse.body}");
+    }
+  }
 
   Future<void> follow() async {
     try {
@@ -84,11 +145,123 @@ class _HomePageState extends State<HomePage> {
 
       if (data.statusCode == 201) {
         rechargeData = List<Map<String, dynamic>>.from(data.data['data']);
-        if(rechargeData.isEmpty){
-        return homePopup(context);
+        if (rechargeData.isEmpty) {
+          return showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  contentPadding: const EdgeInsets.all(0),
+                  insetPadding: const EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  backgroundColor: Colors.transparent,
+                  content: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            image: AssetImage("assets/popup_bg_img.png"),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 30),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Recharge now of",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Rs. 9",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "and instantly get",
+                                    style: GoogleFonts.inter(fontSize: 16),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "Rs. 100 in Your Wallet",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.orange,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30, vertical: 12),
+                                    ),
+                                    onPressed: () {
+                                      createOrderAndOpenCheckout();
+                                    },
+                                    child: Text(
+                                      "Recharge Now",
+                                      style: GoogleFonts.inter(
+                                          fontSize: 16, color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: -40,
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              "assets/gift.png", // Your gift image
+                              height: 80,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.black,
+                                  size: 22,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              });
         }
-
-
       } else {
         // Failed API request
         print("API request failed with status code: ${data.statusCode}");
@@ -102,15 +275,19 @@ class _HomePageState extends State<HomePage> {
       // Handle other exceptions
       print("Error: $e");
       showToast("An unexpected error occurred. Please try again later.");
-    } finally {
-
-    }
+    } finally {}
   }
 
   @override
   void initState() {
     fetchAndInitProfile();
-
+    razorpay = Razorpay();
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+            (PaymentSuccessResponse response) {
+          handlerPaymentSuccess(response);
+        });
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BannerList()).fetchProfileData();
     Get.put(BlocList()).blocData();
@@ -123,6 +300,81 @@ class _HomePageState extends State<HomePage> {
     _searchController.addListener(_onSearchChanged);
     super.initState();
   }
+
+  void handlerErrorFailure(PaymentFailureResponse response) {
+    print("Payment error: ${response.message}");
+  }
+
+  void handlerExternalWallet(ExternalWalletResponse response) {
+    print("External Wallet: ${response.walletName}");
+  }
+
+  Future<void> handlerPaymentSuccess(PaymentSuccessResponse response) async {
+    print("Payment success====");
+    String paymentId = response.paymentId ?? 'NA';
+    String orderId = response.orderId.toString();
+    String signature = response.signature ?? 'NA';
+    DateTime paymentTime = DateTime.now();
+    String userName =
+        profileController.profileDataList.first.name ?? 'Unknown User';
+
+    int selectedAmount = 9;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString('user_id');
+
+    storePaymentDetails(paymentId, orderId, signature, paymentTime, userName,
+        selectedAmount, userId!);
+  }
+
+  Future<void> storePaymentDetails(
+      String paymentId,
+      String orderId,
+      String signature,
+      DateTime paymentTime,
+      String userName,
+      int selectedAmount,
+      String userId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      String? user_id = prefs.getString('user_id');
+
+      print(user_id);
+
+      ApiRequest apiRequest = ApiRequest(
+        "$apiUrl/wallet-payment",
+        method: ApiMethod.POST,
+        body: packFormData(
+          {
+            'user_id': user_id,
+            'name': userName,
+            'order_id': orderId,
+            'amount': 100,
+            'is_bonus': true,
+            'date': paymentTime,
+            'payment_id': paymentId,
+            'status': 'paid'
+          },
+        ),
+      );
+      dio.Response data = await apiRequest.send();
+      if (data.
+      statusCode == 201) {
+        print("API request successful: ${data.data}");
+        follow();
+        showToast("Wallet Recharge successfull");
+      } else {
+        print("API request failed with status code: ${data.statusCode}");
+      }
+      print("manjulika${data}");
+    } catch (e) {
+      // showToast(tosteError);
+    }
+    setState(() {
+      Get.find<ProfileList>().fetchProfileData();
+    });
+  }
+
 
   void _onSearchChanged() {
     if (_searchController.text.length >= 3) {
@@ -172,10 +424,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> chatzegocloud() async {
-    // await ZIMKit().init(
-    //     appID: 2007373594,
-    //     appSign:
-    //         '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 
@@ -233,6 +481,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    razorpay.clear();
     _searchController.removeListener(_onSearchChanged);
     super.dispose();
   }
@@ -278,8 +527,8 @@ class _HomePageState extends State<HomePage> {
             actions: [
               IconButton(
                   onPressed: () {
-                    navigate.push(routeMe( SetupProfileScreen(phone: '', userId: null,)));
-                    // navigate.push(routeMe(const SearchPage()));
+                    // navigate.push(routeMe( SetupProfileScreen(phone: '', userId: null,)));
+                    navigate.push(routeMe(const SearchPage()));
                   },
                   icon: Icon(
                     Icons.search,
@@ -317,7 +566,7 @@ class _HomePageState extends State<HomePage> {
 
                           return Text(
                             "₹ $formattedWallet",
-                            style:  GoogleFonts.inter(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 15,
@@ -329,7 +578,8 @@ class _HomePageState extends State<HomePage> {
                               .profileDataList.isEmpty) {}
                           return Text(
                             '0',
-                            style:  GoogleFonts.inter(fontWeight: FontWeight.w500),
+                            style:
+                                GoogleFonts.inter(fontWeight: FontWeight.w500),
                           );
                         }
                       },
@@ -344,9 +594,9 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Badge(
                   backgroundColor: AppColor.primary,
-                  label:  Text(
+                  label: Text(
                     "0",
-                    style:  GoogleFonts.inter(fontSize: 10),
+                    style: GoogleFonts.inter(fontSize: 10),
                   ),
                   child: SvgPicture.asset(
                     "assets/icons/notic.svg",
@@ -433,7 +683,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         "Our Top Astrologers".toUpperCase(),
-                        style:  GoogleFonts.inter(
+                        style: GoogleFonts.inter(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
@@ -596,7 +846,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style:  GoogleFonts.inter(
+                                                    style: GoogleFonts.inter(
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400,
@@ -644,7 +894,7 @@ class _HomePageState extends State<HomePage> {
                                                 chunkedText,
                                                 maxLines: null,
                                                 overflow: TextOverflow.visible,
-                                                style:  GoogleFonts.inter(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -742,7 +992,7 @@ class _HomePageState extends State<HomePage> {
                                           title,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style:  GoogleFonts.inter(
+                                          style: GoogleFonts.inter(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
                                           ),
@@ -924,7 +1174,7 @@ class _HomePageState extends State<HomePage> {
                                           celebrity.title ?? 'NA',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style:  GoogleFonts.inter(
+                                          style: GoogleFonts.inter(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                           ),

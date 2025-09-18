@@ -112,12 +112,6 @@ class _WalletPageState extends State<WalletPage> {
     }
   }
 
-  String generateRandomOrderId() {
-    var random = Random();
-    int randomNumber = 10000 + random.nextInt(90000);
-    return 'Astro@$randomNumber';
-  }
-
   Future<void> handlerPaymentSuccess(PaymentSuccessResponse response) async {
     print("Payment success====");
     String paymentId = response.paymentId ?? 'NA';
