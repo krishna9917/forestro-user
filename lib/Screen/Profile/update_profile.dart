@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:foreastro/Components/PhoneInputBox.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
+import 'package:foreastro/Screen/Kundali/location_page.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Screen/Profile/profilepage.dart';
 import 'package:foreastro/Utils/Quick.dart';
@@ -58,7 +59,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController city=TextEditingController();
   TextEditingController state=TextEditingController();
-  TextEditingController pin=TextEditingController();
+  // TextEditingController pin=TextEditingController();
   final _birthtimeController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -82,73 +83,73 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     gender = widget.profileData?.gender;
     state.text = widget.profileData?.state;
     sign = widget.profileData?.sign;
-    pin.text = widget.profileData?.pinCode??"" ;
+    // pin.text = widget.profileData?.pinCode??"" ;
 
 
     print("gender is $gender" );
   }
 
-  Future<void> getStateCity() async {
-    try {
-      final dio = Dio();
-      final url = "https://api.postalpincode.in/pincode/${pin.text}";
-
-
-      final response = await dio.get(url);
-
-
-      if (response.statusCode == 200) {
-        final res = response.data is String
-            ? jsonDecode(response.data)
-            : response.data;
-
-        if (res is List && res.isNotEmpty) {
-          final postOffices = res[0]["PostOffice"] as List?;
-
-          if (postOffices != null && postOffices.isNotEmpty) {
-            final first = postOffices.first as Map<String, dynamic>;
-
-            final stateValue = first["State"] ?? "";
-            final blockValue = first["Block"] ?? "";
-
-
-
-            setState(() {
-              state.text = stateValue;
-              city.text = blockValue;
-
-            });
-          } else {
-            setState(() {
-              state.text = "";
-              city.text = "";
-
-            });
-
-            showToast("No post office details found for this pin code.");
-          }
-        } else {
-
-          showToast("Invalid response format from API.");
-        }
-      } else {
-        print("❌ Server error: ${response.statusCode}");
-        setState(() {
-          state.text = "";
-          city.text = "";
-
-        });
-        showToast("Server error: ${response.statusCode}");
-      }
-    } on DioException catch (e) {
-      print("❌ Dio error: ${e.message}");
-      showToast("This pin code is not valid. Please try a different pin code.");
-    } catch (e) {
-
-      print("❌ Unexpected error: $e");
-      showToast("An unexpected error occurred. Please try again later.");
-    }
-  }
+  // Future<void> getStateCity() async {
+  //   try {
+  //     final dio = Dio();
+  //     final url = "https://api.postalpincode.in/pincode/${pin.text}";
+  //
+  //
+  //     final response = await dio.get(url);
+  //
+  //
+  //     if (response.statusCode == 200) {
+  //       final res = response.data is String
+  //           ? jsonDecode(response.data)
+  //           : response.data;
+  //
+  //       if (res is List && res.isNotEmpty) {
+  //         final postOffices = res[0]["PostOffice"] as List?;
+  //
+  //         if (postOffices != null && postOffices.isNotEmpty) {
+  //           final first = postOffices.first as Map<String, dynamic>;
+  //
+  //           final stateValue = first["State"] ?? "";
+  //           final blockValue = first["Block"] ?? "";
+  //
+  //
+  //
+  //           setState(() {
+  //             state.text = stateValue;
+  //             city.text = blockValue;
+  //
+  //           });
+  //         } else {
+  //           setState(() {
+  //             state.text = "";
+  //             city.text = "";
+  //
+  //           });
+  //
+  //           showToast("No post office details found for this pin code.");
+  //         }
+  //       } else {
+  //
+  //         showToast("Invalid response format from API.");
+  //       }
+  //     } else {
+  //       print("❌ Server error: ${response.statusCode}");
+  //       setState(() {
+  //         state.text = "";
+  //         city.text = "";
+  //
+  //       });
+  //       showToast("Server error: ${response.statusCode}");
+  //     }
+  //   } on DioException catch (e) {
+  //     print("❌ Dio error: ${e.message}");
+  //     showToast("This pin code is not valid. Please try a different pin code.");
+  //   } catch (e) {
+  //
+  //     print("❌ Unexpected error: $e");
+  //     showToast("An unexpected error occurred. Please try again later.");
+  //   }
+  // }
 
   void onSumbit() async {
     makeNewAccount();
@@ -194,16 +195,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           : widget.profileData?.dateOfBirth ?? '';
       String? finalGender = gender ?? widget.profileData?.gender;
       String? finalState = state.text.isNotEmpty ? state.text : widget.profileData?.state ?? '';
-      String? finalPin = pin.text.isNotEmpty ? pin.text : widget.profileData?.pinCode ?? '';
+      // String? finalPin = pin.text.isNotEmpty ? pin.text : widget.profileData?.pinCode ?? '';
       String? finalSign = sign ?? widget.profileData?.sign;
 
-      if(pin.text.length<6){
-        showToast("Enter Valid PinCode");
-        setState(() {
-          loading = false;
-        });
-        return;
-      }
+      // if(pin.text.length<6){
+      //   showToast("Enter Valid PinCode");
+      //   setState(() {
+      //     loading = false;
+      //   });
+      //   return;
+      // }
       if(finalState!.isEmpty || finalCity.isEmpty){
         showToast("Enter Valid PinCode");
         setState(() {
@@ -227,7 +228,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             'city': finalCity[0].toUpperCase() + city.text.substring(1),
             'state': finalState,
             "user_id": user_id,
-            "pin_code": finalPin,
+            // "pin_code": finalPin,
             if (image != null) "profile_image": image,
           },
         ),
@@ -522,74 +523,89 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     fontWeight: FontWeight.w500
                                 ),),
                                 const SizedBox(height: 10,),
-                                TextFormField(
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(6),
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  controller: pin,
-                                  decoration: InputDecoration(
-
-                                    hintText: "Enter PinCode",
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                  onChanged: ((value) {
-                                    if (value.isNotEmpty && value.length > 5) {
-                                      getStateCity();
-                                    }
-                                  }),
-                                ),
+                                // TextFormField(
+                                //   inputFormatters: [
+                                //     LengthLimitingTextInputFormatter(6),
+                                //     FilteringTextInputFormatter.digitsOnly
+                                //   ],
+                                //   controller: pin,
+                                //   decoration: InputDecoration(
+                                //
+                                //     hintText: "Enter PinCode",
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                //       borderRadius: BorderRadius.circular(30),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                //       borderRadius: BorderRadius.circular(30),
+                                //     ),
+                                //   ),
+                                //   onChanged: ((value) {
+                                //     if (value.isNotEmpty && value.length > 5) {
+                                //       getStateCity();
+                                //     }
+                                //   }),
+                                // ),
                                 const SizedBox(height: 16),
                                 Text("    Birth State",style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500
                                 ),),
                                 const SizedBox(height: 10,),
-                                TextFormField(
-
-                                  enabled: false,
-                                  controller: state,
-                                  decoration: InputDecoration(
-                                    hintText: "Birth State",
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text("    Birth City",style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                                const SizedBox(height: 10,),
-                                TextFormField(
-
-                                  enabled: false,
-                                  controller: city,
-                                  decoration: InputDecoration(
-                                    hintText: "Birth City",
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
-                                      borderRadius: BorderRadius.circular(30),
+                                GestureDetector(
+                                  onTap: (){
+                                    Get.to(GoogleMapSearchPlacesApi(
+                                      onSelect: (e) {
+                                        setState(() {
+                                          if(e.city?.isEmpty??false || (e.state?.isEmpty??false)){
+                                            showToast("Please search with city name");
+                                          }else{
+                                            city.text = e.city??"";
+                                            state.text = e.state??"";
+                                          }
+                                        });
+                                      },
+                                    ));
+                                  },
+                                  child: TextFormField(
+                                    enabled: false,
+                                    controller: TextEditingController(text: "${city.text}, ${state.text}"),
+                                    decoration: InputDecoration(
+                                      hintText: "Search with city name",
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
                                     ),
                                   ),
                                 ),
+                                // const SizedBox(height: 16),
+                                // Text("    Birth City",style: GoogleFonts.inter(
+                                //     fontSize: 14,
+                                //     fontWeight: FontWeight.w500
+                                // ),),
+                                // const SizedBox(height: 10,),
+                                // TextFormField(
+                                //
+                                //   enabled: false,
+                                //   controller: city,
+                                //   decoration: InputDecoration(
+                                //     hintText: "Birth City",
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                //       borderRadius: BorderRadius.circular(30),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                //       borderRadius: BorderRadius.circular(30),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             const SizedBox(height: 10,),

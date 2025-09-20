@@ -128,6 +128,11 @@ class InputBox extends StatelessWidget {
             fillColor: Color.fromARGB(164, 255, 255, 255),
             hintText: hintText,
             filled: true,
+            hintStyle: GoogleFonts.inter(
+              color: Color(0xffA4A4A4),
+              fontSize: 14,
+              fontWeight: FontWeight.w500
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
               borderSide: BorderSide(

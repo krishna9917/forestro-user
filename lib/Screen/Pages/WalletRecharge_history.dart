@@ -118,7 +118,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                           ),
                           Text(
                             "Balance".toUpperCase(),
-                            style: const TextStyle(
+                            style:  GoogleFonts.inter(
                               fontWeight: FontWeight.w500,
                             ),
                           ),

@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   late DateTime startTime;
   late DateTime endTime;
   late Timer _timer;
-  late int _remainingSeconds;
+  int _remainingSeconds = 0;
   bool isSessionEnded = false;
   bool _isBeeping = false;
   Color countdownColor = Colors.white;
@@ -57,8 +57,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    sessionController = Get.put(SessionController());
     chatzegocloud();
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
@@ -104,8 +102,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     //   return;
     // }
     await ZIMKit().connectUser(
-      id: "23",
-      name: "dsfdsfdfdfd",
+      id: "${widget.userId}-user",
+      name: "User",
       // avatarUrl: profile,
     );
   }
@@ -254,7 +252,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         children: [
           ZIMKitMessageListPage(
             conversationType: ZIMConversationType.peer,
-            conversationID: "32",
+            conversationID: widget.callID,
             showPickFileButton: false,
             showMoreButton: false,
             theme: ThemeData(),

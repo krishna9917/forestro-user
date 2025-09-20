@@ -718,7 +718,7 @@ class _HomePageState extends State<HomePage> {
                       //       horizontal: 20.0, vertical: 10),
                       //   child: Text(
                       //     "pending reques".toUpperCase(),
-                      //     style: const TextStyle(
+                      //     style: const GoogleFonts.inter(
                       //       fontWeight: FontWeight.bold,
                       //       fontSize: 18,
                       //     ),
@@ -1074,7 +1074,7 @@ class _HomePageState extends State<HomePage> {
                 //                             celebrity.title ?? 'NA',
                 //                             maxLines: 2,
                 //                             overflow: TextOverflow.ellipsis,
-                //                             style: const TextStyle(
+                //                             style: const GoogleFonts.inter(
                 //                               fontSize: 14,
                 //                               fontWeight: FontWeight.w400,
                 //                             ),

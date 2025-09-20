@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ContactVerifiction extends StatefulWidget {
   const ContactVerifiction({super.key});
@@ -56,8 +57,8 @@ class _ContactVerifictionState extends State<ContactVerifiction> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text("Your Request Has Been Submitted!",
-                          style: TextStyle(
+                       Text("Your Request Has Been Submitted!",
+                          style: GoogleFonts.inter(
                               fontSize: 20, fontWeight: FontWeight.w600)),
                       const Padding(
                         padding: EdgeInsets.all(8.0),

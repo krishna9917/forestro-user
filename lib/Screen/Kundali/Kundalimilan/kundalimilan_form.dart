@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/PhoneInputBox.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
+import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Kundali/Kundalimilan/kundalimilan_page.dart';
 import 'package:foreastro/Screen/Kundali/location_page.dart';
 import 'package:foreastro/controler/horoscope_kundali/chart_image_controler.dart';
@@ -233,33 +234,48 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                   const SizedBox(
                     height: 10,
                   ),
-                  TitleWidget(
+                  CompleteProfileInputBox(
                     title: "Boy Birth Of Place",
-                    child: TextFormField(
-                      onTap: () async {
-                        final selectedAddress = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleMapSearchPlacesApi(),
-                          ),
-                        );
-                        if (selectedAddress != null) {
+                    textEditingController: addressControllerBoy,
+                    readOnly: true,
+                    prefixIcon: const Icon(Icons.location_on_rounded),
+                    onTap: () {
+                      Get.to(GoogleMapSearchPlacesApi(
+                        onSelect: (e) {
                           setState(() {
-                            addressControllerBoy.text = selectedAddress;
+                            addressControllerBoy.text = e.address;
                           });
-                        }
-                      },
-                      readOnly: true,
-                      controller: addressControllerBoy,
-                      validator: (inp) {
-                        if (inp!.isEmpty) {
-                          return "Enter your address";
-                        }
-                        return null;
-                      },
-                    ),
+                        },
+                      ));
+                    },
                   ),
+                  // TitleWidget(
+                  //   title: "Boy Birth Of Place",
+                  //   child: TextFormField(
+                  //     onTap: () async {
+                  //       final selectedAddress = await Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               const GoogleMapSearchPlacesApi(),
+                  //         ),
+                  //       );
+                  //       if (selectedAddress != null) {
+                  //         setState(() {
+                  //           addressControllerBoy.text = selectedAddress;
+                  //         });
+                  //       }
+                  //     },
+                  //     readOnly: true,
+                  //     controller: addressControllerBoy,
+                  //     validator: (inp) {
+                  //       if (inp!.isEmpty) {
+                  //         return "Enter your address";
+                  //       }
+                  //       return null;
+                  //     },
+                  //   ),
+                  // ),
                   const Gap(10),
                   TitleWidget(
                     title: "Boy Birth Time",
@@ -365,33 +381,48 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                   const SizedBox(
                     height: 10,
                   ),
-                  TitleWidget(
-                    title: "Girl Birth Of Place",
-                    child: TextFormField(
-                      onTap: () async {
-                        final selectedAddress = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleMapSearchPlacesApi(),
-                          ),
-                        );
-                        if (selectedAddress != null) {
+                  CompleteProfileInputBox(
+                    title: "Boy Birth Of Place",
+                    textEditingController: addressControllerGirl,
+                    readOnly: true,
+                    prefixIcon: const Icon(Icons.location_on_rounded),
+                    onTap: () {
+                      Get.to(GoogleMapSearchPlacesApi(
+                        onSelect: (e) {
                           setState(() {
-                            addressControllerGirl.text = selectedAddress;
+                            addressControllerGirl.text = e.address;
                           });
-                        }
-                      },
-                      readOnly: true,
-                      controller: addressControllerGirl,
-                      validator: (inp) {
-                        if (inp!.isEmpty) {
-                          return "Enter your address";
-                        }
-                        return null;
-                      },
-                    ),
+                        },
+                      ));
+                    },
                   ),
+                  // TitleWidget(
+                  //   title: "Girl Birth Of Place",
+                  //   child: TextFormField(
+                  //     onTap: () async {
+                  //       final selectedAddress = await Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               const GoogleMapSearchPlacesApi(),
+                  //         ),
+                  //       );
+                  //       if (selectedAddress != null) {
+                  //         setState(() {
+                  //           addressControllerGirl.text = selectedAddress;
+                  //         });
+                  //       }
+                  //     },
+                  //     readOnly: true,
+                  //     controller: addressControllerGirl,
+                  //     validator: (inp) {
+                  //       if (inp!.isEmpty) {
+                  //         return "Enter your address";
+                  //       }
+                  //       return null;
+                  //     },
+                  //   ),
+                  // ),
                   const Gap(10),
                   TitleWidget(
                     title: "Girl Birth Time",

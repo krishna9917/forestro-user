@@ -93,8 +93,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 contentCenter: true,
                 backgroundColor: AppColor.primary,
                 unselectedBackgroundColor: Colors.grey[300],
-                unselectedLabelStyle: const TextStyle(color: Colors.black),
-                labelStyle: const TextStyle(
+                unselectedLabelStyle:  GoogleFonts.inter(color: Colors.black),
+                labelStyle:  GoogleFonts.inter(
                     color: Colors.white, fontWeight: FontWeight.bold),
                 tabs: const [
                   Tab(text: " Lagna "),
@@ -191,11 +191,11 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           ButtonsTabBar(
             backgroundColor: AppColor.primary,
             unselectedBackgroundColor: Colors.grey[300],
-            labelStyle: const TextStyle(
+            labelStyle:  GoogleFonts.inter(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-            unselectedLabelStyle: const TextStyle(
+            unselectedLabelStyle:  GoogleFonts.inter(
               color: Colors.black,
             ),
             radius: 8.0,
@@ -425,7 +425,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               child: Center(
                 child: Text(
                   displayText,
-                  style: const TextStyle(
+                  style:  GoogleFonts.inter(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -619,40 +619,40 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                           : Colors.white;
                     },
                   ),
-                  columns: const [
+                  columns:  [
                     DataColumn(
                         label: Text('Planets',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('R Sign',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('Degree',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('Sign Lord',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('Nakshatra',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('Nakshatra Lord',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                     DataColumn(
                         label: Text('House',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white))),
                   ],
@@ -1256,28 +1256,28 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                   Table(
                     border: TableBorder.all(),
                     children: [
-                      const TableRow(
-                        decoration: BoxDecoration(
+                      TableRow(
+                        decoration: const BoxDecoration(
                             color: Color.fromARGB(165, 255, 102, 0)),
                         children: [
                           TableCell(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Cusp',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                     color: Colors.white),
                               ),
                             ),
                           ),
-                          TableCell(
+                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Degree',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     color: Colors.white),
@@ -1285,48 +1285,48 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                          TableCell(
+                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Sign',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     color: Colors.white),
                               ),
                             ),
                           ),
-                          TableCell(
+                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Sign Lord',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     color: Colors.white),
                               ),
                             ),
                           ),
-                          TableCell(
+                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Star Lord',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     color: Colors.white),
                               ),
                             ),
                           ),
-                          TableCell(
+                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Sub Lord',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     color: Colors.white),
@@ -1686,7 +1686,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${mahadasha.start!.substring(0, 16)}'
                               : mahadasha.start!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1696,7 +1696,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${mahadasha.end!.substring(0, 16)}'
                               : mahadasha.end!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1741,7 +1741,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${antardasha.start!.substring(0, 16)}'
                               : antardasha.start!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1751,7 +1751,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${antardasha.end!.substring(0, 16)}'
                               : antardasha.end!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1798,7 +1798,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${paryantardasha.start!.substring(0, 16)}'
                               : paryantardasha.start!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1808,7 +1808,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${paryantardasha.end!.substring(0, 16)}'
                               : paryantardasha.end!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1858,7 +1858,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${shookshamadasha.start!.substring(0, 16)}'
                               : shookshamadasha.start!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1868,7 +1868,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${shookshamadasha.end!.substring(0, 16)}'
                               : shookshamadasha.end!)
                           : 'N/A',
-                      style: const TextStyle(fontSize: 10),
+                      style:  GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
@@ -209,91 +208,85 @@ class _AppDrawerState extends State<AppDrawer> {
                             //     ),
                             //   ),
                             // ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/navwallet.svg",
-                                    width: 25,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                         Text(
-                                          "Balance",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10,
-                                              color: const Color.fromARGB(
-                                                  255, 81, 81, 81)
-                                          )
-
-
-
-                                        ),
-                                        Obx(
-                                          () {
-                                            if (profileController
-                                                .profileDataList.isNotEmpty) {
-                                              String wallet = profileController
-                                                      .profileDataList
-                                                      .first
-                                                      .wallet ??
-                                                  'NA';
-
-                                              // Check if wallet is a number and format it to two decimal places
-                                              String formattedWallet = 'NA';
-                                              if (wallet != 'NA') {
-                                                try {
-                                                  formattedWallet =
-                                                      double.parse(wallet)
-                                                          .toStringAsFixed(2);
-                                                } catch (e) {
-                                                  print(
-                                                      "Error parsing wallet value: $e");
-                                                }
-                                              }
-
-                                              return Text(
-                                                "₹ $formattedWallet",
-                                                style:  Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
-                                                ),
-                                              );
-                                            } else {
-                                              if (profileController
-                                                  .profileDataList.isEmpty) {
-                                                print(
-                                                    "Profile data list is empty");
-                                              }
-                                              return Text(
-                                                'NA',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                              );
-                                            }
-                                          },
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/navwallet.svg",
+                                  width: 25,
+                                ),
+                                const SizedBox(width: 8),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                       Text(
+                                        "Balance",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                            color: const Color.fromARGB(
+                                                255, 81, 81, 81)
                                         )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
+
+
+
+                                      ),
+                                      Obx(
+                                        () {
+                                          if (profileController
+                                              .profileDataList.isNotEmpty) {
+                                            String wallet = profileController
+                                                    .profileDataList
+                                                    .first
+                                                    .wallet ??
+                                                'NA';
+
+                                            // Check if wallet is a number and format it to two decimal places
+                                            String formattedWallet = 'NA';
+                                            if (wallet != 'NA') {
+                                              try {
+                                                formattedWallet =
+                                                    double.parse(wallet)
+                                                        .toStringAsFixed(2);
+                                              } catch (e) {
+                                              }
+                                            }
+
+                                            return Text(
+                                              "₹ $formattedWallet",
+                                              style:  Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium!.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            );
+                                          } else {
+                                            if (profileController
+                                                .profileDataList.isEmpty) {
+                                            }
+                                            return Text(
+                                              'NA',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            );
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
                             )
                           ],
                         ),
@@ -389,15 +382,15 @@ class _AppDrawerState extends State<AppDrawer> {
                         final buildNumber = snapshot.data!.buildNumber;
                         return Text(
                           "Version: $version ($buildNumber)",
-                          style: const TextStyle(
+                          style:  GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.grey,
                           ),
                         );
                       } else {
-                        return const Text(
+                        return  Text(
                           "Version: N/A",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.grey,
                           ),

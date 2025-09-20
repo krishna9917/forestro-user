@@ -48,7 +48,7 @@
 //     backgroundColor: AppColor.secondary,
 //     scrolledUnderElevation: 0.0,
 //     elevation: 0.0,
-//     titleTextStyle: TextStyle(
+//     titleTextStyle: GoogleFonts.inter(
 //         fontWeight: FontWeight.w600, color: Colors.black, fontSize: 18),
 //     systemOverlayStyle: SystemUiOverlayStyle(
 //       statusBarColor: Colors.transparent,

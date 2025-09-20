@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Components/PhoneInputBox.dart';
 import 'package:foreastro/Components/Widgts/title_widget.dart';
+import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Kundali/CombinedDetailsView.dart';
 import 'package:foreastro/Screen/Kundali/location_page.dart';
 import 'package:foreastro/Utils/Quick.dart';
@@ -228,35 +229,54 @@ class _KundaliFormState extends State<KundaliForm>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleWidget(
-                    title: "Place of Birth",
-                    child: TextFormField(
-                      onTap: () async {
-                        final selectedAddress = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleMapSearchPlacesApi(),
-                          ),
-                        );
-                        if (selectedAddress != null) {
+                  // TitleWidget(
+                  //   title: "Place of Birth",
+                  //   child: TextFormField(
+                  //     onTap: () async {
+                  //       final selectedAddress = await Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               const GoogleMapSearchPlacesApi(
+                  //                 onSelect: (){
+                  //
+                  //                 },
+                  //               ),
+                  //         ),
+                  //       );
+                  //       if (selectedAddress != null) {
+                  //         setState(() {
+                  //           addressController.text = selectedAddress;
+                  //         });
+                  //       }
+                  //     },
+                  //     decoration: const InputDecoration(
+                  //       hintText: "Search Location",
+                  //     ),
+                  //     readOnly: true,
+                  //     controller: addressController,
+                  //     validator: (inp) {
+                  //       if (inp!.isEmpty) {
+                  //         return "Enter your address";
+                  //       }
+                  //       return null;
+                  //     },
+                  //   ),
+                  // ),
+                  CompleteProfileInputBox(
+                    title: "Enter Birth Place",
+                    textEditingController: addressController,
+                    readOnly: true,
+                    prefixIcon: const Icon(Icons.location_on_rounded),
+                    onTap: () {
+                      Get.to(GoogleMapSearchPlacesApi(
+                        onSelect: (e) {
                           setState(() {
-                            addressController.text = selectedAddress;
+                            addressController.text = e.address;
                           });
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Search Location",
-                      ),
-                      readOnly: true,
-                      controller: addressController,
-                      validator: (inp) {
-                        if (inp!.isEmpty) {
-                          return "Enter your address";
-                        }
-                        return null;
-                      },
-                    ),
+                        },
+                      ));
+                    },
                   ),
                   const Gap(10),
                   TitleWidget(

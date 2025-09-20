@@ -442,10 +442,10 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                         onTap: () {
                                           Get.dialog(
                                             AlertDialog(
-                                              title: const Center(
+                                              title:  Center(
                                                 child: Text(
                                                   'Do you want to send call request ?',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w500,
                                                     color: Colors.black,
@@ -742,9 +742,9 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                       ),
                     )
                   else if (reviews.isEmpty)
-                    const Center(
+                     Center(
                       child: Text('No reviews available.',
-                          style: TextStyle(fontSize: 16)),
+                          style: GoogleFonts.inter(fontSize: 16)),
                     )
                   else
                     ...reviews
@@ -813,7 +813,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                       .take(2)
                                                       .join(' ')
                                                   : 'NA',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: MediaQuery.of(context)
                                                         .size
                                                         .width *
@@ -837,7 +837,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                             Text(
                                               review.comment ??
                                                   'No comment provided.',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: MediaQuery.of(context)
                                                         .size
                                                         .width *
@@ -857,7 +857,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                 .format(DateTime.parse(
                                                     review.postDate))
                                             : 'NA',
-                                        style: TextStyle(
+                                        style: GoogleFonts.inter(
                                           fontSize: MediaQuery.of(context)
                                                   .size
                                                   .width *
