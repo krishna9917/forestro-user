@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
-import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/controler/bloc_controler.dart';
 import 'package:foreastro/controler/call_histrory_controller.dart';
@@ -111,7 +110,7 @@ class InitApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         navigatorKey: navigatorKey,
-        home: SetupProfileScreen(phone: "", userId: ""),
+        home: const SplashScreen(),
         initialBinding: BindingsBuilder(() {
           Get.lazyPut<ProfileList>(() => ProfileList());
           Get.lazyPut<BlocList>(() => BlocList());
