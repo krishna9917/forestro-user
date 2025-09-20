@@ -224,7 +224,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                     children: [
                       const SizedBox(height: 10),
                       Text(_title,
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               color: Colors.grey.shade800,
                               fontSize: 17,
                               fontWeight: FontWeight.w500)),
@@ -260,7 +260,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                             }
                           });
                         },
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             color: Colors.grey.shade800, fontSize: 16.0),
                         decoration: const InputDecoration(
                             border: UnderlineInputBorder(),
@@ -318,7 +318,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                                         : _title == 'State'
                                             ? _stateSubList[index].name
                                             : _citySubList[index].name,
-                                    style: TextStyle(
+                                    style: GoogleFonts.inter(
                                         color: Colors.grey.shade800,
                                         fontSize: 16.0)),
                               ),
@@ -368,7 +368,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(message,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 16.0))));
+            style:  GoogleFonts.inter(color: Colors.white, fontSize: 16.0))));
   }
 
   InputDecoration defaultDecoration = const InputDecoration(

@@ -1,12 +1,74 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:foreastro/Screen/Auth/SetupProfile.dart';
+import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
+Future<Map<String, dynamic>> fetchCoordinates(String address) async {
+  const apiKey = 'AIzaSyBXwHH1AuqJEY9yoxCPD_e04t9hEiYM9SQ';
+  final url = Uri.parse(
+    'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$apiKey',
+  );
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+
+    if (data['results'].isEmpty) {
+      throw Exception('No results found');
+    }
+
+    final result = data['results'][0];
+    final location = result['geometry']['location'];
+    final components = result['address_components'];
+
+    String? city;
+    String? state;
+
+    for (var c in components) {
+      List types = c['types'];
+      if (types.contains("locality")) {
+        city = c['long_name'];
+      }
+      if (types.contains("administrative_area_level_1")) {
+        state = c['long_name'];
+      }
+    }
+
+    return {
+      'lat': location['lat'],
+      'lng': location['lng'],
+      'city': city ?? '',
+      'state': state ?? '',
+    };
+  } else {
+    throw Exception('Failed to fetch coordinates');
+  }
+}
+
+class ExpectAddressLatLog {
+  String address;
+  double? lat;
+  double? lng;
+  String? city;
+  String? state;
+
+  ExpectAddressLatLog({
+    required this.address,
+    required this.lat,
+    required this.lng,
+    this.city,
+    this.state,
+  });
+}
+
 class GoogleMapSearchPlacesApi extends StatefulWidget {
-  const GoogleMapSearchPlacesApi({Key? key}) : super(key: key);
+  final Function(ExpectAddressLatLog e) onSelect;
+  const GoogleMapSearchPlacesApi({Key? key, required this.onSelect})
+      : super(key: key);
 
   @override
   _GoogleMapSearchPlacesApiState createState() =>
@@ -18,6 +80,7 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
   var uuid = const Uuid();
   String _sessionToken = '1234567890';
   List<dynamic> _placeList = [];
+  bool loading = false;
 
   @override
   void initState() {
@@ -28,7 +91,7 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
   }
 
   _onChanged() {
-    if (_sessionToken == null) {
+    if (_sessionToken.isEmpty) {
       setState(() {
         _sessionToken = uuid.v4();
       });
@@ -58,7 +121,7 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
         throw Exception('Failed to load predictions');
       }
     } catch (e) {
-     
+      if (kDebugMode) print("Error: $e");
     }
   }
 
@@ -67,60 +130,74 @@ class _GoogleMapSearchPlacesApiState extends State<GoogleMapSearchPlacesApi> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title:  Text(
+        title: const Text(
           'Search Your places',
-         style: GoogleFonts.inter(),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: "Search your location here",
-                  focusColor: Colors.white,
-
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () {
-                      _controller.clear();
-                    },
-                  ),
+      body: Builder(builder: (context) {
+        if (loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: CompleteProfileInputBox(
+                  title: "",
+                  autofocus: true,
+                  textEditingController: _controller,
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _placeList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context, _placeList[index]["description"]);
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _placeList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () async {
+                      FocusScope.of(context).unfocus();
 
-                    // setState(
-                    //   () {
-                    //     _controller.text = _placeList[index]["description"];
-                    //     _placeList = [];
-                    //   },
-                    // );
-                  },
-                  child: ListTile(
-                    title: Text(_placeList[index]["description"],style: GoogleFonts.inter(),),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
-      ),
+                      try {
+                        setState(() {
+                          loading = true;
+                        });
+
+                        Map<String, dynamic> data = await fetchCoordinates(
+                          _placeList[index]["description"],
+                        );
+
+                        widget.onSelect(
+                          ExpectAddressLatLog(
+                            address: _placeList[index]["description"],
+                            lat: data['lat'],
+                            lng: data['lng'],
+                            city: data['city'],
+                            state: data['state'],
+                          ),
+                        );
+
+                        Get.back();
+                      } catch (e) {
+                        setState(() {
+                          loading = false;
+                        });
+                        if (kDebugMode) print("Error selecting place: $e");
+                      }
+                    },
+                    child: ListTile(
+                      title: Text(_placeList[index]["description"]),
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }

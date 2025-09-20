@@ -256,7 +256,7 @@ class KundaliMilan extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+          // Text(title, style: const GoogleFonts.inter(fontWeight: FontWeight.bold)),
           Flexible(child: Text(value,style: GoogleFonts.inter())),
         ],
       ),
@@ -312,7 +312,7 @@ class KundaliMilan extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(title, style:  GoogleFonts.inter(fontWeight: FontWeight.bold)),
         DataRowWidget(label: "Description", value: detail.description),
         DataRowWidget(label: "Full Score", value: detail.fullScore?.toString()),
       ],
@@ -323,7 +323,7 @@ class KundaliMilan extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(title, style:  GoogleFonts.inter(fontWeight: FontWeight.bold)),
         DataRowWidget(label: "Gana", value: details.gana),
         DataRowWidget(label: "Yoni", value: details.yoni),
         DataRowWidget(label: "Vasya", value: details.vasya),

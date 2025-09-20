@@ -968,14 +968,14 @@ class InfoTask extends StatelessWidget {
           // Text.rich(
           //   TextSpan(
           //       text: '$label ',
-          //       style: const TextStyle(fontSize: 12),
+          //       style: const GoogleFonts.inter(fontSize: 12),
           //       children: <InlineSpan>[
           //         TextSpan(
           //           text: desc.replaceAllMapped(
           //               new RegExp(r'(?:[^,]*,){3}[^,]*(?=,|$)'),
           //               (match) => '${match.group(0)}\n'),
-          //           style: const TextStyle(fontWeight: FontWeight.w400),
-          //           // style: const TextStyle(fontWeight: FontWeight.w500),
+          //           style: const GoogleFonts.inter(fontWeight: FontWeight.w400),
+          //           // style: const GoogleFonts.inter(fontWeight: FontWeight.w500),
           //         )
           //       ]),
           //   overflow: TextOverflow.ellipsis,

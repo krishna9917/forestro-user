@@ -5,6 +5,7 @@ import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class NotificationService {
@@ -14,9 +15,7 @@ class NotificationService {
     var name = profileController.profileDataList.first.name;
     var img = profileController.profileDataList.first.profileImg ?? '';
     var wallet = profileController.profileDataList.first.wallet ?? '0';
-    print(wallet);
 
-    print("token==========$token");
 
     try {
       await http.post(
@@ -66,12 +65,12 @@ class NotificationService {
                   const SizedBox(height: 10),
                   RichText(
                     textAlign: TextAlign.center,
-                    text: const TextSpan(
+                    text:  TextSpan(
                       children: [
                         TextSpan(
                           text:
                               "The planets are adjusting their frequencies just for you... ",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 15.0,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
@@ -79,7 +78,7 @@ class NotificationService {
                         ),
                         TextSpan(
                           text: "STAY TUNE ",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                             color: AppColor.primary,
@@ -87,7 +86,7 @@ class NotificationService {
                         ),
                         TextSpan(
                           text: "your astrologer will ",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 15.0,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
@@ -95,7 +94,7 @@ class NotificationService {
                         ),
                         TextSpan(
                           text: "CONNECT WITH YOU ",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                             color: AppColor.primary,
@@ -103,7 +102,7 @@ class NotificationService {
                         ),
                         TextSpan(
                           text: "in any moment! ",
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 15.0,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
@@ -164,14 +163,10 @@ class NotificationService {
       'android_channel_id': '85714e81-732c-4a19-8e48-c843dde6a9fa',
     });
 
-    print("body=======$body");
 
     var response = await http.post(url, headers: headers, body: body);
-    print("respons==========${response.body}");
     if (response.statusCode == 200) {
-      print('Notification sent successfully!');
     } else {
-      print('Failed to send notification: ${response.body}');
     }
   }
 }

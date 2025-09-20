@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomWheelDatePicker extends StatefulWidget {
   final DateTime? initialDate;
@@ -136,7 +137,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                   const SizedBox(width: 12),
                   Text(
                     "$selectedDay ${_getMonthName(selectedMonth)} $selectedYear",
-                    style: const TextStyle(
+                    style:  GoogleFonts.inter(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -154,7 +155,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                   Expanded(
                     child: Text(
                       'Day',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -165,7 +166,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                   Expanded(
                     child: Text(
                       'Month',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -176,7 +177,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                   Expanded(
                     child: Text(
                       'Year',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -201,7 +202,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                           .map((day) => Center(
                                 child: Text(
                                   day.toString().padLeft(2, '0'),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -220,7 +221,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                           .map((month) => Center(
                                 child: Text(
                                   _getMonthName(month),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -241,7 +242,7 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                           .map((year) => Center(
                                 child: Text(
                                   year.toString(),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -263,9 +264,9 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                 children: [
                   TextButton(
                     onPressed: _onCancel,
-                    child: const Text(
+                    child:  Text(
                       'Cancel',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -274,9 +275,9 @@ class _CustomWheelDatePickerState extends State<CustomWheelDatePicker> {
                   ),
                   TextButton(
                     onPressed: _onConfirm,
-                    child: const Text(
+                    child:  Text(
                       'Select',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.yellow,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

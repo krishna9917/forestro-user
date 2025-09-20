@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomWheelTimePicker extends StatefulWidget {
   final TimeOfDay? initialTime;
@@ -139,7 +140,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                   const SizedBox(width: 12),
                   Text(
                     _formatTime(),
-                    style: const TextStyle(
+                    style:  GoogleFonts.inter(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -157,7 +158,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                   Expanded(
                     child: Text(
                       'Hour',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -168,7 +169,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                   Expanded(
                     child: Text(
                       'Minute',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -179,7 +180,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                   Expanded(
                     child: Text(
                       'Second',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.grey[400],
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -206,7 +207,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                           .map((hour) => Center(
                                 child: Text(
                                   hour.toString().padLeft(2, '0'),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -227,7 +228,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                           .map((minute) => Center(
                                 child: Text(
                                   minute.toString().padLeft(2, '0'),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,
@@ -248,7 +249,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                           .map((second) => Center(
                                 child: Text(
                                   second.toString().padLeft(2, '0'),
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -269,7 +270,7 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                           .map((period) => Center(
                                 child: Text(
                                   period,
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -291,9 +292,9 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                 children: [
                   TextButton(
                     onPressed: _onCancel,
-                    child: const Text(
+                    child:  Text(
                       'Cancel',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -302,9 +303,9 @@ class _CustomWheelTimePickerState extends State<CustomWheelTimePicker> {
                   ),
                   TextButton(
                     onPressed: _onConfirm,
-                    child: const Text(
+                    child:  Text(
                       'Confirm',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.yellow,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

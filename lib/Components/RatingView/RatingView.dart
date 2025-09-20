@@ -75,11 +75,11 @@ class _RatingReviewBoxState extends State<RatingReviewBox> {
             ],
           ),
           const SizedBox(height: 15),
-          const Text(
+           Text(
             "There’s no other program that walks you through exactly what you need to know to start an online store fast, written by someone who has built several 7-figure ecommerce businesses from scratch. What’s more, everything has been broken down in step-by-step detail with real action plans including finding your niche0.",
             maxLines: 8,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 13),
+            style: GoogleFonts.inter(fontSize: 13),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foreastro/Components/ViewImage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LatestBlogs extends StatelessWidget {
   const LatestBlogs({
@@ -56,11 +57,11 @@ class LatestBlog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          const Text(
+           Text(
             "808 Angel Number Meaning and Significance",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 17,
               fontWeight: FontWeight.w500,
             ),
@@ -68,7 +69,7 @@ class LatestBlog extends StatelessWidget {
           const SizedBox(height: 3),
           Text(
             "Khushagra Gupta",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: Colors.black.withOpacity(0.5),
               fontSize: 13,
             ),
@@ -147,11 +148,11 @@ class VideoCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
-          const Text(
+           Text(
             "808 Angel Number Meaning and Significance",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 17,
               fontWeight: FontWeight.w500,
             ),
@@ -159,7 +160,7 @@ class VideoCard extends StatelessWidget {
           const SizedBox(height: 3),
           Text(
             "Khushagra Gupta",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: Colors.black.withOpacity(0.5),
               fontSize: 13,
             ),

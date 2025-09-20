@@ -25,7 +25,7 @@ ThemeData appTheme = ThemeData(
         elevation: 0,
         backgroundColor: AppColor.bgcolor,
         surfaceTintColor: Colors.transparent,
-        titleTextStyle: const TextStyle(
+        titleTextStyle:  GoogleFonts.inter(
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18)),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -65,7 +65,7 @@ ThemeData appTheme = ThemeData(
         ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        textStyle: WidgetStatePropertyAll(TextStyle(color: AppColor.primary)),
+        textStyle: WidgetStatePropertyAll(GoogleFonts.inter(color: AppColor.primary)),
         foregroundColor: WidgetStatePropertyAll(AppColor.primary),
       ),
     ),

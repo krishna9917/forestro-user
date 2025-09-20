@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foreastro/Screen/chat/dashboard_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -99,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
         child: Text(
           btnName,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+          style:  GoogleFonts.inter(color: Colors.white, fontSize: 18),
         ));
   }
 

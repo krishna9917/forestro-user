@@ -360,8 +360,7 @@ class _HomePageState extends State<HomePage> {
       dio.Response data = await apiRequest.send();
       if (data.
       statusCode == 201) {
-        print("API request successful: ${data.data}");
-        follow();
+        Get.back();
         showToast("Wallet Recharge successfull");
       } else {
         print("API request failed with status code: ${data.statusCode}");
@@ -719,7 +718,7 @@ class _HomePageState extends State<HomePage> {
                       //       horizontal: 20.0, vertical: 10),
                       //   child: Text(
                       //     "pending reques".toUpperCase(),
-                      //     style: const TextStyle(
+                      //     style: const GoogleFonts.inter(
                       //       fontWeight: FontWeight.bold,
                       //       fontSize: 18,
                       //     ),
@@ -1075,7 +1074,7 @@ class _HomePageState extends State<HomePage> {
                 //                             celebrity.title ?? 'NA',
                 //                             maxLines: 2,
                 //                             overflow: TextOverflow.ellipsis,
-                //                             style: const TextStyle(
+                //                             style: const GoogleFonts.inter(
                 //                               fontSize: 14,
                 //                               fontWeight: FontWeight.w400,
                 //                             ),

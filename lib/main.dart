@@ -31,6 +31,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ZIMKit().init(
+    appID: 1230629691,
+    appSign: '16464f848f6510fb18fef88047b37ddb297aeca244a348dc5b0151d40d192c86',
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -110,7 +114,8 @@ class InitApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         navigatorKey: navigatorKey,
-        home: const SplashScreen(),
+        // home: SetupProfileScreen(phone: "", userId: ""),
+        home: SplashScreen(),
         initialBinding: BindingsBuilder(() {
           Get.lazyPut<ProfileList>(() => ProfileList());
           Get.lazyPut<BlocList>(() => BlocList());

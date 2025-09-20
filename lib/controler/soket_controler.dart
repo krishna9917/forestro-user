@@ -9,6 +9,7 @@ import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/soket_services.dart';
 import 'package:foreastro/videocall/my_call.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -72,7 +73,7 @@ class SocketController extends GetxController {
                 const SizedBox(height: 16),
                 Text(
                   "Are you sure you want to start ${data['requestType'] == 'audio' || data['requestType'] == 'video' ? 'a ${data['requestType']} call' : 'a ${data['requestType']}'} with this astrologer, $name?",
-                  style: const TextStyle(
+                  style:  GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
@@ -111,6 +112,7 @@ class SocketController extends GetxController {
                     });
                     print("Emitting startSession with data: ${{
                       'userId': data['userId'],
+                      'userType': data['userType'],
                       'requestType': 'chat',
                       'data': {
                         'walletAmount': wallet,
@@ -160,6 +162,7 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'chat',
+            'userType':data['userType'],
             'total': totalMinutes,
             'data': {
               'walletAmount': walletAmount,
@@ -168,6 +171,7 @@ class SocketController extends GetxController {
           });
           print("Emitting startSession with data: ${{
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'chat',
             'data': {
               'walletAmount': walletAmount,
@@ -196,6 +200,7 @@ class SocketController extends GetxController {
           var totalMinutes = walletAmount / pricePerMin;
           socket?.emit('startSession', {
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'video',
             'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,
@@ -224,6 +229,7 @@ class SocketController extends GetxController {
 
           socket?.emit('startSession', {
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'audio',
             'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,
