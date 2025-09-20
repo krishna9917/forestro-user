@@ -105,7 +105,6 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
     return buffer.toString();
   }
 
- 
   Future folllow(String? id) async {
     try {
       if (id != null) {
@@ -225,9 +224,11 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                             children: [
                               Text(
                                 addLineBreaks(
-                                  (widget.astrologer!.name != null && widget. astrologer!.name!.isNotEmpty)
-                                      ? '${widget. astrologer!.name![0].toUpperCase()}${widget.astrologer!.name!.substring(1)}'
-                                      : 'No Name',2),
+                                    (widget.astrologer!.name != null &&
+                                            widget.astrologer!.name!.isNotEmpty)
+                                        ? '${widget.astrologer!.name![0].toUpperCase()}${widget.astrologer!.name!.substring(1)}'
+                                        : 'No Name',
+                                    2),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
@@ -303,7 +304,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                           ),
                                         ),
                                       ),
-                                      child:  Text(
+                                      child: Text(
                                         "Follow",
                                         style: GoogleFonts.inter(
                                           fontSize: 13,
@@ -442,7 +443,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                         onTap: () {
                                           Get.dialog(
                                             AlertDialog(
-                                              title:  Center(
+                                              title: Center(
                                                 child: Text(
                                                   'Do you want to send call request ?',
                                                   style: GoogleFonts.inter(
@@ -457,7 +458,8 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                   children: [
                                                     ElevatedButton(
                                                         onPressed: () {
-                                                          print(" data is ${profileController.profileDataList.first.status}");
+                                                          print(
+                                                              " data is ${profileController.profileDataList.first.status}");
                                                           if (profileController
                                                               .profileDataList
                                                               .isNotEmpty) {
@@ -473,7 +475,8 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                                                         .astrologer!
                                                                         .videoChargesPerMin) ??
                                                                     0;
-                                                           print(videoChargesPerMin);
+                                                            print(
+                                                                videoChargesPerMin);
                                                             if (videoChargesPerMin >
                                                                 0) {
                                                               var totalMinutes =
@@ -715,10 +718,11 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                     ],
                   ),
                 )),
-             Padding(
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Reviews",
-                  style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
+                  style: GoogleFonts.inter(
+                      fontSize: 18, fontWeight: FontWeight.w600)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -742,7 +746,7 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                       ),
                     )
                   else if (reviews.isEmpty)
-                     Center(
+                    Center(
                       child: Text('No reviews available.',
                           style: GoogleFonts.inter(fontSize: 16)),
                     )

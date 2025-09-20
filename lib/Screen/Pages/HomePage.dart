@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       headers: {
         "Content-Type": "application/json",
         "Authorization":
-        "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
+            "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
       },
       body: jsonEncode({
         "amount": totalAmount,
@@ -159,100 +159,116 @@ class _HomePageState extends State<HomePage> {
                     clipBehavior: Clip.none,
                     alignment: Alignment.topCenter,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                        decoration: BoxDecoration(
-                          image: const DecorationImage(
-                            image: AssetImage("assets/popup_bg_img.png"),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 30),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Recharge now of",
-                                    style: GoogleFonts.inter(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "Rs. 9",
-                                    style: GoogleFonts.inter(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "and instantly get",
-                                    style: GoogleFonts.inter(fontSize: 16),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    "Rs. 100 in Your Wallet",
-                                    style: GoogleFonts.inter(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 12),
-                                    ),
-                                    onPressed: () {
-                                      createOrderAndOpenCheckout();
-                                    },
-                                    child: Text(
-                                      "Recharge Now",
-                                      style: GoogleFonts.inter(
-                                          fontSize: 16, color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          padding: const EdgeInsets.fromLTRB(20, 60, 20, 25),
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              image: AssetImage("assets/popup_bg_img.png"),
+                              fit: BoxFit.fill,
                             ),
-                          ],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Recharge now of",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Rs. 9",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "and instantly get",
+                                      style: GoogleFonts.inter(fontSize: 16),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Wrap(
+                                      children: [
+                                        Text(
+                                          "Rs. 100 ",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                        Text(
+                                          "in Your Wallet",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.orange,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 12),
+                                      ),
+                                      onPressed: () {
+                                        createOrderAndOpenCheckout();
+                                      },
+                                      child: Text(
+                                        "Recharge Now",
+                                        style: GoogleFonts.inter(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Positioned(
-                        top: -40,
+                        top: 20,
+                        right: 30,
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.black,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: -20,
                         child: Stack(
                           children: [
                             Image.asset(
                               "assets/gift.png", // Your gift image
                               height: 80,
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                child: const Icon(
-                                  Icons.close,
-                                  color: Colors.black,
-                                  size: 22,
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -283,9 +299,9 @@ class _HomePageState extends State<HomePage> {
     fetchAndInitProfile();
     razorpay = Razorpay();
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-            (PaymentSuccessResponse response) {
-          handlerPaymentSuccess(response);
-        });
+        (PaymentSuccessResponse response) {
+      handlerPaymentSuccess(response);
+    });
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
     Get.find<ProfileList>().fetchProfileData();
@@ -358,8 +374,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
       dio.Response data = await apiRequest.send();
-      if (data.
-      statusCode == 201) {
+      if (data.statusCode == 201) {
         Get.back();
         showToast("Wallet Recharge successfull");
       } else {
@@ -373,7 +388,6 @@ class _HomePageState extends State<HomePage> {
       Get.find<ProfileList>().fetchProfileData();
     });
   }
-
 
   void _onSearchChanged() {
     if (_searchController.text.length >= 3) {
@@ -787,123 +801,142 @@ class _HomePageState extends State<HomePage> {
                         return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container(
-                          height: MediaQuery.of(context).size.height * 0.17,
+                          constraints:
+                              BoxConstraints(maxHeight: 200, minHeight: 130),
                           child: ListView(
+                            shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             children: List.generate(
                               controller.clientsaysDataList.length,
                               (index) {
                                 final data =
                                     controller.clientsaysDataList[index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        width: 1,
-                                        color:
-                                            AppColor.primary.withOpacity(0.3),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // const SizedBox(height: 8),
-                                        Row(
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                            width: 1,
+                                            color: AppColor.primary
+                                                .withOpacity(0.3),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                              child: data.image != null
-                                                  ? Image.network(
-                                                      data.image!,
-                                                      width: 50,
-                                                      height: 50,
-                                                      fit: BoxFit.cover,
-                                                      errorBuilder: (context,
-                                                          error, stackTrace) {
-                                                        return const Icon(
-                                                            Icons.error);
-                                                      },
-                                                    )
-                                                  : const Icon(Icons.person,
-                                                      size: 50),
+                                            // const SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                  child: data.image != null
+                                                      ? Image.network(
+                                                          data.image!,
+                                                          width: 50,
+                                                          height: 50,
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            return const Icon(
+                                                                Icons.error);
+                                                          },
+                                                        )
+                                                      : const Icon(Icons.person,
+                                                          size: 50),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        data.name ?? 'NA',
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      if (data.rating != null)
+                                                        Row(
+                                                          children:
+                                                              List.generate(
+                                                            double.parse(controller
+                                                                    .clientsaysDataList[
+                                                                        index]
+                                                                    .rating
+                                                                    .toString())
+                                                                .toInt(),
+                                                            (_) => Icon(
+                                                              Icons.star,
+                                                              color: AppColor
+                                                                  .primary,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.all(5.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    data.name ?? 'NA',
-                                                    maxLines: 2,
+                                              child: Builder(
+                                                builder: (context) {
+                                                  final comment =
+                                                      data.comment ?? 'NA';
+
+                                                  final words =
+                                                      comment.split(' ');
+                                                  final chunkedText =
+                                                      List.generate(
+                                                    (words.length / 7).ceil(),
+                                                    (index) => words
+                                                        .skip(index * 7)
+                                                        .take(7)
+                                                        .join(' '),
+                                                  ).join('\n');
+
+                                                  return Text(
+                                                    chunkedText,
+                                                    maxLines: null,
                                                     overflow:
-                                                        TextOverflow.ellipsis,
+                                                        TextOverflow.visible,
                                                     style: GoogleFonts.inter(
-                                                      fontSize: 14,
+                                                      fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                  if (data.rating != null)
-                                                    Row(
-                                                      children: List.generate(
-                                                        double.parse(controller
-                                                                .clientsaysDataList[
-                                                                    index]
-                                                                .rating
-                                                                .toString())
-                                                            .toInt(),
-                                                        (_) => Icon(
-                                                          Icons.star,
-                                                          color:
-                                                              AppColor.primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                ],
+                                                  );
+                                                },
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Builder(
-                                            builder: (context) {
-                                              final comment =
-                                                  data.comment ?? 'NA';
-
-                                              final words = comment.split(' ');
-                                              final chunkedText = List.generate(
-                                                (words.length / 7).ceil(),
-                                                (index) => words
-                                                    .skip(index * 7)
-                                                    .take(7)
-                                                    .join(' '),
-                                              ).join('\n');
-
-                                              return Text(
-                                                chunkedText,
-                                                maxLines: null,
-                                                overflow: TextOverflow.visible,
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 );
                               },
                             ),
@@ -1139,7 +1172,6 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
                                       child: InkWell(
                                         onTap: () {
                                           if (videoUrl.isNotEmpty) {
@@ -1156,7 +1188,7 @@ class _HomePageState extends State<HomePage> {
                                               'https://via.placeholder.com/550x140.png?text=No+Image',
                                           width: 550,
                                           height: 140,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
                                           placeholder: (context, url) =>
                                               const Center(
                                             child: CircularProgressIndicator(),
@@ -1216,6 +1248,7 @@ class _HomePageState extends State<HomePage> {
 
 class BottamBar extends StatelessWidget {
   final int index;
+
   const BottamBar({
     super.key,
     required this.index,

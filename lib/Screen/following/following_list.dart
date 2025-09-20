@@ -100,7 +100,8 @@ class _FollowingListState extends State<FollowingList> {
               ? Center(
                   child: Text(
                     "You are not following anyastrologers.",
-                    style: GoogleFonts.inter(fontSize: 16, color: Colors.grey[600]),
+                    style: GoogleFonts.inter(
+                        fontSize: 16, color: Colors.grey[600]),
                   ),
                 )
               : ListView.builder(
@@ -155,7 +156,7 @@ class _FollowingListState extends State<FollowingList> {
                                     vertical: 5, horizontal: 15),
                               ),
                             ),
-                            child:  Text(
+                            child: Text(
                               "Unfollow",
                               style: GoogleFonts.inter(
                                 fontSize: 15,

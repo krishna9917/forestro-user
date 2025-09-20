@@ -86,7 +86,7 @@ class ChatListCard extends StatelessWidget {
                     children: [
                       Text(
                         callData.name ?? '',
-                        style:  GoogleFonts.inter(
+                        style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -98,12 +98,12 @@ class ChatListCard extends StatelessWidget {
                         children: [
                           Text(
                             callData.date ?? '',
-                            style:  GoogleFonts.inter(fontSize: 12),
+                            style: GoogleFonts.inter(fontSize: 12),
                           ),
                           const SizedBox(width: 8),
                           Text(
                             callData.time ?? '',
-                            style:  GoogleFonts.inter(fontSize: 12),
+                            style: GoogleFonts.inter(fontSize: 12),
                           ),
                         ],
                       ),
@@ -135,12 +135,12 @@ class ChatListCard extends StatelessWidget {
                 ),
                 Text(
                   "Duration: ${callData.callDuration ?? ''} min",
-                  style:
-                        GoogleFonts.inter(fontSize: 8, fontWeight: FontWeight.w900),
+                  style: GoogleFonts.inter(
+                      fontSize: 8, fontWeight: FontWeight.w900),
                 ),
                 Text(
                   "Amount: ₹${callData.totalAmount ?? ''}",
-                  style:  GoogleFonts.inter(
+                  style: GoogleFonts.inter(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: AppColor.primary,

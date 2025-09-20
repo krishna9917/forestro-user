@@ -100,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
         child: Text(
           btnName,
-          style:  GoogleFonts.inter(color: Colors.white, fontSize: 18),
+          style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
         ));
   }
 

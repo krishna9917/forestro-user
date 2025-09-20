@@ -118,7 +118,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                           ),
                           Text(
                             "Balance".toUpperCase(),
-                            style:  GoogleFonts.inter(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -151,7 +151,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                     .profileDataList!.isEmpty) {
                                   print("Profile data list is empty");
                                 }
-                                return  Text(
+                                return Text(
                                   '₹00.00',
                                   style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
@@ -195,7 +195,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     Text(
+                                    Text(
                                       "Wallet Recharge!",
                                       style: GoogleFonts.inter(
                                         fontSize: 13,
@@ -209,7 +209,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                               "")),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style:  GoogleFonts.inter(
+                                      style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -222,7 +222,7 @@ class _WalletRechargeHistoryState extends State<WalletRechargeHistory> {
                                   alignment: Alignment.topRight,
                                   child: Text(
                                     "₹${rechargeData[index]['amount'] ?? ""}",
-                                    style:  GoogleFonts.inter(
+                                    style: GoogleFonts.inter(
                                       color: Colors.green,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w900,

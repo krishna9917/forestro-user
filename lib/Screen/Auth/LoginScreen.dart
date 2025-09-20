@@ -346,7 +346,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final termsAndPrivacyTextStyle = GoogleFonts.inter(color: Colors.black45, fontWeight: FontWeight.w500);
+    final termsAndPrivacyTextStyle =
+        GoogleFonts.inter(color: Colors.black45, fontWeight: FontWeight.w500);
 
     return Scaffold(
       extendBody: true,

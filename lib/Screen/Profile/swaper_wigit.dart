@@ -1,4 +1,3 @@
-
 // import 'package:flutter/material.dart';
 // import 'package:foreastro/controler/baner_controler.dart';
 // import 'package:foreastro/model/banner_model.dart';

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RatingPage extends StatefulWidget {
   final int? austroid;
+
   const RatingPage({super.key, required this.austroid});
 
   @override
@@ -24,6 +25,7 @@ class _RatingPageState extends State<RatingPage> {
   TextEditingController reviewcomment = TextEditingController();
   bool loading = false;
   String rating = '';
+
   Future<void> review() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,20 +61,14 @@ class _RatingPageState extends State<RatingPage> {
         // navigate.pushReplacement(routeMe(const ExploreAstroPage()));
         showToast("Successful");
       } else {
-       
         showToast("Failed to complete profile. Please try again later.");
       }
     } on DioException catch (e) {
       if (e.response != null && e.response!.statusCode == 401) {
         showToast("You have reviewed this profile.");
       } else if (e is FormatException) {
-        
-      } else {
-        
-      }
+      } else {}
     } catch (e) {
-      
-     
       showToast("An unexpected error occurred. Please try again later.");
     } finally {
       setState(() {
@@ -94,12 +90,12 @@ class _RatingPageState extends State<RatingPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Center(
+            Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text("Rate",
-                    style:
-                    GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(
+                        fontSize: 18, fontWeight: FontWeight.w600)),
               ),
             ),
             Gap(3.h),
@@ -120,12 +116,12 @@ class _RatingPageState extends State<RatingPage> {
               maxRating: 5,
             ),
             Gap(5.h),
-             Center(
+            Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Write Your Review",
-                    style:
-                    GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
+                    style: GoogleFonts.inter(
+                        fontSize: 18, fontWeight: FontWeight.w600)),
               ),
             ),
             Gap(2.h),

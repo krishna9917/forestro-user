@@ -16,13 +16,14 @@ class TitleWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: GoogleFonts.inter(color: Colors.black54, fontWeight: FontWeight.w400),
+            style: GoogleFonts.inter(
+                color: Colors.black54, fontWeight: FontWeight.w400),
           ),
           Text(
             subTitle,
             style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                ),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

@@ -24,7 +24,6 @@ class _RzerpayScreenState extends State<RzerpayScreen> {
 
   @override
   void dispose() {
-   
     super.dispose();
     razorpay.clear();
   }
@@ -54,17 +53,11 @@ class _RzerpayScreenState extends State<RzerpayScreen> {
     }
   }
 
-  void handlerPaymentSuccess() {
-   
-  }
+  void handlerPaymentSuccess() {}
 
-  void handlerErrorFailure() {
-   
-  }
+  void handlerErrorFailure() {}
 
-  void handlerExternalWallet() {
-   
-  }
+  void handlerExternalWallet() {}
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +77,9 @@ class _RzerpayScreenState extends State<RzerpayScreen> {
               height: 12,
             ),
             ElevatedButton(
-              child:  Text(
+              child: Text(
                 "Donate Now",
-                style:  GoogleFonts.inter(color: Colors.white),
+                style: GoogleFonts.inter(color: Colors.white),
               ),
               onPressed: () {
                 openCheckout();

@@ -67,6 +67,7 @@ class ExpectAddressLatLog {
 
 class GoogleMapSearchPlacesApi extends StatefulWidget {
   final Function(ExpectAddressLatLog e) onSelect;
+
   const GoogleMapSearchPlacesApi({Key? key, required this.onSelect})
       : super(key: key);
 

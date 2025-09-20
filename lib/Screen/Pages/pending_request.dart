@@ -66,7 +66,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
             if (requestP.isNotEmpty)
               Text(
                 "pending request".toUpperCase(),
-                style:  GoogleFonts.inter(
+                style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -134,7 +134,7 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
                                   ),
                                 ],
                               ),
-                              child:  Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const Icon(Icons.block,

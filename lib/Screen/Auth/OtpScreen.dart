@@ -34,6 +34,7 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
   bool loading = false;
   bool resendLoading = false;
   TextEditingController otpController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -174,13 +175,16 @@ class _OtpScreenState extends State<OtpScreen> with CodeAutoFill {
                       ),
                       SizedBox(
                         width: scrWeight(context) - 80,
-                        child:  ListTile(
-                          title:  Text(
+                        child: ListTile(
+                          title: Text(
                             "Verify Your OTP",
                             style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                          subtitle: Text("Enter Your OTP Sent On Your Mobile",style: GoogleFonts.inter(),),
+                          subtitle: Text(
+                            "Enter Your OTP Sent On Your Mobile",
+                            style: GoogleFonts.inter(),
+                          ),
                         ),
                       ),
                     ],

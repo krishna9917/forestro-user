@@ -79,7 +79,8 @@ class _OurClientSaysState extends State<OurClientSays> {
                                       Row(
                                         children: List.generate(
                                           double.parse(data.rating.toString())
-                                              .toInt(), // Parse as double and then to integer
+                                              .toInt(),
+                                          // Parse as double and then to integer
                                           (_) => const Icon(
                                             Icons.star,
                                             color: AppColor.primary,
@@ -98,7 +99,7 @@ class _OurClientSaysState extends State<OurClientSays> {
                               data.comment ?? 'NA',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style:  GoogleFonts.inter(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),

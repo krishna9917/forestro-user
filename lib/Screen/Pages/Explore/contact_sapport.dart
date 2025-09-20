@@ -47,12 +47,9 @@ class _ContactSupportState extends State<ContactSupport> {
 
       if (data.statusCode == 201) {
         Get.off(const ContactVerifiction());
-        
       } else {
-       
         showToast("Failed to complete profile. Please try again later.");
       }
-
     } catch (e) {
       showToast(tosteError);
     }
@@ -136,7 +133,7 @@ class _ContactSupportState extends State<ContactSupport> {
                           contactsupport();
                         }
                       },
-                      child:  Text(
+                      child: Text(
                         "Submit",
                         style: GoogleFonts.inter(color: Colors.white),
                       ),

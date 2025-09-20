@@ -17,6 +17,7 @@ class CombinedDetailsView extends StatefulWidget {
   final double lati;
   final double long;
   final String lang;
+
   const CombinedDetailsView(
       {super.key,
       // required this.name,
@@ -30,6 +31,7 @@ class CombinedDetailsView extends StatefulWidget {
       // required this.lat,
       // required this.log,
       });
+
   @override
   State<CombinedDetailsView> createState() => _CombinedDetailsViewState();
 }
@@ -42,6 +44,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
   String displayText = "Mahadasha";
   final List<String> navigationHistory = ['mahadasha'];
   int currentIndex = 0;
+
   // String currentDetail = 'mahadasha';
 
   @override
@@ -93,8 +96,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                 contentCenter: true,
                 backgroundColor: AppColor.primary,
                 unselectedBackgroundColor: Colors.grey[300],
-                unselectedLabelStyle:  GoogleFonts.inter(color: Colors.black),
-                labelStyle:  GoogleFonts.inter(
+                unselectedLabelStyle: GoogleFonts.inter(color: Colors.black),
+                labelStyle: GoogleFonts.inter(
                     color: Colors.white, fontWeight: FontWeight.bold),
                 tabs: const [
                   Tab(text: " Lagna "),
@@ -191,11 +194,11 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
           ButtonsTabBar(
             backgroundColor: AppColor.primary,
             unselectedBackgroundColor: Colors.grey[300],
-            labelStyle:  GoogleFonts.inter(
+            labelStyle: GoogleFonts.inter(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-            unselectedLabelStyle:  GoogleFonts.inter(
+            unselectedLabelStyle: GoogleFonts.inter(
               color: Colors.black,
             ),
             radius: 8.0,
@@ -425,7 +428,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
               child: Center(
                 child: Text(
                   displayText,
-                  style:  GoogleFonts.inter(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -619,7 +622,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                           : Colors.white;
                     },
                   ),
-                  columns:  [
+                  columns: [
                     DataColumn(
                         label: Text('Planets',
                             style: GoogleFonts.inter(
@@ -914,8 +917,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                       // ),
                       // DataRowWidget(
                       //     label: 'Bad Qualities', value: item.badQualities),
-                      const SizedBox(
-                          height: 16), // Add some spacing between rows
+                      const SizedBox(height: 16),
+                      // Add some spacing between rows
                     ],
                   );
                 }).toList(),
@@ -1026,8 +1029,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                       ),
                       DataRowWidget(
                           label: 'Bad Qualities', value: item.badQualities),
-                      const SizedBox(
-                          height: 16), // Add some spacing between rows
+                      const SizedBox(height: 16),
+                      // Add some spacing between rows
                     ],
                   );
                 }).toList(),
@@ -1272,7 +1275,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                           TableCell(
+                          TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
@@ -1285,7 +1288,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                           TableCell(
+                          TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
@@ -1297,7 +1300,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                           TableCell(
+                          TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
@@ -1309,7 +1312,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                           TableCell(
+                          TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
@@ -1321,7 +1324,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ),
                             ),
                           ),
-                           TableCell(
+                          TableCell(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
@@ -1686,7 +1689,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${mahadasha.start!.substring(0, 16)}'
                               : mahadasha.start!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1696,7 +1699,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${mahadasha.end!.substring(0, 16)}'
                               : mahadasha.end!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1741,7 +1744,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${antardasha.start!.substring(0, 16)}'
                               : antardasha.start!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1751,7 +1754,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${antardasha.end!.substring(0, 16)}'
                               : antardasha.end!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1798,7 +1801,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${paryantardasha.start!.substring(0, 16)}'
                               : paryantardasha.start!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1808,7 +1811,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${paryantardasha.end!.substring(0, 16)}'
                               : paryantardasha.end!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1858,7 +1861,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${shookshamadasha.start!.substring(0, 16)}'
                               : shookshamadasha.start!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1868,7 +1871,7 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                               ? '${shookshamadasha.end!.substring(0, 16)}'
                               : shookshamadasha.end!)
                           : 'N/A',
-                      style:  GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),
@@ -1897,10 +1900,11 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
             navigationButtons(),
             DataTable(
               columnSpacing: 12,
-              columns:  [
+              columns: [
                 DataColumn(label: Text('Planet', style: GoogleFonts.inter())),
-                DataColumn(label: Text('Start Date',style: GoogleFonts.inter())),
-                DataColumn(label: Text('End Date',style: GoogleFonts.inter())),
+                DataColumn(
+                    label: Text('Start Date', style: GoogleFonts.inter())),
+                DataColumn(label: Text('End Date', style: GoogleFonts.inter())),
               ],
               rows: pranadashadashaList.map((pranadasha) {
                 return DataRow(
@@ -1908,7 +1912,8 @@ class _CombinedDetailsViewState extends State<CombinedDetailsView> {
                     DataCell(
                       Text(
                         '${mahadashaList.first.name!.substring(0, 2).toUpperCase()} - ${antardashaList.first.name!.substring(0, 2).toUpperCase() ?? 'N/A'} - ${paryantardashaList.first.name!.substring(0, 2).toUpperCase()} - ${shookshamadashaList.first.name!.substring(0, 2).toUpperCase()} - ${pranadasha.name!.substring(0, 2).toUpperCase()}',
-                      style: GoogleFonts.inter(),),
+                        style: GoogleFonts.inter(),
+                      ),
                     ),
                     DataCell(Text(
                       pranadasha.start != null
@@ -1969,7 +1974,7 @@ class DataRowWidget extends StatelessWidget {
               //   border: Border.all(color: Colors.grey),
               //   borderRadius: BorderRadius.circular(4.0),
               // ),
-              child: Text(value ?? 'N/A',style: GoogleFonts.inter()),
+              child: Text(value ?? 'N/A', style: GoogleFonts.inter()),
             ),
           ),
         ],

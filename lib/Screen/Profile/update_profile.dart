@@ -48,6 +48,7 @@ class UpdateProfileScreen extends StatefulWidget {
 
   const UpdateProfileScreen({Key? key, required this.profileData})
       : super(key: key);
+
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
 }
@@ -57,8 +58,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool loading = false;
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController city=TextEditingController();
-  TextEditingController state=TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController state = TextEditingController();
+
   // TextEditingController pin=TextEditingController();
   final _birthtimeController = TextEditingController();
   final _birthDateController = TextEditingController();
@@ -67,9 +69,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String? gender;
 
   String? sign;
+
   // String city = "";
   File? _pickedImage;
-
 
   @override
   void initState() {
@@ -85,8 +87,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     sign = widget.profileData?.sign;
     // pin.text = widget.profileData?.pinCode??"" ;
 
-
-    print("gender is $gender" );
+    print("gender is $gender");
   }
 
   // Future<void> getStateCity() async {
@@ -194,7 +195,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ? _birthDateController.text
           : widget.profileData?.dateOfBirth ?? '';
       String? finalGender = gender ?? widget.profileData?.gender;
-      String? finalState = state.text.isNotEmpty ? state.text : widget.profileData?.state ?? '';
+      String? finalState =
+          state.text.isNotEmpty ? state.text : widget.profileData?.state ?? '';
       // String? finalPin = pin.text.isNotEmpty ? pin.text : widget.profileData?.pinCode ?? '';
       String? finalSign = sign ?? widget.profileData?.sign;
 
@@ -205,7 +207,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       //   });
       //   return;
       // }
-      if(finalState!.isEmpty || finalCity.isEmpty){
+      if (finalState!.isEmpty || finalCity.isEmpty) {
         showToast("Enter Valid PinCode");
         setState(() {
           loading = false;
@@ -308,12 +310,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // const SizedBox(height: 30),
-                     Center(
+                    Center(
                       child: Text(
                         "Complete your Profile",
                         style: GoogleFonts.inter(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold, fontSize: 25),),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25),
+                      ),
                     ),
                     Gap(3.h),
                     Padding(
@@ -446,15 +450,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                           Padding(
+                                          Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 20, bottom: 5),
-                                            child: Text(
-                                              "Gender",
-                                              style: GoogleFonts.inter(
-                                                  fontWeight: FontWeight.bold
-                                              )
-                                            ),
+                                            child: Text("Gender",
+                                                style: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ),
                                           SizedBox(
                                             height: 50,
@@ -483,17 +485,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                           Padding(
+                                          Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 20, bottom: 5),
-                                            child: Text(
-                                              "Zodiac Sign",
-                                              style: GoogleFonts.inter(
-                                                  fontWeight: FontWeight.bold
-                                              )
-
-
-                                            ),
+                                            child: Text("Zodiac Sign",
+                                                style: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ),
                                           SizedBox(
                                             height: 50,
@@ -514,15 +512,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                             ),
                             Gap(3.h),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("    Pin Code",style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                                const SizedBox(height: 10,),
+                                Text(
+                                  "    Pin Code",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 // TextFormField(
                                 //   inputFormatters: [
                                 //     LengthLimitingTextInputFormatter(6),
@@ -548,21 +552,28 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 //   }),
                                 // ),
                                 const SizedBox(height: 16),
-                                Text("    Birth State",style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500
-                                ),),
-                                const SizedBox(height: 10,),
+                                Text(
+                                  "    Birth State",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Get.to(GoogleMapSearchPlacesApi(
                                       onSelect: (e) {
                                         setState(() {
-                                          if(e.city?.isEmpty??false || (e.state?.isEmpty??false)){
-                                            showToast("Please search with city name");
-                                          }else{
-                                            city.text = e.city??"";
-                                            state.text = e.state??"";
+                                          if (e.city?.isEmpty ??
+                                              false ||
+                                                  (e.state?.isEmpty ?? false)) {
+                                            showToast(
+                                                "Please search with city name");
+                                          } else {
+                                            city.text = e.city ?? "";
+                                            state.text = e.state ?? "";
                                           }
                                         });
                                       },
@@ -570,15 +581,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   },
                                   child: TextFormField(
                                     enabled: false,
-                                    controller: TextEditingController(text: "${city.text}, ${state.text}"),
+                                    controller: TextEditingController(
+                                        text: "${city.text}, ${state.text}"),
                                     decoration: InputDecoration(
                                       hintText: "Search with city name",
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            width: 1),
                                         borderRadius: BorderRadius.circular(30),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            width: 1.5),
                                         borderRadius: BorderRadius.circular(30),
                                       ),
                                     ),
@@ -608,8 +624,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 // ),
                               ],
                             ),
-                            const SizedBox(height: 10,),
-
+                            const SizedBox(
+                              height: 10,
+                            ),
 
                             TitleWidget(
                               title: "Enter Birth Time",
@@ -704,14 +721,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         ),
                                       );
                                     }
-                                    return  Text(
-                                      "Submit",
-                                        style:GoogleFonts.inter(
+                                    return Text("Submit",
+                                        style: GoogleFonts.inter(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white
-                                        )
-
-                                    );
+                                            color: Colors.white));
                                   })),
                             )
                           ],

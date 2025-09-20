@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class BlocDetailes extends StatefulWidget {
   final String id;
+
   const BlocDetailes({super.key, required this.id});
 
   @override
@@ -58,7 +59,7 @@ class _BlocDetailesState extends State<BlocDetailes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Block Detail".toUpperCase()),
+        title: Text("Blog Detail".toUpperCase()),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -71,7 +72,8 @@ class _BlocDetailesState extends State<BlocDetailes> {
                       imageUrl: imageUrl!,
                       placeholder: (context, url) =>
                           const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                       fit: BoxFit.cover,
                       height: MediaQuery.of(context).size.height * 0.23,
                     ),

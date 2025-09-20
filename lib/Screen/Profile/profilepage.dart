@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Components/Widgts/shadow_widget.dart';
 import 'package:foreastro/Components/Widgts/status_indicator_widget.dart';
+
 // Import the profile model
 import 'package:foreastro/Utils/assets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.setState(fn);
     Get.find<ProfileList>().fetchProfileData();
   }
+
   // @override
   // void initState() {
   //   Get.find<ProfileList>().fetchProfileData();
@@ -51,7 +53,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -115,8 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       profileDataList.first.name!.substring(1)
                                   : 'NA',
                               style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.dp),
+                                  fontWeight: FontWeight.bold, fontSize: 18.dp),
                             ),
                             Gap(2.w),
                           ])),

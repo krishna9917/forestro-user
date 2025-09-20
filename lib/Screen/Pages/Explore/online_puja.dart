@@ -76,18 +76,19 @@ class _OnlinePujaState extends State<OnlinePuja>
               },
             ),
             const SizedBox(height: 10),
-             Center(
+            Center(
               child: Text("Online Puja",
-                  style: GoogleFonts.inter(fontSize: 25, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(
+                      fontSize: 25, fontWeight: FontWeight.w700)),
             ),
-             Center(
+            Center(
               child: Text("Coming Soon",
                   style: GoogleFonts.inter(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
                       color: AppColor.primary)),
             ),
-             Center(
+            Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
@@ -143,9 +144,9 @@ class _OnlinePujaState extends State<OnlinePuja>
                         }
                       },
                       keyboardType: TextInputType.datetime,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'DD/MM/YYYY',
-                        hintStyle:GoogleFonts.inter(
+                        hintStyle: GoogleFonts.inter(
                             color: Colors.grey, fontWeight: FontWeight.normal),
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
@@ -191,7 +192,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                   ),
                   Gap(2.h),
                   // Kind of Puja selection field wrapped in a FormField
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 20, bottom: 5),
                     child: Text(
                       "Kind of Puja",
@@ -243,7 +244,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                               padding: const EdgeInsets.only(left: 20, top: 5),
                               child: Text(
                                 state.errorText!,
-                                style:GoogleFonts.inter(color: Colors.red),
+                                style: GoogleFonts.inter(color: Colors.red),
                               ),
                             ),
                         ],
@@ -273,7 +274,7 @@ class _OnlinePujaState extends State<OnlinePuja>
                           navigate.push(routeMe(const ContactVerifiction()));
                         }
                       },
-                      child:  Text(
+                      child: Text(
                         "Submit",
                         style: GoogleFonts.inter(color: Colors.white),
                       ),

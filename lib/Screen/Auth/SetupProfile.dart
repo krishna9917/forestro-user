@@ -204,7 +204,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           ),
           const SizedBox(height: 8),
           Text("${currentPage + 1}/3",
-              style:  GoogleFonts.inter(fontWeight: FontWeight.bold)),
+              style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -267,10 +267,10 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                               child: Icon(Icons.arrow_back_ios)),
                         )
                       : const SizedBox(height: 25, width: 25),
-                   Text("Complete your Profile",
-                      style:
-                          GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const  SizedBox(height: 25, width: 25),
+                  Text("Complete your Profile",
+                      style: GoogleFonts.inter(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 25, width: 25),
                 ],
               ),
               const SizedBox(height: 50),
@@ -279,12 +279,14 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
-                  physics: const NeverScrollableScrollPhysics(), // prevent swipe
+                  physics: const NeverScrollableScrollPhysics(),
+                  // prevent swipe
                   onPageChanged: (index) => setState(() => currentPage = index),
                   children: [
                     // ------------------ PAGE 1 ------------------
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -301,8 +303,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                           ),
                           Theme(
                             data: ThemeData(
-                              inputDecorationTheme:
-                              const InputDecorationTheme(
+                              inputDecorationTheme: const InputDecorationTheme(
                                 contentPadding: EdgeInsets.all(0),
                                 enabledBorder: InputBorder.none,
                               ),
@@ -310,36 +311,29 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             child: SizedBox(
                                 width: scrWeight(context),
                                 child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 20, bottom: 5),
-                                      child: Text(
-                                          "Gender",
+                                      child: Text("Gender",
                                           style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.bold
-                                          )
-                                      ),
+                                              fontWeight: FontWeight.bold)),
                                     ),
                                     SizedBox(
                                       height: 50,
                                       child: SelectBox(
-                                        list: const [
-                                          "Male",
-                                          "Female",
-                                          "Other"
-                                        ],
+                                        list: const ["Male", "Female", "Other"],
                                         onChanged: (e) {
                                           setState(() {
                                             selectedGender = e;
                                           });
                                         },
                                         // hint: widget.profileData!.gender,
-                                        initialItem: selectedGender.isEmpty ? null : selectedGender,
+                                        initialItem: selectedGender.isEmpty
+                                            ? null
+                                            : selectedGender,
                                       ),
                                     ),
                                   ],
@@ -360,7 +354,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
 
                     // ------------------ PAGE 2 ------------------
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -369,7 +364,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             child: TextFormField(
                               // controller: TextEditingController(text: "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"),
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               onTap: _showCustomDatePicker,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
@@ -378,8 +373,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 hintStyle: GoogleFonts.inter(
                                     color: Color(0xffA4A4A4),
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500
-                                ),
+                                    fontWeight: FontWeight.w500),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
@@ -427,7 +421,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             child: TextFormField(
                               // controller: _birthtimeController,
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.number,
                               onTap: _showCustomTimePicker,
                               // validator: (_) => Validator.onlyNum(
@@ -442,8 +436,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 hintStyle: GoogleFonts.inter(
                                     color: Color(0xffA4A4A4),
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500
-                                ),
+                                    fontWeight: FontWeight.w500),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   borderSide: BorderSide(
@@ -502,7 +495,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                         children: [
                           CompleteProfileInputBox(
                             title: "Enter Birth Place",
-                            textEditingController: TextEditingController(text: "${city.text}, ${state.text}"),
+                            textEditingController: TextEditingController(
+                                text: "${city.text}, ${state.text}"),
                             readOnly: true,
                             hintText: "Search with city name",
                             prefixIcon: const Icon(Icons.location_on_rounded),
@@ -510,11 +504,12 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                               Get.to(GoogleMapSearchPlacesApi(
                                 onSelect: (e) {
                                   setState(() {
-                                    if(e.city?.isEmpty??false || (e.state?.isEmpty??false)){
+                                    if (e.city?.isEmpty ??
+                                        false || (e.state?.isEmpty ?? false)) {
                                       showToast("Please search with city name");
-                                    }else{
-                                      city.text = e.city??"";
-                                      state.text = e.state??"";
+                                    } else {
+                                      city.text = e.city ?? "";
+                                      state.text = e.state ?? "";
                                       locationData = e;
                                     }
                                   });
@@ -623,7 +618,6 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   }
 }
 
-
 class CompleteProfileInputBox extends StatelessWidget {
   String title;
   TextEditingController? textEditingController;
@@ -641,20 +635,25 @@ class CompleteProfileInputBox extends StatelessWidget {
   Function(String)? onChanged;
   String? hintText;
   List<TextInputFormatter>? inputFormatter;
+
   CompleteProfileInputBox(
       {super.key,
-        this.keyboardType,
-        this.textEditingController,
-        required this.title,
-        this.validator,
-        this.readOnly = false,
-        this.onTap,
-        this.maxLines = 1,
-        this.suffixIcon,
-        this.prefixIcon,
-        this.autofocus = false,
-        this.obscureText = false,
-        this.maxLength,this.enable,this.inputFormatter,this.onChanged,this.hintText});
+      this.keyboardType,
+      this.textEditingController,
+      required this.title,
+      this.validator,
+      this.readOnly = false,
+      this.onTap,
+      this.maxLines = 1,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.autofocus = false,
+      this.obscureText = false,
+      this.maxLength,
+      this.enable,
+      this.inputFormatter,
+      this.onChanged,
+      this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -676,7 +675,7 @@ class CompleteProfileInputBox extends StatelessWidget {
         TextFormField(
           onChanged: onChanged,
           inputFormatters: inputFormatter,
-          enabled: enable??true,
+          enabled: enable ?? true,
           controller: textEditingController,
           keyboardType: keyboardType,
           validator: validator,
@@ -711,6 +710,7 @@ class CompleteProfileSelectBox extends StatelessWidget {
   List<String> list;
   String? hintText;
   dynamic Function(String?)? onChanged;
+
   CompleteProfileSelectBox({
     super.key,
     required this.list,
@@ -729,7 +729,7 @@ class CompleteProfileSelectBox extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10, bottom: 8),
           child: Text(
             title,
-            style:GoogleFonts.inter(
+            style: GoogleFonts.inter(
               color: Color(0xFF353333),
               fontSize: 14,
               fontWeight: FontWeight.w600,

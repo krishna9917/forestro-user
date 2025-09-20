@@ -57,14 +57,13 @@ class _ContactVerifictionState extends State<ContactVerifiction> {
                       const SizedBox(
                         height: 15,
                       ),
-                       Text("Your Request Has Been Submitted!",
+                      Text("Your Request Has Been Submitted!",
                           style: GoogleFonts.inter(
                               fontSize: 20, fontWeight: FontWeight.w600)),
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           "Thank you for reaching out to us! \nWe have received your support request and our \nteam  already on it",
-
                           textAlign: TextAlign.center,
                         ),
                       ),

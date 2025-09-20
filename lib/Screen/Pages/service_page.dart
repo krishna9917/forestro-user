@@ -38,7 +38,7 @@ class _ServicesPageState extends State<ServicesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           "Online Astrologers",
           style: GoogleFonts.inter(color: Colors.white),
         ),
@@ -58,7 +58,8 @@ class _ServicesPageState extends State<ServicesPage> {
             return Center(
               child: Text(
                 "No astrologers are online.",
-                style: GoogleFonts.inter(fontSize: 16, color: Colors.grey.shade600),
+                style: GoogleFonts.inter(
+                    fontSize: 16, color: Colors.grey.shade600),
               ),
             );
           }
@@ -93,7 +94,7 @@ class _ServicesPageState extends State<ServicesPage> {
                   ),
                   title: Text(
                     displayName,
-                    style:  GoogleFonts.inter(
+                    style: GoogleFonts.inter(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -105,10 +106,10 @@ class _ServicesPageState extends State<ServicesPage> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                               TextSpan(
+                              TextSpan(
                                 text: "Available now ",
-                                style:
-                                GoogleFonts.inter(color: Colors.grey, fontSize: 14),
+                                style: GoogleFonts.inter(
+                                    color: Colors.grey, fontSize: 14),
                               ),
                               TextSpan(
                                 text:
@@ -186,7 +187,7 @@ class _ServicesPageState extends State<ServicesPage> {
                             height: 20,
                           ),
                           const SizedBox(width: 6),
-                           Text(
+                          Text(
                             "Chat",
                             style: GoogleFonts.inter(
                               color: Colors.white,

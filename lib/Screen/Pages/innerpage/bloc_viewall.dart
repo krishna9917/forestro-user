@@ -65,10 +65,9 @@ class _BlocViewAllState extends State<BlocViewAll> {
                     itemCount: controller.blocDataList.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // 2 columns
+                      crossAxisCount: 2,
                       crossAxisSpacing: 8.0,
                       mainAxisSpacing: 8.0,
-                      childAspectRatio: 3 / 2, // 2:2 ratio
                     ),
                     itemBuilder: (context, index) {
                       final blocData = controller.blocDataList[index];
@@ -94,7 +93,7 @@ class _BlocViewAllState extends State<BlocViewAll> {
                           ),
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
@@ -113,15 +112,13 @@ class _BlocViewAllState extends State<BlocViewAll> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:GoogleFonts.inter(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                              Text(
+                                title,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],

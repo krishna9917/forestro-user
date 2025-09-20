@@ -31,87 +31,79 @@ class _CelebinsightsState extends State<Celebinsights> {
           return Obx(() {
             if (controller.isLoading) {
               // Shimmer effect during loading
-              return SizedBox(
-                height: 200,
-                child: Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5, // Number of shimmer placeholders
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: 190,
-                        color: Colors.white,
-                      );
-                    },
-                  ),
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: 5, // Number of shimmer placeholders
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      height: 140,
+                      color: Colors.white,
+                    );
+                  },
                 ),
               );
             } else {
               return RefreshIndicator(
                 onRefresh: _refreshData,
-                child: SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: controller.celibrityDataList.length,
-                    itemBuilder: (context, index) {
-                      final celebrity = controller.celibrityDataList[index];
-                      var videoUrl = celebrity.video?.toString() ?? '';
-
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: 190,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: InkWell(
-                                onTap: () {
-                                  if (videoUrl.isNotEmpty) {
-                                    navigate.push(routeMe(VideoPlay(
-                                      videoUrl: videoUrl,
-                                    )));
-                                  } else {
-                                    print(
-                                        'Video URL is null, cannot play video.');
-                                  }
-                                },
-                                child: CachedNetworkImage(
-                                  imageUrl: celebrity.thumbnail ??
-                                      'https://via.placeholder.com/550x140.png?text=No+Image',
-                                  width: 550,
-                                  height: 140,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                child: ListView.builder(
+                  itemCount: controller.celibrityDataList.length,
+                  itemBuilder: (context, index) {
+                    final celebrity = controller.celibrityDataList[index];
+                    var videoUrl = celebrity.video?.toString() ?? '';
+                    return Container(
+                      margin: const EdgeInsets.all(8.0),
+                      width: 190,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            child: InkWell(
+                              onTap: () {
+                                if (videoUrl.isNotEmpty) {
+                                  navigate.push(routeMe(VideoPlay(
+                                    videoUrl: videoUrl,
+                                  )));
+                                } else {
+                                  print(
+                                      'Video URL is null, cannot play video.');
+                                }
+                              },
+                              child: CachedNetworkImage(
+                                imageUrl: celebrity.thumbnail ??
+                                    'https://via.placeholder.com/550x140.png?text=No+Image',
+                                width: 550,
+                                height: 170,
+                                fit: BoxFit.fill,
+                                placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
                                 ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                celebrity.title ?? 'NA',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Text(
+                              celebrity.title ?? 'NA',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               );
             }

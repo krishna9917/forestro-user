@@ -179,15 +179,17 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
             const SizedBox(
               height: 10,
             ),
-             Center(
+            Center(
               child: Text("Kundali Milan",
-                  style: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(
+                      fontSize: 22, fontWeight: FontWeight.w700)),
             ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  " Welcome \nPlease provide some details",style: GoogleFonts.inter(),
+                  " Welcome \nPlease provide some details",
+                  style: GoogleFonts.inter(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -216,9 +218,9 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       Text(
                         "Boy",
                         style: GoogleFonts.inter(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       Flexible(
                         child: Padding(
@@ -363,9 +365,9 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
                       Text(
                         "Girl",
                         style: GoogleFonts.inter(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       Flexible(
                         child: Padding(
@@ -499,7 +501,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
               ),
             ),
             Gap(2.h),
-             Padding(
+            Padding(
               padding: EdgeInsets.only(left: 20, bottom: 5),
               child: Text(
                 "Language",
@@ -524,7 +526,7 @@ class _KundaliMilanFormState extends State<KundaliMilanForm>
             Gap(3.h),
             ElevatedButton(
               onPressed: submitForm,
-              child:  Text("Submit",style:GoogleFonts.inter()),
+              child: Text("Submit", style: GoogleFonts.inter()),
             ),
           ],
         ),

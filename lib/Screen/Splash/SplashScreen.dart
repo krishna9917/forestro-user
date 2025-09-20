@@ -428,8 +428,6 @@ class SpinAstro extends StatelessWidget {
   }
 }
 
-
-
 class NoInternetPopup extends StatefulWidget {
   final VoidCallback? onRetry;
   final VoidCallback? onClose;
@@ -626,7 +624,8 @@ class _NoInternetPopupState extends State<NoInternetPopup>
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 2.h, horizontal: 5.w),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),

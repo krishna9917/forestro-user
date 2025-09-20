@@ -22,10 +22,11 @@ class _ChatPopUpOptionsState extends State<ChatPopUpOptions> {
         return [
           PopupMenuItem(
             value: 'New Chat',
-            child:  ListTile(
+            child: ListTile(
               leading: const Icon(CupertinoIcons.chat_bubble_2_fill),
               title: Text(
-                'Create New Chat',style: GoogleFonts.inter(),
+                'Create New Chat',
+                style: GoogleFonts.inter(),
                 maxLines: 1,
               ),
             ),

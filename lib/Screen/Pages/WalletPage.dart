@@ -263,7 +263,8 @@ class _WalletPageState extends State<WalletPage> {
                               .profileDataList.isEmpty) {}
                           return Text(
                             'NA',
-                            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                            style:
+                                GoogleFonts.inter(fontWeight: FontWeight.w500),
                           );
                         }
                       },
@@ -272,20 +273,23 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ),
             ),
-             Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     "Recharge Wallet",
-                     style: GoogleFonts.inter(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                  Text("Choose from the available quick recharge packs",style: GoogleFonts.inter(), ),
+                  Text(
+                    "Choose from the available quick recharge packs",
+                    style: GoogleFonts.inter(),
+                  ),
 
                   // const SizedBox(height: 30),
                   // TextField(

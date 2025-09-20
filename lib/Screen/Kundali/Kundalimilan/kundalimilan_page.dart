@@ -15,7 +15,7 @@ class KundaliMilan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           "Kundali Millan",
           style: GoogleFonts.inter(color: Colors.white),
         ),
@@ -53,9 +53,9 @@ class KundaliMilan extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.inter(
-                color: Colors.black,
-                fontWeight: FontWeight.w800,
-              ),
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+          ),
         ),
         Flexible(
           child: Padding(
@@ -257,7 +257,7 @@ class KundaliMilan extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Text(title, style: const GoogleFonts.inter(fontWeight: FontWeight.bold)),
-          Flexible(child: Text(value,style: GoogleFonts.inter())),
+          Flexible(child: Text(value, style: GoogleFonts.inter())),
         ],
       ),
     );
@@ -270,7 +270,8 @@ class KundaliMilan extends StatelessWidget {
       } else {
         final response = kundaliController.southmatching.value.response;
         if (response == null) {
-          return  Center(child: Text('No data available.',style: GoogleFonts.inter()));
+          return Center(
+              child: Text('No data available.', style: GoogleFonts.inter()));
         } else {
           return Column(
             children: [
@@ -312,7 +313,7 @@ class KundaliMilan extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style:  GoogleFonts.inter(fontWeight: FontWeight.bold)),
+        Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
         DataRowWidget(label: "Description", value: detail.description),
         DataRowWidget(label: "Full Score", value: detail.fullScore?.toString()),
       ],
@@ -323,7 +324,7 @@ class KundaliMilan extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style:  GoogleFonts.inter(fontWeight: FontWeight.bold)),
+        Text(title, style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
         DataRowWidget(label: "Gana", value: details.gana),
         DataRowWidget(label: "Yoni", value: details.yoni),
         DataRowWidget(label: "Vasya", value: details.vasya),

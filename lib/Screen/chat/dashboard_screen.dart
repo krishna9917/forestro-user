@@ -21,7 +21,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xff0155FE),
         elevation: 0,
-        title:  Text('Chat and Groups',style: GoogleFonts.inter()),
+        title: Text('Chat and Groups', style: GoogleFonts.inter()),
         actions: const [ChatPopUpOptions()],
       ),
       body: Column(
@@ -37,8 +37,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return InkWell(
       onTap: () {
         copyText(widget.userId);
-        ScaffoldMessenger.of(context)
-            .showSnackBar( SnackBar(content: Text('Copied',style: GoogleFonts.inter())));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Copied', style: GoogleFonts.inter())));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -46,7 +46,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         alignment: Alignment.center,
         child: Text(
           'User Id: ${widget.userId}',
-          style:  GoogleFonts.inter(fontSize: 16),
+          style: GoogleFonts.inter(fontSize: 16),
         ),
       ),
     );

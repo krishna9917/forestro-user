@@ -114,11 +114,12 @@ class _ComingSoonAstrologerPageState extends State<ComingSoonAstrologerPage>
               ],
             ),
             const SizedBox(height: 20),
-             Padding(
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Coming Soon...',
-                style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.inter(
+                    fontSize: 20, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -171,7 +172,7 @@ Widget _buildTimeBox(int timeValue, String label) {
         ),
         Text(
           label,
-          style:  GoogleFonts.inter(fontSize: 13, color: Colors.grey),
+          style: GoogleFonts.inter(fontSize: 13, color: Colors.grey),
         ),
       ],
     ),

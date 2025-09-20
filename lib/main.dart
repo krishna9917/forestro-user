@@ -114,7 +114,6 @@ class InitApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         navigatorKey: navigatorKey,
-        // home: SetupProfileScreen(phone: "", userId: ""),
         home: SplashScreen(),
         initialBinding: BindingsBuilder(() {
           Get.lazyPut<ProfileList>(() => ProfileList());

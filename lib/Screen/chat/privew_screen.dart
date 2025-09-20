@@ -9,6 +9,7 @@ import 'package:photo_view/photo_view.dart';
 class PreviewScreen extends StatelessWidget {
   final Certifications certification;
   final bool isImage;
+
   const PreviewScreen(
       {super.key, required this.certification, this.isImage = false});
 
@@ -49,12 +50,12 @@ class PreviewScreen extends StatelessWidget {
                       nightMode: false,
                     ).cachedFromUrl(
                       certification.certificate.toString(),
-                      placeholder: (progress) =>
-                          Center(child: Text('$progress %',style: GoogleFonts.inter())),
+                      placeholder: (progress) => Center(
+                          child:
+                              Text('$progress %', style: GoogleFonts.inter())),
                       errorWidget: (error) => Center(
-                        child: Text(
-                          error.toString(),style: GoogleFonts.inter()
-                        ),
+                        child:
+                            Text(error.toString(), style: GoogleFonts.inter()),
                       ),
                     );
                   }
@@ -74,7 +75,7 @@ class PreviewScreen extends StatelessWidget {
                           certification.certificate.toString() +
                               certification.certificate.toString(),
                           textAlign: TextAlign.center,
-                          style:  GoogleFonts.inter(
+                          style: GoogleFonts.inter(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),

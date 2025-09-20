@@ -61,7 +61,7 @@ class _NoInternetPageState extends State<NoInternetPage> {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 20),
-                   Text(
+                  Text(
                     "No Internet Connection",
                     style: GoogleFonts.inter(
                       fontSize: 22,
@@ -88,9 +88,10 @@ class _NoInternetPageState extends State<NoInternetPage> {
                       ),
                       backgroundColor: AppColor.primary,
                     ),
-                    child:  Text(
+                    child: Text(
                       "Retry",
-                      style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
+                      style:
+                          GoogleFonts.inter(fontSize: 18, color: Colors.white),
                     ),
                   ),
                 ],

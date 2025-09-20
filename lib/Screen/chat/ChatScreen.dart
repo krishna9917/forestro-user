@@ -88,7 +88,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> chatzegocloud() async {
-
     String profile = profileController.profileDataList.isNotEmpty
         ? profileController.profileDataList.first.profileImg
         : '';

@@ -24,6 +24,7 @@ class AudioCall extends StatefulWidget {
       required this.username,
       required this.price,
       required this.totalMinutes});
+
   final String callID;
   final String userid;
   final String username;
@@ -196,7 +197,8 @@ class _AudioCallState extends State<AudioCall> {
         children: [
           ZegoUIKitPrebuiltCall(
             appID: 844833851,
-            appSign: '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
+            appSign:
+                '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
             userID: widget.userid,
             userName: widget.username.split(' ').first,
             callID: widget.callID,

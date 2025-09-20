@@ -19,6 +19,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final profileController = Get.find<ProfileList>();
+
   @override
   void initState() {
     super.initState();
@@ -203,7 +204,7 @@ class ChatListCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child:  Text(
+                child: Text(
                   "View History",
                   style: GoogleFonts.inter(
                     fontSize: 12,

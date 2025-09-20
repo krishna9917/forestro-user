@@ -206,16 +206,17 @@ class _KundaliFormState extends State<KundaliForm>
             const SizedBox(
               height: 10,
             ),
-             Center(
+            Center(
               child: Text("Kundali",
-                  style: GoogleFonts.inter(fontSize: 25, fontWeight: FontWeight.w700)),
+                  style: GoogleFonts.inter(
+                      fontSize: 25, fontWeight: FontWeight.w700)),
             ),
-             Center(
+            Center(
               child: Padding(
                 padding: EdgeInsets.all(4.0),
                 child: Text(
                   " Welcome \nPlease provide some details",
-                   style: GoogleFonts.inter(),
+                  style: GoogleFonts.inter(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -374,7 +375,7 @@ class _KundaliFormState extends State<KundaliForm>
                   //   },
                   // ),
                   Gap(2.h),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 20, bottom: 5),
                     child: Text(
                       "Language",
@@ -403,7 +404,7 @@ class _KundaliFormState extends State<KundaliForm>
                     height: 52,
                     child: ElevatedButton(
                       onPressed: submitForm,
-                      child:  Text(
+                      child: Text(
                         "Submit",
                         style: GoogleFonts.inter(color: Colors.white),
                       ),

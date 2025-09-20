@@ -10,6 +10,7 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 
 class PreviewChatScreen extends StatelessWidget {
   final String astroId;
+
   const PreviewChatScreen({
     super.key,
     required this.astroId,
@@ -190,8 +191,12 @@ class _AudioPlayerDialogState extends State<AudioPlayerDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_formatDuration(_position),style: GoogleFonts.inter(),),
-              Text(_formatDuration(_duration - _position),style: GoogleFonts.inter()),
+              Text(
+                _formatDuration(_position),
+                style: GoogleFonts.inter(),
+              ),
+              Text(_formatDuration(_duration - _position),
+                  style: GoogleFonts.inter()),
             ],
           ),
         ],

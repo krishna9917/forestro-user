@@ -402,9 +402,12 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                           Column(children: [
                             const SizedBox(height: 5),
                             Text(
-                              addLineBreaks( (astrologer.name != null && astrologer.name!.isNotEmpty)
-                                  ? '${astrologer.name![0].toUpperCase()}${astrologer.name!.substring(1)}'
-                                  : 'No Name', 1),
+                              addLineBreaks(
+                                  (astrologer.name != null &&
+                                          astrologer.name!.isNotEmpty)
+                                      ? '${astrologer.name![0].toUpperCase()}${astrologer.name!.substring(1)}'
+                                      : 'No Name',
+                                  1),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
@@ -475,7 +478,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                   ),
                                 ),
                               ),
-                              child:  Text(
+                              child: Text(
                                 "Follow",
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
@@ -506,8 +509,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                             image: "exp.svg",
                                             label: "Exp :",
                                             desc: Text(
-                                                "${astrologer.experience}",style: GoogleFonts.inter(),),
-
+                                              "${astrologer.experience}",
+                                              style: GoogleFonts.inter(),
+                                            ),
                                           ),
                                           const SizedBox(width: 15),
                                           const SizedBox(width: 10),
@@ -517,8 +521,10 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                         image: "lang.svg",
                                         label: "Language :",
                                         desc: Text(
-                                            astrologer.languaage?.join(', ') ??
-                                                "", style: GoogleFonts.inter(),),
+                                          astrologer.languaage?.join(', ') ??
+                                              "",
+                                          style: GoogleFonts.inter(),
+                                        ),
                                       ),
                                       InfoTask(
                                         image: "call.svg",
@@ -611,7 +617,9 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                 ),
                                               )
                                             : Text(
-                                                "₹ ${astrologer.chatChargesPerMin}/minute",style: GoogleFonts.inter(),),
+                                                "₹ ${astrologer.chatChargesPerMin}/minute",
+                                                style: GoogleFonts.inter(),
+                                              ),
                                       ),
                                       const SizedBox(height: 10),
                                       Row(
@@ -622,7 +630,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                             onTap: () {
                                               Get.dialog(
                                                 AlertDialog(
-                                                  title:  Center(
+                                                  title: Center(
                                                     child: Text(
                                                       'Do you want to send call request?',
                                                       style: GoogleFonts.inter(
@@ -710,7 +718,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                               }
                                                             }
                                                           },
-                                                          child:  Text(
+                                                          child: Text(
                                                             "Video Call",
                                                             style: GoogleFonts.inter(
                                                                 fontSize: 12,
@@ -795,7 +803,7 @@ class _ExploreAstroViewState extends State<ExploreAstroView> {
                                                               }
                                                             }
                                                           },
-                                                          child:  Text(
+                                                          child: Text(
                                                             "Audio Call",
                                                             style: GoogleFonts.inter(
                                                                 fontSize: 12,
@@ -928,7 +936,8 @@ class ActionBtn extends StatelessWidget {
             const Spacer(),
             Text(
               title,
-              style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 12),
+              style:
+                  GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 12),
             ),
             const Spacer(),
           ],

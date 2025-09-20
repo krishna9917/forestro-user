@@ -66,7 +66,9 @@ class _RemedyScreenState extends State<RemedyScreen> {
                         ),
                         url: remedy.astroImg,
                       ),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       // const Spacer(),
                       Text(
                         remedy.astrologerName ?? '',
