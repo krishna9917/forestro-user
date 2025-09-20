@@ -111,6 +111,7 @@ class SocketController extends GetxController {
                     });
                     print("Emitting startSession with data: ${{
                       'userId': data['userId'],
+                      'userType': data['userType'],
                       'requestType': 'chat',
                       'data': {
                         'walletAmount': wallet,
@@ -160,6 +161,7 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'chat',
+            'userType':data['userType'],
             'total': totalMinutes,
             'data': {
               'walletAmount': walletAmount,
@@ -168,6 +170,7 @@ class SocketController extends GetxController {
           });
           print("Emitting startSession with data: ${{
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'chat',
             'data': {
               'walletAmount': walletAmount,
@@ -196,6 +199,7 @@ class SocketController extends GetxController {
           var totalMinutes = walletAmount / pricePerMin;
           socket?.emit('startSession', {
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'video',
             'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,
@@ -224,6 +228,7 @@ class SocketController extends GetxController {
 
           socket?.emit('startSession', {
             'userId': data['userId'],
+            'userType': data['userType'],
             'requestType': 'audio',
             'walletAmount': walletAmount,
             'totalMinutes': totalMinutes,

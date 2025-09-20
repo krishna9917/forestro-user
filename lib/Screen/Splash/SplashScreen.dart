@@ -127,7 +127,7 @@ class _SplashScreenState extends State<SplashScreen>
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.contains(ConnectivityResult.none)) {
-        showToast("Chek Your Internet Conection");
+        showToast("Check Your Internet Conection");
       }
     });
   }

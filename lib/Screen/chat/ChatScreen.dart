@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -39,7 +40,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
-  final SocketController socketController = Get.find<SocketController>();
+  final SocketController socketController = Get.put(SocketController());
   late SessionController sessionController;
   late DateTime startTime;
   late DateTime endTime;
@@ -89,13 +90,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> chatzegocloud() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user_id = prefs.getString('user_id');
-
-    if (user_id == null) {
-      print('User ID not found in SharedPreferences');
-      return;
-    }
 
     String profile = profileController.profileDataList.isNotEmpty
         ? profileController.profileDataList.first.profileImg
@@ -105,24 +99,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         ? profileController.profileDataList.first.name
         : '';
 
-    if (name.isEmpty) {
-      print("Name not found");
-      return;
-    }
-
-    print("name=======$name $user_id $profile  --   $user_id-user");
-    var user = ZIMKit().currentUser;
-    if (user == null) {
-      try {
-        await ZIMKit().connectUser(
-          id: "$user_id-user",
-          name: name,
-          avatarUrl: profile,
-        );
-      } catch (e) {
-        print("Error: $e");
-      }
-    }
+    // if (name.isEmpty) {
+    //   print("Name not found");
+    //   return;
+    // }
+    await ZIMKit().connectUser(
+      id: "23",
+      name: "dsfdsfdfdfd",
+      // avatarUrl: profile,
+    );
   }
 
   Future<void> playBeepSound() async {
@@ -268,7 +253,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: Stack(
         children: [
           ZIMKitMessageListPage(
-            conversationID: widget.id,
+            conversationType: ZIMConversationType.peer,
+            conversationID: "32",
             showPickFileButton: false,
             showMoreButton: false,
             theme: ThemeData(),

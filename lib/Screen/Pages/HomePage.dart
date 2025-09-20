@@ -360,8 +360,7 @@ class _HomePageState extends State<HomePage> {
       dio.Response data = await apiRequest.send();
       if (data.
       statusCode == 201) {
-        print("API request successful: ${data.data}");
-        follow();
+        Get.back();
         showToast("Wallet Recharge successfull");
       } else {
         print("API request failed with status code: ${data.statusCode}");
