@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
+import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/controler/bloc_controler.dart';
 import 'package:foreastro/controler/call_histrory_controller.dart';
@@ -27,9 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  
-}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,7 +115,7 @@ class InitApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: appTheme,
         navigatorKey: navigatorKey,
-        home: const SplashScreen(),
+        home: SetupProfileScreen(phone: "", userId: ""),
         initialBinding: BindingsBuilder(() {
           Get.lazyPut<ProfileList>(() => ProfileList());
           Get.lazyPut<BlocList>(() => BlocList());

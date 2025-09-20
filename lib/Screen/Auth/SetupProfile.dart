@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,20 +14,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Helper/InAppKeys.dart';
 import '../../Utils/Quick.dart' show showToast;
 import '../../core/function/navigation.dart' show routeMe;
-
-
+import '../../Components/CustomWheelDatePicker.dart';
+import '../../Components/CustomWheelTimePicker.dart';
 
 class SetupProfileScreen extends StatefulWidget {
   String phone;
   var userId;
   final String? email;
   final String? name;
+
   SetupProfileScreen(
       {super.key,
-        required this.phone,
-        required this.userId,
-        this.email,
-        this.name});
+      required this.phone,
+      required this.userId,
+      this.email,
+      this.name});
 
   @override
   State<SetupProfileScreen> createState() => _SetupProfileScreenState();
@@ -37,12 +38,12 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   final PageController _pageController = PageController();
 
   int currentPage = 0;
-   String ?selectedValue;
+  String? selectedValue;
   final nameController = TextEditingController();
   final cityController = TextEditingController();
-  TextEditingController city=TextEditingController();
-  TextEditingController state=TextEditingController();
-  TextEditingController pin=TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController state = TextEditingController();
+  TextEditingController pin = TextEditingController();
   String selectedGender = '';
   String selectedState = '';
   String selectedCity = '';
@@ -57,7 +58,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       FormData body = FormData.fromMap({
         'name': nameController.text,
         'gender': selectedGender,
-        'date_of_birth': "${selectedDate?.day}-${selectedDate?.month}=${selectedDate?.year}",
+        'date_of_birth':
+            "${selectedDate?.day}-${selectedDate?.month}-${selectedDate?.year}",
         'birth_time': "${selectedTime?.hour}:${selectedTime?.minute}",
         'city': city.text[0].toUpperCase() + city.text.substring(1),
         'state': state.text,
@@ -87,28 +89,21 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         showToast(
             "This email ID is already registered. Please try a different email ID.");
       }
-
-      // showToast(e.message.toString());
     } catch (e) {
       showToast("An unexpected error occurred. Please try again later.");
     } finally {}
   }
-
-
 
   Future<void> getStateCity() async {
     try {
       final dio = Dio();
       final url = "https://api.postalpincode.in/pincode/${pin.text}";
 
-
       final response = await dio.get(url);
 
-
       if (response.statusCode == 200) {
-        final res = response.data is String
-            ? jsonDecode(response.data)
-            : response.data;
+        final res =
+            response.data is String ? jsonDecode(response.data) : response.data;
 
         if (res is List && res.isNotEmpty) {
           final postOffices = res[0]["PostOffice"] as List?;
@@ -119,31 +114,25 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             final stateValue = first["State"] ?? "";
             final blockValue = first["Block"] ?? "";
 
-
-
             setState(() {
               state.text = stateValue;
               city.text = blockValue;
-
             });
           } else {
             setState(() {
               state.text = "";
               city.text = "";
-
             });
 
             showToast("No post office details found for this pin code.");
           }
         } else {
-
           showToast("Invalid response format from API.");
         }
       } else {
         setState(() {
           state.text = "";
           city.text = "";
-
         });
         showToast("Server error: ${response.statusCode}");
       }
@@ -151,32 +140,24 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       print("❌ Dio error: ${e.message}");
       showToast("This pin code is not valid. Please try a different pin code.");
     } catch (e) {
-
       print("❌ Unexpected error: $e");
       showToast("An unexpected error occurred. Please try again later.");
     }
   }
 
-
-
-
-
-
-
-
   void nextPage() {
-    if(currentPage ==0){
-      if(nameController.text.isEmpty ||selectedGender.isEmpty ){
-        Fluttertoast.showToast(msg: "Please fill the required filled ");
+    if (currentPage == 0) {
+      if (nameController.text.isEmpty || selectedGender.isEmpty) {
+        Fluttertoast.showToast(msg: "Please fill the required field");
       } else {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.ease,
         );
       }
-    }else if (currentPage == 1){
-      if(selectedDate == null || selectedTime== null){
-        Fluttertoast.showToast(msg: "Please fill the required filled ");
+    } else if (currentPage == 1) {
+      if (selectedDate == null || selectedTime == null) {
+        Fluttertoast.showToast(msg: "Please fill the required field");
       } else {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
@@ -196,16 +177,13 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   }
 
   void submitForm() {
-    if(state.text.isEmpty || city.text.isEmpty || pin.text.isEmpty ){
-      Fluttertoast.showToast(msg: "Please fill the required filled ");
-    } else if (pin.text.length<6){
+    if (state.text.isEmpty || city.text.isEmpty || pin.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill the required field");
+    } else if (pin.text.length < 6) {
       Fluttertoast.showToast(msg: "Please Enter Valid Pin Code");
+    } else {
+      makeNewAccount();
     }
-
-    else{
-    makeNewAccount();
-    }
-    // Optionally show a success dialog/snackbar
   }
 
   Widget buildProgressBar() {
@@ -215,15 +193,46 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          LinearProgressIndicator(value: progress, color: Colors.orange,
-          minHeight: 10,
+          LinearProgressIndicator(
+            value: progress,
+            color: Colors.orange,
+            minHeight: 10,
             borderRadius: BorderRadius.circular(10),
           ),
           const SizedBox(height: 8),
-           Text("${currentPage+1}/3", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${currentPage + 1}/3",
+              style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );
+  }
+
+  // ✅ Custom Date Picker using GetX
+  void _showCustomDatePicker() async {
+    final date = await showCustomWheelDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      title: "Select Date of Birth",
+    );
+    if (date != null) {
+      setState(() {
+        selectedDate = date;
+      });
+    }
+  }
+
+  // ✅ Custom Time Picker using GetX
+  void _showCustomTimePicker() async {
+    final time = await showCustomWheelTimePicker(
+      context: context,
+      initialTime: selectedTime,
+      title: "Select Birth Time",
+    );
+    if (time != null) {
+      setState(() {
+        selectedTime = time;
+      });
+    }
   }
 
   @override
@@ -232,17 +241,23 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-               currentPage !=0 ? InkWell(
-                    onTap: (){
-                      previousPage();
-                    },
-                    child: const Padding(padding: EdgeInsets.all(10),child: Icon(Icons.arrow_back_ios),)):const SizedBox(height: 25,width: 25,),
-                const Text("Complete your Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                currentPage != 0
+                    ? InkWell(
+                        onTap: () {
+                          previousPage();
+                        },
+                        child: const Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(Icons.arrow_back_ios)),
+                      )
+                    : const SizedBox(height: 25, width: 25),
+                const Text("Complete your Profile",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox()
               ],
             ),
@@ -255,40 +270,41 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                 physics: const NeverScrollableScrollPhysics(), // prevent swipe
                 onPageChanged: (index) => setState(() => currentPage = index),
                 children: [
-                  // Page 1
+                  // ------------------ PAGE 1 ------------------
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(" Name",style: GoogleFonts.inter(
-                           fontSize: 14,
-                           fontWeight: FontWeight.w600
-                        ),),
-                        const SizedBox(height: 10,),
+                        Text(" Name",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: nameController,
-                          maxLength: 50, // limit to 50 characters
+                          maxLength: 50,
                           decoration: InputDecoration(
                             counterText: "",
                             hintText: "Name",
                             enabledBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1), // light grey border
-                              borderRadius: BorderRadius.circular(30), // optional rounded corners
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5), // border when focused
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Text(" Gender",style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600
-                        ),),
-                        const SizedBox(height: 10,),
+                        Text(" Gender",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 10),
                         DropdownButtonFormField<String>(
                           value: selectedGender.isEmpty ? null : selectedGender,
                           items: ['Male', 'Female', 'Other'].map((gender) {
@@ -297,28 +313,24 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                               child: Text(gender),
                             );
                           }).toList(),
-                          onChanged: (val) => setState(() => selectedGender = val!),
+                          onChanged: (val) =>
+                              setState(() => selectedGender = val!),
                           decoration: InputDecoration(
                             hintText: "Select",
                             enabledBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide:  BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 32),
                         ElevatedButton(
                           onPressed: nextPage,
@@ -326,27 +338,21 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             backgroundColor: Colors.orange,
                             minimumSize: const Size(double.infinity, 50),
                           ),
-                          child:  Text("Next",style: GoogleFonts.inter()),
+                          child: Text("Next", style: GoogleFonts.inter()),
                         )
                       ],
                     ),
                   ),
 
-                  // Page 2
-                  // Page 2
+                  // ------------------ PAGE 2 ------------------
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          " Date of Birth",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text(" Date of Birth",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 10),
                         TextFormField(
                           readOnly: true,
@@ -356,34 +362,24 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
                             suffixIcon: const Icon(Icons.calendar_today),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onTap: () async {
-                            DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime(2000),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
-                            if (picked != null) {
-                              setState(() => selectedDate = picked);
-                            }
-                          },
+                          onTap: _showCustomDatePicker,
                         ),
                         const SizedBox(height: 16),
-                        Text(
-                          " Birth Time",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text(" Birth Time",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 10),
                         TextFormField(
                           readOnly: true,
@@ -393,25 +389,20 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                                 : selectedTime!.format(context),
                             suffixIcon: const Icon(Icons.access_time),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          onTap: () async {
-                            TimeOfDay? picked = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
-                            if (picked != null) {
-                              setState(() => selectedTime = picked);
-                            }
-                          },
+                          onTap: _showCustomTimePicker,
                         ),
-
                         const SizedBox(height: 32),
                         ElevatedButton(
                           onPressed: nextPage,
@@ -419,28 +410,22 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             backgroundColor: Colors.orange,
                             minimumSize: const Size(double.infinity, 50),
                           ),
-                          child:  Text("Next",style:GoogleFonts.inter()),
+                          child: Text("Next", style: GoogleFonts.inter()),
                         )
                       ],
                     ),
                   ),
 
-
-                  // Page 3
-                  // Page 3
-                  // Page 3
-                  // Page 3
+                  // ------------------ PAGE 3 ------------------
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(" Pin Code",style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600
-                        ),),
-                        const SizedBox(height: 10,),
+                        Text(" Pin Code",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 10),
                         TextFormField(
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(6),
@@ -450,11 +435,15 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                           decoration: InputDecoration(
                             hintText: "Enter PinCode",
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
@@ -464,45 +453,49 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                             }
                           }),
                         ),
-                        Text(" Birth State",style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600
-                        ),),
-                        const SizedBox(height: 10,),
+                        Text(" Birth State",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 10),
                         TextFormField(
-
-                         enabled: false,
+                          enabled: false,
                           controller: state,
                           decoration: InputDecoration(
                             hintText: "Birth State",
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Text(" Birth City",style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600
-                        ),),
-                        const SizedBox(height: 10,),
+                        Text(" Birth City",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 10),
                         TextFormField(
-
                           enabled: false,
                           controller: city,
                           decoration: InputDecoration(
                             hintText: "Birth City",
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.5),
+                              borderSide: BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1.5),
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
@@ -519,7 +512,6 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -529,9 +521,3 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     );
   }
 }
-
-
-
-
-
-
