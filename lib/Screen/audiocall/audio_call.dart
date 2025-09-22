@@ -1,20 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:foreastro/controler/audio_call_controller.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
-import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
-import 'package:foreastro/Utils/Quick.dart';
-import 'package:foreastro/controler/profile_controler.dart';
-import 'package:foreastro/controler/soket_controler.dart';
-import 'package:foreastro/core/api/ApiRequest.dart';
-import 'package:foreastro/videocall/const.dart';
-import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
+import '../../Utils/Quick.dart';
 
 class AudioCall extends StatefulWidget {
   const AudioCall(
@@ -36,243 +27,223 @@ class AudioCall extends StatefulWidget {
 }
 
 class _AudioCallState extends State<AudioCall> {
-  final SocketController socketController = Get.find<SocketController>();
-  late DateTime startTime;
-  late DateTime endTime;
-  late Timer _timer;
-  late int _remainingSeconds;
-  bool isLoading = false;
-  bool _isLoading = false;
-  bool _isBeeping = false;
-  Color countdownColor = Colors.white;
-  AudioPlayer player = AudioPlayer();
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  late AudioCallController _audioCallController;
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
-    startTime = DateTime.now();
-    _remainingSeconds = (widget.totalMinutes * 60).toInt();
-
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> results) {
-      if (results.isNotEmpty && results.first == ConnectivityResult.none) {
-        socketController.closeSession(
-          senderId: widget.userid,
-          requestType: "audio",
-          message: "User Cancel Can",
-          data: {
-            "userId": widget.userid,
-            'communication_id': widget.callID,
-          },
-        );
-        print("No internet connection detected. Ending call...");
-        endChatSession();
-        Get.offAll(const NoInternetPage());
-      }
-    });
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 60) {
-        setState(() {
-          _remainingSeconds--;
-          if (_remainingSeconds == 120 && !_isBeeping) {
-            countdownColor =
-                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
-            playBeepSound();
-          }
-        });
-      } else if (_remainingSeconds == 60) {
-        if (_timer.isActive) {
-          _timer.cancel();
-        }
-        setState(() {
-          endChatSession();
-        });
-      }
-    });
+    _initializeController();
   }
 
-  Future<void> playBeepSound() async {
-    try {
-      await player.setAsset('assets/bg/beep.mp3');
-      for (int i = 0; i < 3; i++) {
-        await player.play();
-        await Future.delayed(const Duration(milliseconds: 500));
+  void _initializeController() {
+    // Check if controller already exists and reset it if needed
+    if (Get.isRegistered<AudioCallController>()) {
+      _audioCallController = Get.find<AudioCallController>();
+      // Only reset if call is already ended
+      if (_audioCallController.isCallEnded) {
+        _audioCallController.resetController();
       }
-    } catch (e) {
-      print('Audio play error: $e');
+    } else {
+      _audioCallController = Get.put(AudioCallController());
     }
-  }
-
-  Future<void> endChatSession() async {
-    showToast("Ending session...");
-    setState(() {
-      isLoading = true;
-    });
-
-    endTime = DateTime.now();
-    Duration duration = endTime.difference(startTime);
-
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes % 60;
-    int seconds = duration.inSeconds % 60;
-
-    String totaltime = "${hours.toString().padLeft(2, '0')}:"
-        "${minutes.toString().padLeft(2, '0')}:"
-        "${seconds.toString().padLeft(2, '0')}";
-
-    await SharedPreferences.getInstance().then((prefs) {
-      // Store the session
-      String sessionData = jsonEncode({
-        'call_id': widget.callID,
-        'astro_per_min_price': widget.price,
-        'totaltime': totaltime,
-      });
-      prefs.setString('active_call', sessionData).then((_) {
-        // Retrieve and print the stored session
-        String? storedSession = prefs.getString('active_call');
-        print("Stored Session: $storedSession");
-      });
-    });
-
-    await calculateprice(totaltime);
-  }
-
-  Future calculateprice(String totaltime) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    try {
-      ApiRequest apiRequest = ApiRequest(
-        "$apiUrl/communication-charges",
-        method: ApiMethod.POST,
-        body: packFormData(
-          {
-            'communication_id': widget.callID,
-            'astro_per_min_price': widget.price,
-            'time': totaltime,
-          },
-        ),
+    
+    // Only initialize if not already initialized
+    if (!_audioCallController.isInitialized) {
+      _audioCallController.initializeCall(
+        callID: widget.callID,
+        userid: widget.userid,
+        username: widget.username,
+        price: widget.price,
+        totalMinutes: widget.totalMinutes,
       );
-
-      dio.Response data = await apiRequest.send();
-      print("datatttttttttt$data");
-      if (data.statusCode == 201) {
-        print("Data sent successfully");
-        await Get.find<ProfileList>().fetchProfileData();
-        setState(() {
-          isLoading = false;
-        });
-        await prefs.remove('active_call');
-
-        print("Cleared active_call from storage");
-        Get.offAll(const WalletPage());
-      }
-    } catch (e) {
-      print(e);
     }
-  }
-
-  String formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    _connectivitySubscription?.cancel();
+    if (!_isDisposed) {
+      print("AudioCall disposing...");
+      _isDisposed = true;
 
-    player.dispose();
-    super.dispose();
+      // Clean up the call properly
+      try {
+        if (_audioCallController.isCallActive &&
+            !_audioCallController.isCallEnded) {
+          _audioCallController.handleZegoHangup();
+        }
+      } catch (e) {
+        print('Error during dispose: $e');
+      }
+
+      super.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: true,
-      child: Stack(
-        children: [
-          ZegoUIKitPrebuiltCall(
-            appID: 844833851,
-            appSign:
-                '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
-            userID: widget.userid,
-            userName: widget.username.split(' ').first,
-            callID: widget.callID,
-            events: ZegoUIKitPrebuiltCallEvents(
-              onCallEnd: (event, defaultAction) async {
-                await endChatSession();
-                // Get.offAll(const HomePage());
-              },
-              onError: (error) {
-                print("Error: $error");
-              },
-              user: ZegoCallUserEvents(
-                onEnter: (user) {
-                  showToast("${user.name} joined the call");
-                },
-                onLeave: (user) {
-                  print("${user.name} left the call");
-                },
-              ),
-            ),
-            config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
-          ),
-          Positioned(
-            top: 30,
-            left: 10,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 125, 122, 122),
-                    Color.fromARGB(151, 234, 231, 227)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+    return Obx(() {
+      // Safety check to ensure controller is initialized
+      try {
+        // If call is ended or disconnecting, show proper UI
+        if (_audioCallController.isCallEnded ||
+            _audioCallController.isDisconnecting) {
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(
+                  color: Colors.white,
                 ),
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    offset: const Offset(2, 4),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.timer_outlined,
+                const SizedBox(height: 20),
+                Text(
+                  _audioCallController.isDisconnecting
+                      ? "Ending call..."
+                      : "Call ended",
+                  style: const TextStyle(
                     color: Colors.white,
-                    size: 24,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    formatTime(_remainingSeconds),
-                    style: GoogleFonts.inter(
-                      color: countdownColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          Center(child: Image.asset("assets/call_logo.jpg")),
-          if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
+        );
+      }
+
+      return SafeArea(
+        top: true,
+        child: Stack(
+          children: [
+            ZegoUIKitPrebuiltCall(
+              key: ValueKey('audio_call_${widget.callID}'),
+              appID: 844833851,
+              appSign:
+                  '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
+              userID: widget.userid,
+              userName: widget.username.split(' ').first,
+              callID: widget.callID,
+              events: ZegoUIKitPrebuiltCallEvents(
+                onCallEnd: (event, defaultAction) async {
+                  if (_audioCallController.isCallEnded ||
+                      _audioCallController.isDisconnecting) {
+                    print(
+                        "Call already ended or disconnecting, skipping onCallEnd");
+                    return;
+                  }
+
+                  print("Call ended: ${event.toString()}");
+                  // Handle our custom disconnection logic first
+                  _audioCallController.handleZegoHangup();
+
+                  // Execute the default action after a small delay to prevent conflicts
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    try {
+                      defaultAction();
+                    } catch (e) {
+                      print('Error executing default action: $e');
+                    }
+                  });
+                },
+                onError: (error) {
+                  print("Zego error: $error");
+                  // Handle error gracefully
+                  _audioCallController.handleCallError(error.toString());
+                },
+                user: ZegoCallUserEvents(
+                  onEnter: (user) {
+                    showToast("${user.name} joined the call");
+                  },
+                  onLeave: (user) {
+                    print("${user.name} left the call");
+                  },
+                ),
+              ),
+              config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
             ),
-        ],
+            // Countdown timer - using GetBuilder instead of nested Obx
+            _buildCountdownTimer(),
+            Center(child: Image.asset("assets/call_logo.jpg")),
+            // Loading indicator - using GetBuilder instead of nested Obx
+            _buildLoadingIndicator(),
+          ],
+        ),
+      );
+      } catch (e) {
+        // If controller is not initialized, show loading screen
+        print('Controller not initialized yet: $e');
+        return const Scaffold(
+          backgroundColor: Colors.black,
+          body: Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Widget _buildCountdownTimer() {
+    return GetBuilder<AudioCallController>(
+      builder: (controller) => Positioned(
+        top: 30,
+        left: 10,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color.fromARGB(255, 125, 122, 122),
+                Color.fromARGB(151, 234, 231, 227)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: const Offset(2, 4),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.timer_outlined,
+                color: Colors.white,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                controller.formatTime(controller.remainingSeconds),
+                style: GoogleFonts.inter(
+                  color: controller.countdownColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return GetBuilder<AudioCallController>(
+      builder: (controller) => controller.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

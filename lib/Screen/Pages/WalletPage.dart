@@ -3,6 +3,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:foreastro/Screen/Pages/HomePage.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/profile_controler.dart';
+import 'package:foreastro/controler/payment_controller.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:foreastro/theme/Colors.dart';
 import 'package:gap/gap.dart';
@@ -24,9 +25,9 @@ class WalletPage extends StatefulWidget {
 
 class _WalletPageState extends State<WalletPage> {
   int amountIndex = 0;
-  late Razorpay razorpay;
   final List amountList = [100, 200, 300, 400, 500, 1000, 2000, 5000, 10000];
   final profileController = Get.find<ProfileList>();
+  final PaymentController paymentController = Get.put(PaymentController());
   late TextEditingController _amountController;
 
   @override
@@ -36,152 +37,21 @@ class _WalletPageState extends State<WalletPage> {
     _amountController =
         TextEditingController(text: amountList[amountIndex].toString());
 
-    razorpay = Razorpay();
-
-    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-        (PaymentSuccessResponse response) {
-      handlerPaymentSuccess(response);
-    });
-    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
-    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+    // Set initial amount in payment controller
+    paymentController.setSelectedAmount(amountList[amountIndex]);
   }
 
   @override
   void dispose() {
-    razorpay.clear();
     _amountController.dispose();
     super.dispose();
   }
 
-  Future<void> createOrderAndOpenCheckout() async {
-    int baseAmount =
-        (int.tryParse(_amountController.text) ?? amountList[amountIndex]);
-    double gst = baseAmount * 0.18;
-    int totalAmount = (baseAmount + gst).toInt() * 100;
-    String breakdownMessage =
-        "Base Amount: ₹$baseAmount\nGST (18%): ₹${gst.toStringAsFixed(2)}\nTotal Amount: ₹${(baseAmount + gst).toStringAsFixed(2)}";
-    showToast(breakdownMessage);
-    String userphone = profileController.profileDataList.first.phone ?? 'NA';
-    String useremail = profileController.profileDataList.first.email ?? 'NA';
-    print("userphone=================================$userphone,$useremail");
-    var orderResponse = await http.post(
-      Uri.parse("https://api.razorpay.com/v1/orders"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":
-            "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
-      },
-      body: jsonEncode({
-        "amount": totalAmount,
-        "currency": "INR",
-        "payment_capture": 1,
-      }),
-    );
-
-    if (orderResponse.statusCode == 200) {
-      var orderData = jsonDecode(orderResponse.body);
-      var orderId = orderData['id'];
-      print("ordrr=============$orderId");
-
-      var options = {
-        "key": "rzp_live_CJkLJpz9BeaRDw",
-        "amount": totalAmount,
-        "name": "For Astro App",
-        "description": "Payment for the some random product",
-        "order_id": orderId,
-        "prefill": {"contact": "$userphone", "email": "$useremail"},
-        "external": {
-          "wallets": ["paytm"],
-          "upi": {
-            "payeeName": "Payee Name",
-            "payeeVpa": "9886975566@okbizaxis",
-          },
-        },
-        "theme": {
-          "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
-        }
-      };
-
-      try {
-        razorpay.open(options);
-      } catch (e) {
-        print(e.toString());
-      }
-    } else {
-      print("Error creating order: ${orderResponse.body}");
-    }
-  }
-
-  Future<void> handlerPaymentSuccess(PaymentSuccessResponse response) async {
-    print("Payment success====");
-    String paymentId = response.paymentId ?? 'NA';
-    String orderId = response.orderId.toString();
-    String signature = response.signature ?? 'NA';
-    DateTime paymentTime = DateTime.now();
-    String userName =
-        profileController.profileDataList.first.name ?? 'Unknown User';
-
+  void initiatePayment() {
     int selectedAmount =
         int.tryParse(_amountController.text) ?? amountList[amountIndex];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('user_id');
-
-    storePaymentDetails(paymentId, orderId, signature, paymentTime, userName,
-        selectedAmount, userId!);
-  }
-
-  Future<void> storePaymentDetails(
-      String paymentId,
-      String orderId,
-      String signature,
-      DateTime paymentTime,
-      String userName,
-      int selectedAmount,
-      String userId) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      String? user_id = prefs.getString('user_id');
-
-      print(user_id);
-
-      ApiRequest apiRequest = ApiRequest(
-        "$apiUrl/wallet-payment",
-        method: ApiMethod.POST,
-        body: packFormData(
-          {
-            'user_id': user_id,
-            'name': userName,
-            'order_id': orderId,
-            'amount': selectedAmount,
-            'date': paymentTime,
-            'payment_id': paymentId,
-            'status': 'paid'
-          },
-        ),
-      );
-      dio.Response data = await apiRequest.send();
-      if (data.statusCode == 201) {
-        print("API request successful: ${data.data}");
-        showToast("Wallet Recharge successfull");
-      } else {
-        print("API request failed with status code: ${data.statusCode}");
-      }
-      print("manjulika${data}");
-    } catch (e) {
-      // showToast(tosteError);
-    }
-    setState(() {
-      Get.find<ProfileList>().fetchProfileData();
-    });
-  }
-
-  void handlerErrorFailure(PaymentFailureResponse response) {
-    print("Payment error: ${response.message}");
-  }
-
-  void handlerExternalWallet(ExternalWalletResponse response) {
-    print("External Wallet: ${response.walletName}");
+    paymentController.setSelectedAmount(selectedAmount);
+    paymentController.createOrderAndOpenCheckout();
   }
 
   @override
@@ -324,6 +194,9 @@ class _WalletPageState extends State<WalletPage> {
                               _amountController.text =
                                   amountList[amountIndex].toString();
                             });
+                            // Update payment controller with selected amount
+                            paymentController
+                                .setSelectedAmount(amountList[amountIndex]);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -358,12 +231,27 @@ class _WalletPageState extends State<WalletPage> {
               child: SizedBox(
                 width: scrWeight(context) - 40,
                 height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    createOrderAndOpenCheckout();
-                  },
-                  child: const Text("Add To Wallet"),
-                ),
+                child: Obx(() => ElevatedButton(
+                      onPressed: paymentController.isPaymentLoading ||
+                              paymentController.isProcessingPayment
+                          ? null
+                          : () {
+                              initiatePayment();
+                            },
+                      child: paymentController.isPaymentLoading ||
+                              paymentController.isProcessingPayment
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(paymentController.isProcessingPayment
+                              ? "Processing..."
+                              : "Add To Wallet"),
+                    )),
               ),
             ),
             const SizedBox(

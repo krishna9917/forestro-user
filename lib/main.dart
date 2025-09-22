@@ -18,6 +18,7 @@ import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/controler/soket_controler.dart';
 import 'package:foreastro/controler/timecalculating_controler.dart';
+import 'package:foreastro/controler/audio_call_controller.dart';
 import 'package:foreastro/firebase_options.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
@@ -129,6 +130,7 @@ class InitApp extends StatelessWidget {
           Get.lazyPut<CartImageControler>(() => CartImageControler());
           Get.lazyPut<KundaliController>(() => KundaliController());
           Get.lazyPut<PendingRequest>(() => PendingRequest());
+          Get.lazyPut<AudioCallController>(() => AudioCallController());
         }),
         builder: (context, child) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

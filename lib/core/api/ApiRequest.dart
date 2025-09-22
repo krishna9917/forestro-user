@@ -41,6 +41,7 @@ class ApiRequest {
     );
     try {
       SharedPreferences sharedPreferences = await LocalStorage.init();
+      print("'Bearer ${sharedPreferences.getString("token")}'");
       Response data = await dio.request<T>(
         url,
         data: body,

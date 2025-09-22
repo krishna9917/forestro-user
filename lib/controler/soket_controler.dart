@@ -16,13 +16,17 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketController extends GetxController {
   final _socket = Rxn<IO.Socket>();
+
   IO.Socket? get socket => _socket.value;
+
   bool? get socketConnected => _socket.value?.connected;
 
   var liveAstrologers = <Map<String, dynamic>>[].obs;
   Map? _workdata;
   bool _iAmWorkScreen = false;
+
   bool get iAmWorkScreen => _iAmWorkScreen;
+
   Map? get workdata => _workdata;
 
   Future<IO.Socket?> initSocketConnection() async {
@@ -73,7 +77,7 @@ class SocketController extends GetxController {
                 const SizedBox(height: 16),
                 Text(
                   "Are you sure you want to start ${data['requestType'] == 'audio' || data['requestType'] == 'video' ? 'a ${data['requestType']} call' : 'a ${data['requestType']}'} with this astrologer, $name?",
-                  style:  GoogleFonts.inter(
+                  style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
@@ -162,7 +166,7 @@ class SocketController extends GetxController {
           socket?.emit('startSession', {
             'userId': data['userId'],
             'requestType': 'chat',
-            'userType':data['userType'],
+            'userType': data['userType'],
             'total': totalMinutes,
             'data': {
               'walletAmount': walletAmount,
@@ -178,13 +182,13 @@ class SocketController extends GetxController {
               ...data,
             }
           }}");
-          Get.off(ChatScreen(
-            id: data['userId'] + "-astro",
-            userId: data['userId'],
-            callID: data['data']['communication_id'].toString(),
-            price: price,
-            totalMinutes: totalMinutes,
-          ));
+          Get.off(() => ChatScreen(
+                id: data['userId'] + "-astro",
+                userId: data['userId'],
+                callID: data['data']['communication_id'].toString(),
+                price: price,
+                totalMinutes: totalMinutes,
+              ));
         }
       } else if (data['requestType'] == 'video') {
         final profileController = Get.find<ProfileList>();
@@ -207,7 +211,7 @@ class SocketController extends GetxController {
             'data': data,
           });
           Get.off(
-            MyCall(
+            () => MyCall(
               userid: data['userId'].toString(),
               username: data['data']['name'].toString(),
               callID: data['data']['communication_id'].toString(),
@@ -236,7 +240,7 @@ class SocketController extends GetxController {
             'data': data,
           });
           Get.off(
-            AudioCall(
+            () => AudioCall(
               userid: data['userId'].toString(),
               username: data['data']['name'].toString(),
               callID: data['data']['communication_id'].toString(),
@@ -269,13 +273,15 @@ class SocketController extends GetxController {
       update();
       // var price = data['chat_charges_per_min'];
       if (data['requestType'] == "chat") {
-        Get.offAll(const WalletPage());
+        Get.offAll(() => const WalletPage());
       }
       if (data['requestType'] == "audio") {
-        Get.offAll(const WalletPage());
+        // Let the audio call controller handle navigation to prevent conflicts
+        print(
+            "Audio session closed via socket, letting audio controller handle navigation");
       }
       if (data['requestType'] == "video") {
-        Get.offAll(const WalletPage());
+        Get.offAll(() => const WalletPage());
       }
     });
 
@@ -309,6 +315,8 @@ class SocketController extends GetxController {
     required String message,
     required Map data,
   }) {
+    print("Closing session: $requestType, Message: $message");
+
     socket?.emit('endSession', {
       'userId': senderId,
       'userType': 'astro',
@@ -316,10 +324,13 @@ class SocketController extends GetxController {
       'data': data,
       'message': message,
     });
-    if (data['requestType'] == "chat") {
-      Get.back();
-    }
-    Get.back();
+
+    // Set work screen to false to allow new requests
+    _iAmWorkScreen = false;
+    update();
+
+    // Don't navigate here as it should be handled by the call controller
+    // The call controller will handle navigation after proper cleanup
   }
 
   void onWorkEnd() {

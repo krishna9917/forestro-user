@@ -11,6 +11,8 @@ import 'package:foreastro/Components/User/LiveProfileView.dart';
 import 'package:foreastro/Components/User/OnlineAstroCard.dart';
 import 'package:foreastro/Components/Widgts/BottamBar.dart';
 import 'package:foreastro/Components/recharge_popup.dart';
+import 'package:foreastro/Components/recharge_dialog.dart';
+import 'package:foreastro/controler/payment_controller.dart';
 import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/SetupProfile.dart';
 import 'package:foreastro/Screen/Pages/Explore/ExploreAstroPage.dart';
@@ -54,11 +56,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Razorpay razorpay;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final bannerController = Get.put(BannerList());
   final BlocList blocListController = Get.put(BlocList());
   final SocketController socketController = Get.put(SocketController());
+  final PaymentController paymentController = Get.put(PaymentController());
   bool? isOnline;
   final TextEditingController _searchController = TextEditingController();
 
@@ -67,63 +69,16 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> rechargeData = [];
 
-  Future<void> createOrderAndOpenCheckout() async {
-    final profileController = Get.find<ProfileList>();
-    int baseAmount = 1;
-    double gst = baseAmount * 0.18;
-    int totalAmount = (baseAmount + gst).toInt() * 100;
-    String breakdownMessage =
-        "Base Amount: ₹$baseAmount\nGST (18%): ₹${gst.toStringAsFixed(2)}\nTotal Amount: ₹${(baseAmount + gst).toStringAsFixed(2)}";
-    showToast(breakdownMessage);
-    String userphone = profileController.profileDataList.first.phone ?? 'NA';
-    String useremail = profileController.profileDataList.first.email ?? 'NA';
-    print("userphone=================================$userphone,$useremail");
-    var orderResponse = await http.post(
-      Uri.parse("https://api.razorpay.com/v1/orders"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization":
-            "Basic ${base64Encode(utf8.encode("rzp_live_CJkLJpz9BeaRDw:hvVS8uUKkURE9rsneO8GGhX4"))}",
-      },
-      body: jsonEncode({
-        "amount": totalAmount,
-        "currency": "INR",
-        "payment_capture": 1,
-      }),
+  void showRechargeDialog() {
+    paymentController.setSelectedAmount(100); // Set the recharge amount
+    Get.dialog(
+      const RechargeDialog(
+        customAmount: 1,
+        customTitle: "Recharge now of",
+        customDescription: "and instantly get",
+      ),
+      barrierDismissible: false,
     );
-
-    if (orderResponse.statusCode == 200) {
-      var orderData = jsonDecode(orderResponse.body);
-      var orderId = orderData['id'];
-      print("ordrr=============$orderId");
-
-      var options = {
-        "key": "rzp_live_CJkLJpz9BeaRDw",
-        "amount": totalAmount,
-        "name": "For Astro App",
-        "description": "Payment for the some random product",
-        "order_id": orderId,
-        "prefill": {"contact": "$userphone", "email": "$useremail"},
-        "external": {
-          "wallets": ["paytm"],
-          "upi": {
-            "payeeName": "Payee Name",
-            "payeeVpa": "9886975566@okbizaxis",
-          },
-        },
-        "theme": {
-          "color": "#${AppColor.primary.value.toRadixString(16).substring(2)}"
-        }
-      };
-
-      try {
-        razorpay.open(options);
-      } catch (e) {
-        print(e.toString());
-      }
-    } else {
-      print("Error creating order: ${orderResponse.body}");
-    }
   }
 
   Future<void> follow() async {
@@ -146,137 +101,7 @@ class _HomePageState extends State<HomePage> {
       if (data.statusCode == 201) {
         rechargeData = List<Map<String, dynamic>>.from(data.data['data']);
         if (rechargeData.isEmpty) {
-          return showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  contentPadding: const EdgeInsets.all(0),
-                  insetPadding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  backgroundColor: Colors.transparent,
-                  content: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.topCenter,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          clipBehavior: Clip.hardEdge,
-                          padding: const EdgeInsets.fromLTRB(20, 60, 20, 25),
-                          decoration: BoxDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage("assets/popup_bg_img.png"),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Recharge now of",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      "Rs. 9",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      "and instantly get",
-                                      style: GoogleFonts.inter(fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Wrap(
-                                      children: [
-                                        Text(
-                                          "Rs. 100 ",
-                                          style: GoogleFonts.inter(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                        Text(
-                                          "in Your Wallet",
-                                          style: GoogleFonts.inter(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.orange,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30, vertical: 12),
-                                      ),
-                                      onPressed: () {
-                                        createOrderAndOpenCheckout();
-                                      },
-                                      child: Text(
-                                        "Recharge Now",
-                                        style: GoogleFonts.inter(
-                                            fontSize: 16, color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 20,
-                        right: 30,
-                        child: GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.black,
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: -20,
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                              "assets/gift.png", // Your gift image
-                              height: 80,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              });
+          return showRechargeDialog();
         }
       } else {
         // Failed API request
@@ -297,13 +122,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     fetchAndInitProfile();
-    razorpay = Razorpay();
-    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-        (PaymentSuccessResponse response) {
-      handlerPaymentSuccess(response);
-    });
-    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
-    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
     Get.find<ProfileList>().fetchProfileData();
     Get.put(BannerList()).fetchProfileData();
     Get.put(BlocList()).blocData();
@@ -312,81 +130,8 @@ class _HomePageState extends State<HomePage> {
     Get.put(GetAstrologerProfile()).astroData();
     follow();
     socketController.initSocketConnection();
-    calculatePrice();
     _searchController.addListener(_onSearchChanged);
     super.initState();
-  }
-
-  void handlerErrorFailure(PaymentFailureResponse response) {
-    print("Payment error: ${response.message}");
-  }
-
-  void handlerExternalWallet(ExternalWalletResponse response) {
-    print("External Wallet: ${response.walletName}");
-  }
-
-  Future<void> handlerPaymentSuccess(PaymentSuccessResponse response) async {
-    print("Payment success====");
-    String paymentId = response.paymentId ?? 'NA';
-    String orderId = response.orderId.toString();
-    String signature = response.signature ?? 'NA';
-    DateTime paymentTime = DateTime.now();
-    String userName =
-        profileController.profileDataList.first.name ?? 'Unknown User';
-
-    int selectedAmount = 9;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('user_id');
-
-    storePaymentDetails(paymentId, orderId, signature, paymentTime, userName,
-        selectedAmount, userId!);
-  }
-
-  Future<void> storePaymentDetails(
-      String paymentId,
-      String orderId,
-      String signature,
-      DateTime paymentTime,
-      String userName,
-      int selectedAmount,
-      String userId) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      String? user_id = prefs.getString('user_id');
-
-      print(user_id);
-
-      ApiRequest apiRequest = ApiRequest(
-        "$apiUrl/wallet-payment",
-        method: ApiMethod.POST,
-        body: packFormData(
-          {
-            'user_id': user_id,
-            'name': userName,
-            'order_id': orderId,
-            'amount': 100,
-            'is_bonus': true,
-            'date': paymentTime,
-            'payment_id': paymentId,
-            'status': 'paid'
-          },
-        ),
-      );
-      dio.Response data = await apiRequest.send();
-      if (data.statusCode == 201) {
-        Get.back();
-        showToast("Wallet Recharge successfull");
-      } else {
-        print("API request failed with status code: ${data.statusCode}");
-      }
-      print("manjulika${data}");
-    } catch (e) {
-      // showToast(tosteError);
-    }
-    setState(() {
-      Get.find<ProfileList>().fetchProfileData();
-    });
   }
 
   void _onSearchChanged() {
@@ -397,39 +142,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> calculatePrice() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? sessionData = prefs.getString('active_call');
-
-      if (sessionData == null) {
-        print("No session data found");
-        return;
-      }
-      Map<String, dynamic> sessionMap = jsonDecode(sessionData);
-      String callId = sessionMap['call_id'] ?? "";
-      String astroPerMinPrice = sessionMap['astro_per_min_price'] ?? "";
-      String totalTime = sessionMap['totaltime'] ?? "";
-      ApiRequest apiRequest = ApiRequest(
-        "$apiUrl/communication-charges",
-        method: ApiMethod.POST,
-        body: packFormData({
-          'communication_id': callId,
-          'astro_per_min_price': astroPerMinPrice,
-          'time': totalTime,
-        }),
-      );
-      dio.Response data = await apiRequest.send();
-      print("API Response: $data");
-
-      if (data.statusCode == 201) {
-        await prefs.remove('active_call');
-        print("Cleared active_call from storage");
-      }
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
 
   Future<void> fetchAndInitProfile() async {
     await chatzegocloud();
@@ -494,7 +206,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    razorpay.clear();
     _searchController.removeListener(_onSearchChanged);
     super.dispose();
   }

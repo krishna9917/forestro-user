@@ -5,6 +5,7 @@ import 'package:foreastro/Components/Widgts/colors.dart';
 import 'package:foreastro/Utils/Quick.dart';
 import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
+import 'package:foreastro/model/pendingrequest_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:google_fonts/google_fonts.dart';
@@ -22,12 +23,34 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
   @override
   void initState() {
     super.initState();
-    pendingRequestController = Get.find<PendingRequest>();
+    // Ensure the controller is initialized before trying to find it
+    try {
+      pendingRequestController = Get.find<PendingRequest>();
+    } catch (e) {
+      // If controller is not found, create it
+      pendingRequestController = Get.put(PendingRequest());
+    }
   }
 
   Future requestCancel(String? id) async {
     try {
       if (id != null) {
+        // Find the item to remove
+        Data? itemToRemove;
+        int? itemIndex;
+        for (int i = 0; i < pendingRequestController.pendingRequestDataList.length; i++) {
+          if (pendingRequestController.pendingRequestDataList[i].id.toString() == id) {
+            itemToRemove = pendingRequestController.pendingRequestDataList[i];
+            itemIndex = i;
+            break;
+          }
+        }
+
+        // Remove item immediately from UI for better UX
+        if (itemToRemove != null && itemIndex != null) {
+          pendingRequestController.pendingRequestDataList.removeAt(itemIndex);
+        }
+
         ApiRequest apiRequest = ApiRequest(
           "$apiUrl/user-pending-request-cancel",
           method: ApiMethod.POST,
@@ -37,18 +60,36 @@ class _PendingRequestScreenState extends State<PendingRequestScreen> {
         );
         dio.Response data = await apiRequest.send();
 
-        if (data.statusCode == 201) {
-          await pendingRequestController.pendingRequestDataList();
-          showToast("Request Cancel successful.");
+        if (data.statusCode == 200 && data.data != null) {
+          // Check if the response indicates success
+          if (data.data['status'] == true) {
+            showToast("Request Cancel successful.");
+          } else {
+            // If API call failed, restore the item
+            if (itemToRemove != null && itemIndex != null) {
+              pendingRequestController.pendingRequestDataList.insert(itemIndex, itemToRemove);
+            }
+            showToast("Failed to cancel request. Please try again.");
+          }
+        } else {
+          // If API call failed, restore the item
+          if (itemToRemove != null && itemIndex != null) {
+            pendingRequestController.pendingRequestDataList.insert(itemIndex, itemToRemove);
+          }
+          showToast("Failed to cancel request. Please try again.");
         }
       }
     } catch (e) {
-      // Handle error
+      // If API call failed, restore the item
+      if (id != null) {
+        await pendingRequestController.pendingRequestData();
+        showToast("Failed to cancel request. Please try again.");
+      }
     }
   }
 
   Future<void> _refreshRequests() async {
-    await pendingRequestController.pendingRequestDataList();
+    await pendingRequestController.pendingRequestData();
   }
 
   @override

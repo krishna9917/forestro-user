@@ -16,7 +16,6 @@ class NotificationService {
     var img = profileController.profileDataList.first.profileImg ?? '';
     var wallet = profileController.profileDataList.first.wallet ?? '0';
 
-
     try {
       await http.post(
         Uri.parse('http://143.244.130.192:4000/notify'),
@@ -50,9 +49,9 @@ class NotificationService {
             elevation: 10,
             content: Container(
               padding: const EdgeInsets.all(16.0),
-              height: 160,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
                     width: 50,
@@ -65,7 +64,7 @@ class NotificationService {
                   const SizedBox(height: 10),
                   RichText(
                     textAlign: TextAlign.center,
-                    text:  TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
                           text:
@@ -163,10 +162,8 @@ class NotificationService {
       'android_channel_id': '85714e81-732c-4a19-8e48-c843dde6a9fa',
     });
 
-
     var response = await http.post(url, headers: headers, body: body);
     if (response.statusCode == 200) {
-    } else {
-    }
+    } else {}
   }
 }

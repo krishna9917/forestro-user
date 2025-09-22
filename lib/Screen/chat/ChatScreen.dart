@@ -41,7 +41,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final SocketController socketController = Get.put(SocketController());
-  late SessionController sessionController;
+  final SessionController sessionController = Get.put(SessionController());
   late DateTime startTime;
   late DateTime endTime;
   late Timer _timer;
