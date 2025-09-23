@@ -161,7 +161,8 @@ class SocketController extends GetxController {
         double walletAmount = double.tryParse(wallet) ?? 0;
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
-          var totalMinutes = walletAmount / pricePerMin;
+          // Use only full divisible minutes: floor(wallet / perMin)
+          var totalMinutes = (walletAmount / pricePerMin).floorToDouble();
           Get.off(() => ChatScreen(
                 id: data['userId'] + "-astro",
                 userId: data['userId'],
@@ -181,7 +182,8 @@ class SocketController extends GetxController {
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
 
         if (walletAmount > 0 && pricePerMin > 0) {
-          var totalMinutes = walletAmount / pricePerMin;
+          // Use only full divisible minutes: floor(wallet / perMin)
+          var totalMinutes = (walletAmount / pricePerMin).floorToDouble();
           Get.off(
             () => MyCall(
               userid: data['userId'].toString(),
@@ -199,9 +201,9 @@ class SocketController extends GetxController {
         double walletAmount = double.tryParse(wallet) ?? 0;
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
 
-        // Calculate total minutes
+        // Calculate total minutes (only whole divisible minutes)
         if (walletAmount > 0 && pricePerMin > 0) {
-          var totalMinutes = walletAmount / pricePerMin;
+          var totalMinutes = (walletAmount / pricePerMin).floorToDouble();
           Get.off(
             () => AudioCall(
               userid: data['userId'].toString(),

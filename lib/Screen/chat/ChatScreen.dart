@@ -61,7 +61,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     chatzegocloud();
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
-    _remainingSeconds = (widget.totalMinutes * 60).toInt();
+    // Enforce only full, divisible minutes already calculated upstream
+    _remainingSeconds = (widget.totalMinutes.floor() * 60).toInt();
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
