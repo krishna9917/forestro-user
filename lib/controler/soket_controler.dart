@@ -162,26 +162,6 @@ class SocketController extends GetxController {
         double pricePerMin = double.tryParse(price.toString()) ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-
-          socket?.emit('startSession', {
-            'userId': data['userId'],
-            'requestType': 'chat',
-            'userType': data['userType'],
-            'total': totalMinutes,
-            'data': {
-              'walletAmount': walletAmount,
-              ...data,
-            },
-          });
-          print("Emitting startSession with data: ${{
-            'userId': data['userId'],
-            'userType': data['userType'],
-            'requestType': 'chat',
-            'data': {
-              'walletAmount': walletAmount,
-              ...data,
-            }
-          }}");
           Get.off(() => ChatScreen(
                 id: data['userId'] + "-astro",
                 userId: data['userId'],
@@ -202,14 +182,6 @@ class SocketController extends GetxController {
 
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-          socket?.emit('startSession', {
-            'userId': data['userId'],
-            'userType': data['userType'],
-            'requestType': 'video',
-            'walletAmount': walletAmount,
-            'totalMinutes': totalMinutes,
-            'data': data,
-          });
           Get.off(
             () => MyCall(
               userid: data['userId'].toString(),
@@ -230,15 +202,6 @@ class SocketController extends GetxController {
         // Calculate total minutes
         if (walletAmount > 0 && pricePerMin > 0) {
           var totalMinutes = walletAmount / pricePerMin;
-
-          socket?.emit('startSession', {
-            'userId': data['userId'],
-            'userType': data['userType'],
-            'requestType': 'audio',
-            'walletAmount': walletAmount,
-            'totalMinutes': totalMinutes,
-            'data': data,
-          });
           Get.off(
             () => AudioCall(
               userid: data['userId'].toString(),

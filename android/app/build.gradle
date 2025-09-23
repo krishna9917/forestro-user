@@ -57,7 +57,7 @@ android {
 
     defaultConfig {
         applicationId "com.foreastro.foreastrouserside"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion 35
         versionCode 37
         versionName "1.0.1"
