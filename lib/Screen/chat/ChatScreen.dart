@@ -93,11 +93,21 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id');
     if (userId == null) return;
-
-    await ZIMKit().connectUser(
-      id: "$userId-user",
-      name: "User",
-    );
+    try {
+      if (ZIMKit().currentUser != null) {
+        try {
+          await ZIMKit().disconnectUser();
+        } catch (_) {}
+        await Future.delayed(const Duration(milliseconds: 200));
+      }
+      await ZIMKit().connectUser(
+        id: "$userId-user",
+        name: "User",
+      );
+    } catch (e) {
+      // keep showing loader; ZIM will retry; avoid crash
+      return;
+    }
     if (mounted) {
       setState(() {
         _zimReady = true;
