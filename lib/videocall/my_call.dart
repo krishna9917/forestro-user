@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:foreastro/constants/zego_keys.dart';
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
 class MyCall extends StatefulWidget {
@@ -170,9 +171,8 @@ class _MyCallState extends State<MyCall> {
       body: Stack(
         children: [
           ZegoUIKitPrebuiltCall(
-            appID: 844833851,
-            appSign:
-                '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
+            appID: ZegoKeys.appID,
+            appSign: ZegoKeys.appSign,
             userID: widget.userid,
             userName: widget.username.split(' ').first,
             callID: widget.callID,

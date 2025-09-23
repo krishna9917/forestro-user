@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+import 'package:foreastro/constants/zego_keys.dart';
 
 class LivePage extends StatelessWidget {
   final String liveID;
@@ -23,9 +24,8 @@ class LivePage extends StatelessWidget {
 
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveStreaming(
-        appID: 2101331696,
-        appSign:
-            '77838d88881dda6ac10b83406f2fb2027e946802d016035e98b58e7af4823dba',
+        appID: ZegoKeys.liveAppID,
+        appSign: ZegoKeys.liveAppSign,
         userID: user_id.toString(),
         userName: name.toString().split(' ').first,
         liveID: liveID,

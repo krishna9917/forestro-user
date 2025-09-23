@@ -456,164 +456,170 @@ class _AustrologyDetailesState extends State<AustrologyDetailes> {
                                               actions: [
                                                 Row(
                                                   children: [
-                                                    ElevatedButton(
-                                                        onPressed: () {
-                                                          print(
-                                                              " data is ${profileController.profileDataList.first.status}");
-                                                          if (profileController
-                                                              .profileDataList
-                                                              .isNotEmpty) {
-                                                            double walletValue =
-                                                                double.parse(
-                                                                    profileController
-                                                                        .profileDataList
-                                                                        .first
-                                                                        .wallet);
-                                                            double
-                                                                videoChargesPerMin =
-                                                                double.parse(widget
-                                                                        .astrologer!
-                                                                        .videoChargesPerMin) ??
-                                                                    0;
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                          onPressed: () {
                                                             print(
-                                                                videoChargesPerMin);
-                                                            if (videoChargesPerMin >
-                                                                0) {
-                                                              var totalMinutes =
-                                                                  walletValue /
-                                                                      videoChargesPerMin;
-                                                              if (totalMinutes >=
-                                                                  2) {
-                                                                var astroid = widget
-                                                                    .astrologer!
-                                                                    .id;
-                                                                var coupon = widget
-                                                                    .astrologer!
-                                                                    .videoCouponCode;
-                                                                var coupencode =
-                                                                    coupon
-                                                                        .toString();
-                                                                var id = astroid
-                                                                    .toString();
-                                                                var signal = widget
-                                                                    .astrologer!
-                                                                    .signalId;
-                                                                var signalId =
-                                                                    signal
-                                                                        .toString();
+                                                                " data is ${profileController.profileDataList.first.status}");
+                                                            if (profileController
+                                                                .profileDataList
+                                                                .isNotEmpty) {
+                                                              double
+                                                                  walletValue =
+                                                                  double.parse(
+                                                                      profileController
+                                                                          .profileDataList
+                                                                          .first
+                                                                          .wallet);
+                                                              double
+                                                                  videoChargesPerMin =
+                                                                  double.parse(widget
+                                                                          .astrologer!
+                                                                          .videoChargesPerMin) ??
+                                                                      0;
+                                                              print(
+                                                                  videoChargesPerMin);
+                                                              if (videoChargesPerMin >
+                                                                  0) {
+                                                                var totalMinutes =
+                                                                    walletValue /
+                                                                        videoChargesPerMin;
+                                                                if (totalMinutes >=
+                                                                    2) {
+                                                                  var astroid =
+                                                                      widget
+                                                                          .astrologer!
+                                                                          .id;
+                                                                  var coupon = widget
+                                                                      .astrologer!
+                                                                      .videoCouponCode;
+                                                                  var coupencode =
+                                                                      coupon
+                                                                          .toString();
+                                                                  var id = astroid
+                                                                      .toString();
+                                                                  var signal = widget
+                                                                      .astrologer!
+                                                                      .signalId;
+                                                                  var signalId =
+                                                                      signal
+                                                                          .toString();
 
-                                                                SendRequest.sendrequestvideo(
-                                                                    id,
-                                                                    widget.astrologer!
-                                                                            .notifactionToken ??
-                                                                        'NA',
-                                                                    coupencode,
-                                                                    signalId);
+                                                                  SendRequest.sendrequestvideo(
+                                                                      id,
+                                                                      widget.astrologer!
+                                                                              .notifactionToken ??
+                                                                          'NA',
+                                                                      coupencode,
+                                                                      signalId);
 
-                                                                Get.back();
-                                                              } else {
-                                                                Get.snackbar(
-                                                                  "Your balance is only $walletValue",
-                                                                  "You need a minimum balance for 2 minutes of video call.",
-                                                                  snackPosition:
-                                                                      SnackPosition
-                                                                          .TOP,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red,
-                                                                  colorText:
-                                                                      Colors
-                                                                          .white,
-                                                                  duration:
-                                                                      const Duration(
-                                                                          seconds:
-                                                                              3),
-                                                                );
+                                                                  Get.back();
+                                                                } else {
+                                                                  Get.snackbar(
+                                                                    "Your balance is only $walletValue",
+                                                                    "You need a minimum balance for 2 minutes of video call.",
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                  );
+                                                                }
                                                               }
                                                             }
-                                                          }
-                                                        },
-                                                        child: const Text(
-                                                            "Video Call")),
+                                                          },
+                                                          child: const Text(
+                                                              "Video")),
+                                                    ),
                                                     const SizedBox(
                                                       width: 10,
                                                     ),
-                                                    ElevatedButton(
-                                                        onPressed: () {
-                                                          if (profileController
-                                                              .profileDataList
-                                                              .isNotEmpty) {
-                                                            double walletValue =
-                                                                double.parse(
-                                                                    profileController
-                                                                        .profileDataList
-                                                                        .first
-                                                                        .wallet);
-                                                            double
-                                                                audioChargesPerMin =
-                                                                double.parse(widget
-                                                                        .astrologer!
-                                                                        .callChargesPerMin) ??
-                                                                    0;
+                                                    Expanded(
+                                                      child: ElevatedButton(
+                                                          onPressed: () {
+                                                            if (profileController
+                                                                .profileDataList
+                                                                .isNotEmpty) {
+                                                              double
+                                                                  walletValue =
+                                                                  double.parse(
+                                                                      profileController
+                                                                          .profileDataList
+                                                                          .first
+                                                                          .wallet);
+                                                              double
+                                                                  audioChargesPerMin =
+                                                                  double.parse(widget
+                                                                          .astrologer!
+                                                                          .callChargesPerMin) ??
+                                                                      0;
 
-                                                            if (audioChargesPerMin >
-                                                                0) {
-                                                              var totalMinutes =
-                                                                  walletValue /
-                                                                      audioChargesPerMin;
-                                                              if (totalMinutes >=
-                                                                  2) {
-                                                                var astroid = widget
-                                                                    .astrologer!
-                                                                    .id;
-                                                                var coupon = widget
-                                                                    .astrologer!
-                                                                    .callCouponCode;
-                                                                var coupencode =
-                                                                    coupon
-                                                                        .toString();
-                                                                var id = astroid
-                                                                    .toString();
-                                                                var signal = widget
-                                                                    .astrologer!
-                                                                    .signalId;
-                                                                var signalId =
-                                                                    signal
-                                                                        .toString();
+                                                              if (audioChargesPerMin >
+                                                                  0) {
+                                                                var totalMinutes =
+                                                                    walletValue /
+                                                                        audioChargesPerMin;
+                                                                if (totalMinutes >=
+                                                                    2) {
+                                                                  var astroid =
+                                                                      widget
+                                                                          .astrologer!
+                                                                          .id;
+                                                                  var coupon = widget
+                                                                      .astrologer!
+                                                                      .callCouponCode;
+                                                                  var coupencode =
+                                                                      coupon
+                                                                          .toString();
+                                                                  var id = astroid
+                                                                      .toString();
+                                                                  var signal = widget
+                                                                      .astrologer!
+                                                                      .signalId;
+                                                                  var signalId =
+                                                                      signal
+                                                                          .toString();
 
-                                                                SendRequest.sendrequestaudio(
-                                                                    id,
-                                                                    widget.astrologer!
-                                                                            .notifactionToken ??
-                                                                        'NA',
-                                                                    coupencode,
-                                                                    signalId);
+                                                                  SendRequest.sendrequestaudio(
+                                                                      id,
+                                                                      widget.astrologer!
+                                                                              .notifactionToken ??
+                                                                          'NA',
+                                                                      coupencode,
+                                                                      signalId);
 
-                                                                Get.back();
-                                                              } else {
-                                                                Get.snackbar(
-                                                                  "Your balance is only $walletValue",
-                                                                  "You need a minimum balance for 2 minutes of audio call.",
-                                                                  snackPosition:
-                                                                      SnackPosition
-                                                                          .TOP,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red,
-                                                                  colorText:
-                                                                      Colors
-                                                                          .white,
-                                                                  duration:
-                                                                      const Duration(
-                                                                          seconds:
-                                                                              3),
-                                                                );
+                                                                  Get.back();
+                                                                } else {
+                                                                  Get.snackbar(
+                                                                    "Your balance is only $walletValue",
+                                                                    "You need a minimum balance for 2 minutes of audio call.",
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                  );
+                                                                }
                                                               }
                                                             }
-                                                          }
-                                                        },
-                                                        child: const Text(
-                                                            "Audio Call")),
+                                                          },
+                                                          child: const Text(
+                                                              "Audio")),
+                                                    ),
                                                   ],
                                                 ),
                                                 // const Spacer(),

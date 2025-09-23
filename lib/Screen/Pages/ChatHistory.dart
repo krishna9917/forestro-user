@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:foreastro/constants/zego_keys.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -29,9 +30,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> chatzegocloud() async {
     await ZIMKit().init(
-        appID: 1432355811,
-        appSign:
-            'fb0256f502da88184adb163037bd05d7d26bf3ac029ca9d38d4a071f3f52bdfd');
+        appID: ZegoKeys.chatAppID,
+        appSign: ZegoKeys.chatAppSign);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user_id = prefs.getString('user_id');
 
@@ -191,9 +191,8 @@ class ChatListCard extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   ZIMKit().init(
-                      appID: 2007373594,
-                      appSign:
-                          '387754e51af7af0caf777a6a742a2d7bcfdf3ea1599131e1ff6cf5d1826649ae');
+                      appID: ZegoKeys.chatAppID,
+                      appSign: ZegoKeys.chatAppSign);
                   var chathistro = chatData.astroId.toString();
                   Get.to(() => PreviewChatScreen(astroId: chathistro));
                 },

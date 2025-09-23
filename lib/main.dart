@@ -26,6 +26,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:foreastro/constants/zego_keys.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -33,8 +34,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await ZIMKit().init(
-    appID: 1230629691,
-    appSign: '16464f848f6510fb18fef88047b37ddb297aeca244a348dc5b0151d40d192c86',
+    appID: ZegoKeys.chatAppID,
+    appSign: ZegoKeys.chatAppSign,
   );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
