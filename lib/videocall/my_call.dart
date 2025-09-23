@@ -20,11 +20,12 @@ import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_stre
 class MyCall extends StatefulWidget {
   const MyCall(
       {super.key,
-        required this.callID,
-        required this.userid,
-        required this.username,
-        required this.price,
-        required this.totalMinutes});
+      required this.callID,
+      required this.userid,
+      required this.username,
+      required this.price,
+      required this.totalMinutes});
+
   final String callID;
   final String userid;
   final String username;
@@ -39,14 +40,15 @@ class _MyCallState extends State<MyCall> {
   final SocketController socketController = Get.find<SocketController>();
   late DateTime startTime;
   late DateTime endTime;
-  late Timer _timer;
+  Timer? _timer;
   late int _remainingSeconds;
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _isBeeping = false;
   Color countdownColor = Colors.white;
   final AudioPlayer _audioPlayer = AudioPlayer();
   AudioPlayer player = AudioPlayer();
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  bool _timerStarted = false;
 
   @override
   void initState() {
@@ -73,27 +75,7 @@ class _MyCallState extends State<MyCall> {
       }
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 60) {
-        setState(() {
-          _remainingSeconds--;
-
-          if (_remainingSeconds == 120 && !_isBeeping) {
-            // startBeeping();
-            countdownColor =
-            (_remainingSeconds <= 120) ? Colors.red : Colors.white;
-            playBeepSound();
-          }
-        });
-      } else if (_remainingSeconds == 60) {
-        if (_timer.isActive) {
-          _timer.cancel();
-        }
-        setState(() {
-          endChatSession();
-        });
-      }
-    });
+    // Delay starting countdown until call connects
   }
 
   Future<void> playBeepSound() async {
@@ -177,111 +159,169 @@ class _MyCallState extends State<MyCall> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     _audioPlayer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ZegoUIKitPrebuiltCall(
-          appID: 844833851,
-          appSign: '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
-          userID: widget.userid,
-          userName: widget.username.split(' ').first,
-          callID: widget.callID,
-          events: ZegoUIKitPrebuiltCallEvents(
-            onError: (e){
-              print("astro error{$e}");
-            },
-            room: ZegoCallRoomEvents(
-                onTokenExpired: (e){
-                  print("astro error{$e}");
-                },
-                onStateChanged: (e){
-                  print("astro error{$e}");
+    return Scaffold(
+      body: Stack(
+        children: [
+          ZegoUIKitPrebuiltCall(
+            appID: 844833851,
+            appSign:
+                '136a48b12cd722234938f6d8613362686b991c1e50784524851803fb7fdab1ab',
+            userID: widget.userid,
+            userName: widget.username.split(' ').first,
+            callID: widget.callID,
+            events: ZegoUIKitPrebuiltCallEvents(
+              onError: (e) {
+                print("astro error{$e}");
+              },
+              room: ZegoCallRoomEvents(onTokenExpired: (e) {
+                print("astro error{$e}");
+              }, onStateChanged: (e) {
+                print("astro error{$e}");
+                if (mounted && _isLoading) {
+                  setState(() {
+                    _isLoading = false;
+                  });
                 }
-            ),
-            user: ZegoCallUserEvents(
-              onEnter: (p) {
-                showToast("${p.name} join in call");
+                if (!_timerStarted) {
+                  _startCountdown();
+                }
+              }),
+              user: ZegoCallUserEvents(
+                onEnter: (p) {
+                  showToast("${p.name} join in call");
+                  if (mounted && _isLoading) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                  if (!_timerStarted) {
+                    _startCountdown();
+                  }
+                },
+              ),
+              onCallEnd: (event, defaultAction) async {
+                // Stop countdown immediately on call end
+                if (_timer?.isActive == true) {
+                  _timer?.cancel();
+                }
+                _timerStarted = false;
+                await endChatSession();
+                // Get.offAll(const HomePage());
+
+                // socketController.closeSession(
+                //   senderId: widget.userid,
+                //   requestType: "chat",
+                //   message: "User Cancel Can",
+                //   data: {
+                //     "userId": widget.userid,
+                //     'communication_id': widget.callID,
+                //   },
+                // );
               },
             ),
-            onCallEnd: (event, defaultAction) async {
-              await endChatSession();
-              // Get.offAll(const HomePage());
-
-              // socketController.closeSession(
-              //   senderId: widget.userid,
-              //   requestType: "chat",
-              //   message: "User Cancel Can",
-              //   data: {
-              //     "userId": widget.userid,
-              //     'communication_id': widget.callID,
-              //   },
-              // );
-            },
-          ),
-          config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-            ..layout = ZegoLayout.pictureInPicture(
-              isSmallViewDraggable: true,
-              switchLargeOrSmallViewByClick: true,
-            ),
-        ),
-        // Countdown Timer Positioned on the Right Corner
-        Positioned(
-          top: 30,
-          left: 10,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 125, 122, 122),
-                  Color.fromARGB(151, 234, 231, 227)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+            config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+              ..layout = ZegoLayout.pictureInPicture(
+                isSmallViewDraggable: true,
+                switchLargeOrSmallViewByClick: true,
               ),
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: const Offset(2, 4),
-                  blurRadius: 6,
+          ),
+          SafeArea(
+              child: Positioned(
+            child: Container(
+              margin: EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 125, 122, 122),
+                    Color.fromARGB(151, 234, 231, 227)
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-              ],
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(2, 4),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.timer_outlined,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    formatTime(_remainingSeconds),
+                    style: GoogleFonts.inter(
+                      color: countdownColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.timer_outlined,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  formatTime(_remainingSeconds),
-                  style: GoogleFonts.inter(
-                    color: countdownColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
+          )),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.4),
+              child: SafeArea(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 12),
+                      Text(
+                        "Please wait, we are connecting...",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-
-        if (_isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-      ],
+        ],
+      ),
     );
+  }
+
+  void _startCountdown() {
+    _timer?.cancel();
+    _timerStarted = true;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 60) {
+        setState(() {
+          _remainingSeconds--;
+          if (_remainingSeconds == 120 && !_isBeeping) {
+            countdownColor =
+                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
+            playBeepSound();
+          }
+        });
+      } else if (_remainingSeconds == 60) {
+        if (_timer?.isActive == true) {
+          _timer?.cancel();
+        }
+        setState(() {
+          endChatSession();
+        });
+      }
+    });
   }
 }

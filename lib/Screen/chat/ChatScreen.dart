@@ -53,6 +53,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool _isAppActive = true;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   final profileController = Get.find<ProfileList>();
+  bool _zimReady = false;
 
   @override
   void initState() {
@@ -88,23 +89,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> chatzegocloud() async {
-    String profile = profileController.profileDataList.isNotEmpty
-        ? profileController.profileDataList.first.profileImg
-        : '';
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('user_id');
+    if (userId == null) return;
 
-    String name = profileController.profileDataList.isNotEmpty
-        ? profileController.profileDataList.first.name
-        : '';
-
-    // if (name.isEmpty) {
-    //   print("Name not found");
-    //   return;
-    // }
     await ZIMKit().connectUser(
-      id: "${widget.userId}-user",
+      id: "$userId-user",
       name: "User",
-      // avatarUrl: profile,
     );
+    if (mounted) {
+      setState(() {
+        _zimReady = true;
+      });
+    }
   }
 
   Future<void> playBeepSound() async {
@@ -228,6 +225,23 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    if (!_zimReady) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(height: 12),
+              Text(
+                "Please wait, we are connecting...",
+                style: TextStyle(color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return WillPopScope(
       onWillPop: () async {
         showAlertPopup(
@@ -250,58 +264,60 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: Stack(
         children: [
           ZIMKitMessageListPage(
-            conversationType: ZIMConversationType.peer,
-            conversationID: widget.callID,
-            showPickFileButton: false,
-            showMoreButton: false,
-            theme: ThemeData(),
-            inputDecoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.all(0),
-            ),
-          ),
-          Positioned(
-            top: 35,
-            right: 10,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 125, 122, 122),
-                    Color.fromARGB(151, 234, 231, 227)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    offset: const Offset(2, 4),
-                    blurRadius: 6,
-                  ),
-                ],
+              conversationType: ZIMConversationType.peer,
+              conversationID: widget.id,
+              showPickFileButton: false,
+              showMoreButton: false,
+              theme: ThemeData(),
+              inputDecoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(0),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.timer_outlined,
-                    color: Colors.white,
-                    size: 24,
+            ),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: const EdgeInsets.only(top: 10, right: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 125, 122, 122),
+                      Color.fromARGB(151, 234, 231, 227)
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    formatTime(_remainingSeconds),
-                    style: GoogleFonts.inter(
-                      color: countdownColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      offset: const Offset(2, 4),
+                      blurRadius: 6,
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.timer_outlined,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      formatTime(_remainingSeconds),
+                      style: GoogleFonts.inter(
+                        color: countdownColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
