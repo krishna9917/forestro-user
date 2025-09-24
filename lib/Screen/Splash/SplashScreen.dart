@@ -14,6 +14,7 @@ import 'package:foreastro/controler/pendingrequest_controller.dart';
 import 'package:foreastro/controler/profile_controler.dart';
 import 'package:foreastro/core/api/ApiRequest.dart';
 import 'package:get/get.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -48,19 +49,24 @@ class _SplashScreenState extends State<SplashScreen>
     )..repeat();
 
     // Load package info first, then check internet
-    _loadPackageInfo().then((_) {
+    _loadPackageInfo().timeout(const Duration(seconds: 3), onTimeout: () {
+      return;
+    }).whenComplete(() {
       _checkInternetAndInitialize();
     });
   }
 
   Future<void> _loadPackageInfo() async {
     try {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      PackageInfo packageInfo = await PackageInfo.fromPlatform()
+          .timeout(const Duration(seconds: 2));
       setState(() {
         _version = packageInfo.version;
         _buildNumber = packageInfo.buildNumber;
       });
-      await version();
+      await version().timeout(const Duration(seconds: 3), onTimeout: () async {
+        print("Version check timed out, continuing...");
+      });
       print("build version number =======>>>>>>>>>>>>$_version $_buildNumber");
     } catch (e) {
       print("Error loading package info: $e");
@@ -75,8 +81,8 @@ class _SplashScreenState extends State<SplashScreen>
       print("Connectivity result: $connectivityResult");
 
       if (connectivityResult.contains(ConnectivityResult.none)) {
-        print("No internet - showing popup");
-        _showNoInternetPopup();
+        print("No internet - navigating to NoInternetPage");
+        Get.offAll(() => const NoInternetPage());
         return;
       }
 
@@ -91,41 +97,14 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _showNoInternetPopup() {
-    if (_isShowingNoInternetPopup || _isAppInitialized) return;
-
-    print("Showing no internet popup using Overlay");
-
-    // Remove existing overlay if any
-    _hideNoInternetPopup();
-
-    _overlayEntry = OverlayEntry(
-      builder: (context) => NoInternetPopup(
-        onRetry: _retryConnection,
-        onClose: _hideNoInternetPopup,
-      ),
-    );
-
-    // Insert overlay at the top level
-    Overlay.of(context).insert(_overlayEntry!);
-
-    setState(() {
-      _isShowingNoInternetPopup = true;
-    });
+    // Popup disabled: navigate to full-screen NoInternetPage instead
+    if (_isAppInitialized) return;
+    Get.offAll(const NoInternetPage());
   }
 
   void _hideNoInternetPopup() {
-    print("Hiding no internet popup");
-
-    if (_overlayEntry != null) {
-      _overlayEntry!.remove();
-      _overlayEntry = null;
-    }
-
-    if (mounted) {
-      setState(() {
-        _isShowingNoInternetPopup = false;
-      });
-    }
+    // Popup disabled: nothing to hide
+    _isShowingNoInternetPopup = false;
   }
 
   Future<void> _retryConnection() async {
@@ -162,20 +141,12 @@ class _SplashScreenState extends State<SplashScreen>
       print("Connectivity changed: $results");
 
       if (results.contains(ConnectivityResult.none)) {
-        // No internet
-        if (!_isShowingNoInternetPopup && !_isAppInitialized) {
-          print("No internet detected - showing popup");
-          _showNoInternetPopup();
-        }
+        // No internet -> navigate to full-screen NoInternetPage
         if (!_isAppInitialized) {
-          showToast("Check Your Internet Connection");
+          Get.offAll(() => const NoInternetPage());
         }
       } else {
-        // Internet restored
-        if (_isShowingNoInternetPopup && !_isAppInitialized) {
-          print("Internet restored - closing popup");
-          _hideNoInternetPopup();
-        }
+        // Internet restored: no popup to close
       }
     });
   }
@@ -187,25 +158,29 @@ class _SplashScreenState extends State<SplashScreen>
       print("Initializing app components...");
 
       // Initialize controllers
-      await Future.wait([
-        Get.put(BannerList()).fetchProfileData(),
-        Get.find<ProfileList>().fetchProfileData(),
-      ]);
+      try {
+        await Get.find<ProfileList>().fetchProfileData()
+            .timeout(const Duration(seconds: 5));
+      } catch (e) {
+        print("Profile fetch timed out: $e");
+      }
+      // Fetch banners in background, don't block splash
+      unawaited(Get.put(BannerList()).fetchProfileData());
 
       // Start periodic updates
       Timer.periodic(const Duration(seconds: 30), (timer) async {
         if (!_isAppInitialized) return;
         try {
-          await Future.wait([
-            Get.put(GetAstrologerProfile()).astroData(),
-            Get.put(PendingRequest()).pendingRequestData(),
-          ]);
+          unawaited(Get.put(GetAstrologerProfile()).astroData());
+          unawaited(Get.put(PendingRequest()).pendingRequestData());
         } catch (e) {
           print("Error in periodic update: $e");
         }
       });
 
       await checkTokenAndNavigate();
+      // connect ZIM after navigation decision; don't block splash
+      unawaited(chatzegocloud());
       setState(() {
         _isAppInitialized = true;
       });
@@ -232,6 +207,7 @@ class _SplashScreenState extends State<SplashScreen>
             "version": "$_version $_buildNumber",
           },
         ),
+        ignoreUnauthorized: true,
       );
       dio.Response data = await apiRequest.send();
 
@@ -280,10 +256,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> requestPermissions() async {
     try {
-      await [
+      // Request permissions, but don't block if user delays
+      unawaited([
         Permission.camera,
         Permission.microphone,
-      ].request();
+      ].request());
     } catch (e) {
       print("Error requesting permissions: $e");
     }
@@ -364,7 +341,7 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _controller.dispose();
     _connectivitySubscription?.cancel();
-    _hideNoInternetPopup(); // Clean up overlay
+    // No overlay to clean
     super.dispose();
   }
 

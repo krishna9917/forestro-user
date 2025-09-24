@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:foreastro/Screen/Splash/SplashScreen.dart';
 import 'package:foreastro/theme/Colors.dart';
@@ -16,26 +17,33 @@ class NoInternetPage extends StatefulWidget {
 class _NoInternetPageState extends State<NoInternetPage> {
   bool isConnected = false;
   bool isChecking = false;
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   @override
   void initState() {
     super.initState();
     checkConnection();
+    _subscription = Connectivity().onConnectivityChanged.listen((results) {
+      if (!mounted) return;
+      if (!results.contains(ConnectivityResult.none)) {
+        // Internet restored; go back to splash to resume normal flow
+        Get.offAll(() => const SplashScreen());
+      }
+    });
   }
 
   Future<void> checkConnection() async {
     setState(() {
       isChecking = true;
     });
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult != ConnectivityResult.none) {
+    final List<ConnectivityResult> results = await Connectivity().checkConnectivity();
+    final bool hasInternet = !results.contains(ConnectivityResult.none);
+    if (hasInternet) {
       setState(() {
         isConnected = true;
         isChecking = false;
       });
-      // Delay for a smooth transition, then navigate to the splash screen
-      await Future.delayed(Duration(seconds: 2));
-      Get.offAll(const SplashScreen());
+      Get.offAll(() => const SplashScreen());
     } else {
       setState(() {
         isChecking = false;
@@ -98,5 +106,11 @@ class _NoInternetPageState extends State<NoInternetPage> {
               ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }

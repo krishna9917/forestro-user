@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ import 'package:foreastro/controler/audio_call_controller.dart';
 import 'package:foreastro/firebase_options.dart';
 import 'package:foreastro/theme/AppTheme.dart';
 import 'package:get/get.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:foreastro/Screen/internetConnection/internet_connection_screen.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,19 +43,32 @@ Future<void> main(List<String> args) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Notification();
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    if (message.notification != null) {}
-  });
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-
-  if (fcmToken != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('fcm_token', fcmToken);
-  }
-  print(fcmToken);
-  initOneSignal();
+  // Do not block app start on notification setup; run in background
+  unawaited(Future(() async {
+    try {
+      Notification();
+    } catch (_) {}
+    try {
+      await FirebaseMessaging.instance
+          .setAutoInitEnabled(true)
+          .timeout(const Duration(seconds: 1));
+    } catch (_) {}
+    try {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
+    } catch (_) {}
+    try {
+      final fcmToken = await FirebaseMessaging.instance
+          .getToken()
+          .timeout(const Duration(seconds: 3));
+      if (fcmToken != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('fcm_token', fcmToken);
+      }
+    } catch (_) {}
+    try {
+      await initOneSignal();
+    } catch (_) {}
+  }));
   runApp(const InitApp());
 }
 
@@ -137,7 +153,7 @@ class InitApp extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _checkForUpdate(context);
           });
-          return child!;
+          return GlobalConnectivityObserver(child: child!);
         },
         // home: HomePage(),
       );
@@ -158,5 +174,63 @@ class InitApp extends StatelessWidget {
     } catch (e) {
       debugPrint("Error checking for updates: $e");
     }
+  }
+}
+
+class GlobalConnectivityObserver extends StatefulWidget {
+  final Widget child;
+  const GlobalConnectivityObserver({super.key, required this.child});
+
+  @override
+  State<GlobalConnectivityObserver> createState() => _GlobalConnectivityObserverState();
+}
+
+class _GlobalConnectivityObserverState extends State<GlobalConnectivityObserver> {
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  bool _navigatedToNoInternet = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkInitial();
+    _subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      if (results.contains(ConnectivityResult.none)) {
+        _showNoInternet();
+      } else {
+        _navigatedToNoInternet = false;
+      }
+    });
+  }
+
+  Future<void> _checkInitial() async {
+    try {
+      final results = await Connectivity().checkConnectivity();
+      if (results.contains(ConnectivityResult.none)) {
+        _showNoInternet();
+      } else {
+        _navigatedToNoInternet = false;
+      }
+    } catch (_) {}
+  }
+
+  void _showNoInternet() {
+    if (_navigatedToNoInternet) return;
+    _navigatedToNoInternet = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.offAll(() => const NoInternetPage());
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

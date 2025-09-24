@@ -142,7 +142,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
   Future<void> fetchAndInitProfile() async {
     await chatzegocloud();
     await Get.find<ProfileList>().fetchProfileData();

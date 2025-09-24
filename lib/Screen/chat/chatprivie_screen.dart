@@ -35,6 +35,7 @@ class PreviewChatScreen extends StatelessWidget {
     return Theme(
       data: appTheme.copyWith(),
       child: ZIMKitMessageListPage(
+        key: ValueKey('preview-${astroId}'),
         // showOnly: true,
         showPickMediaButton: false,
 

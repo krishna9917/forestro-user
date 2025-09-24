@@ -46,9 +46,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   late DateTime endTime;
   late Timer _timer;
   int _remainingSeconds = 0;
+  final ValueNotifier<int> _remainingSecondsNotifier = ValueNotifier<int>(0);
   bool isSessionEnded = false;
   bool _isBeeping = false;
-  Color countdownColor = Colors.white;
   final AudioPlayer player = AudioPlayer();
   bool _isAppActive = true;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
@@ -63,6 +63,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     startTime = DateTime.now();
     // Enforce only full, divisible minutes already calculated upstream
     _remainingSeconds = (widget.totalMinutes.floor() * 60).toInt();
+    _remainingSecondsNotifier.value = _remainingSeconds;
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
@@ -74,14 +75,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds > 60) {
-        setState(() {
-          _remainingSeconds--;
-          if (_remainingSeconds == 120 && !_isBeeping) {
-            countdownColor =
-                (_remainingSeconds <= 120) ? Colors.red : Colors.white;
-            playBeepSound();
-          }
-        });
+        _remainingSeconds--;
+        _remainingSecondsNotifier.value = _remainingSeconds;
+        if (_remainingSeconds == 120 && !_isBeeping) {
+          playBeepSound();
+        }
       } else if (_remainingSeconds == 60 && !isSessionEnded) {
         endChatSession();
         _timer.cancel();
@@ -219,6 +217,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     }
     player.dispose();
     _timer.cancel();
+    _remainingSecondsNotifier.dispose();
     super.dispose();
   }
 
@@ -275,6 +274,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: Stack(
         children: [
           ZIMKitMessageListPage(
+              key: ValueKey('chat-${widget.id}'),
               conversationType: ZIMConversationType.peer,
               conversationID: widget.id,
               showPickFileButton: false,
@@ -318,13 +318,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       size: 24,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      formatTime(_remainingSeconds),
-                      style: GoogleFonts.inter(
-                        color: countdownColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none,
+                    ValueListenableBuilder<int>(
+                      valueListenable: _remainingSecondsNotifier,
+                      builder: (context, value, _) => Text(
+                        formatTime(value),
+                        style: GoogleFonts.inter(
+                          color: value <= 120 ? Colors.red : Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.none,
+                        ),
                       ),
                     ),
                   ],
