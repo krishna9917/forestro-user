@@ -168,6 +168,8 @@ class _MyCallState extends State<MyCall> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Ensure no white flash; keep a dark background behind video
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           ZegoUIKitPrebuiltCall(
@@ -232,9 +234,11 @@ class _MyCallState extends State<MyCall> {
                 switchLargeOrSmallViewByClick: true,
               ),
           ),
-          SafeArea(
-              child: Positioned(
-            child: Container(
+          // Countdown badge - show only after loading overlay is hidden
+          if (!_isLoading)
+            SafeArea(
+                child: Positioned(
+              child: Container(
               margin: EdgeInsets.all(20),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -275,8 +279,8 @@ class _MyCallState extends State<MyCall> {
                   ),
                 ],
               ),
-            ),
-          )),
+              ),
+            )),
           if (_isLoading)
             Container(
               color: Colors.black.withOpacity(0.4),

@@ -179,13 +179,16 @@ class InitApp extends StatelessWidget {
 
 class GlobalConnectivityObserver extends StatefulWidget {
   final Widget child;
+
   const GlobalConnectivityObserver({super.key, required this.child});
 
   @override
-  State<GlobalConnectivityObserver> createState() => _GlobalConnectivityObserverState();
+  State<GlobalConnectivityObserver> createState() =>
+      _GlobalConnectivityObserverState();
 }
 
-class _GlobalConnectivityObserverState extends State<GlobalConnectivityObserver> {
+class _GlobalConnectivityObserverState
+    extends State<GlobalConnectivityObserver> {
   StreamSubscription<List<ConnectivityResult>>? _subscription;
   bool _navigatedToNoInternet = false;
 
