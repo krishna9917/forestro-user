@@ -109,18 +109,23 @@ class SocketController extends GetxController {
                       'userId': data['userId'],
                       'userType': data['userType'],
                       'requestType': data['requestType'],
+                      // Server expects payload under data.data
                       'data': {
-                        'walletAmount': wallet,
-                        ...data,
-                      }
+                        'data': {
+                          ...data['data'],
+                          'walletAmount': wallet,
+                        }
+                      },
                     });
                     print("Emitting startSession with data: ${{
                       'userId': data['userId'],
                       'userType': data['userType'],
-                      'requestType': 'chat',
+                      'requestType': data['requestType'],
                       'data': {
-                        'walletAmount': wallet,
-                        ...data,
+                        'data': {
+                          ...data['data'],
+                          'walletAmount': wallet,
+                        }
                       }
                     }}");
                   }
@@ -153,20 +158,23 @@ class SocketController extends GetxController {
       _iAmWorkScreen = true;
       update();
       print("datasesionstart======${data}");
+      final sessionData = (data is Map) ? (data['data'] ?? {}) : {};
       if (data['requestType'] == 'chat') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
-        var price = data['data']['astroData']['chat_charges_per_min'];
+        var price = sessionData['astroData'] != null
+            ? sessionData['astroData']['chat_charges_per_min']
+            : null;
 
         double walletAmount = double.tryParse(wallet) ?? 0;
-        double pricePerMin = double.tryParse(price.toString()) ?? 0;
+        double pricePerMin = double.tryParse(price?.toString() ?? '') ?? 0;
         if (walletAmount > 0 && pricePerMin > 0) {
           // Use only full divisible minutes: floor(wallet / perMin)
           var totalMinutes = (walletAmount / pricePerMin).floorToDouble();
           Get.off(() => ChatScreen(
                 id: data['userId'] + "-astro",
                 userId: data['userId'],
-                callID: data['data']['communication_id'].toString(),
+                callID: sessionData['communication_id'].toString(),
                 price: price,
                 totalMinutes: totalMinutes,
               ));
@@ -175,11 +183,13 @@ class SocketController extends GetxController {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
 
-        var price = data['data']['astroData']['video_charges_per_min'];
+        var price = sessionData['astroData'] != null
+            ? sessionData['astroData']['video_charges_per_min']
+            : null;
         print("price=========$price");
 
         double walletAmount = double.tryParse(wallet) ?? 0;
-        double pricePerMin = double.tryParse(price.toString()) ?? 0;
+        double pricePerMin = double.tryParse(price?.toString() ?? '') ?? 0;
 
         if (walletAmount > 0 && pricePerMin > 0) {
           // Use only full divisible minutes: floor(wallet / perMin)
@@ -187,8 +197,8 @@ class SocketController extends GetxController {
           Get.off(
             () => MyCall(
               userid: data['userId'].toString(),
-              username: data['data']['name'].toString(),
-              callID: data['data']['communication_id'].toString(),
+              username: sessionData['name'].toString(),
+              callID: sessionData['communication_id'].toString(),
               price: price,
               totalMinutes: totalMinutes,
             ),
@@ -197,9 +207,11 @@ class SocketController extends GetxController {
       } else if (data['requestType'] == 'audio') {
         final profileController = Get.find<ProfileList>();
         var wallet = profileController.profileDataList.first.wallet ?? 'NA';
-        var price = data['data']['astroData']['call_charges_per_min'];
+        var price = sessionData['astroData'] != null
+            ? sessionData['astroData']['call_charges_per_min']
+            : null;
         double walletAmount = double.tryParse(wallet) ?? 0;
-        double pricePerMin = double.tryParse(price.toString()) ?? 0;
+        double pricePerMin = double.tryParse(price?.toString() ?? '') ?? 0;
 
         // Calculate total minutes (only whole divisible minutes)
         if (walletAmount > 0 && pricePerMin > 0) {
@@ -207,8 +219,8 @@ class SocketController extends GetxController {
           Get.off(
             () => AudioCall(
               userid: data['userId'].toString(),
-              username: data['data']['name'].toString(),
-              callID: data['data']['communication_id'].toString(),
+              username: sessionData['name'].toString(),
+              callID: sessionData['communication_id'].toString(),
               price: price,
               totalMinutes: totalMinutes,
             ),

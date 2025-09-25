@@ -18,7 +18,7 @@ MaterialPageRoute routeMe(Widget Screen) {
 void showToast(
   String msg, {
   Toast toastLength = Toast.LENGTH_SHORT,
-  ToastGravity gravity = ToastGravity.BOTTOM,
+  ToastGravity? gravity,
   int timeInSecForIosWeb = 1,
   Color backgroundColor = Colors.black,
   Color textColor = Colors.white,
