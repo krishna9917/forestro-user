@@ -113,14 +113,14 @@ class MyCallController extends GetxController {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final current = remainingSeconds.value;
-      if (current > 60) {
+      if (current > 0) {
         remainingSeconds.value = current - 1;
-        if (remainingSeconds.value <= 120 && !_isBeeping) {
+        if (remainingSeconds.value == 120 && !_isBeeping) {
           countdownColor.value = Colors.red;
           _isBeeping = true;
           playBeepSound();
         }
-      } else if (current == 60) {
+      } else if (current == 0) {
         _timer?.cancel();
         _timerStarted = false;
         endChatSession();

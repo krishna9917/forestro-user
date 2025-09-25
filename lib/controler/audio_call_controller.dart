@@ -118,7 +118,7 @@ class AudioCallController extends GetxController {
     print("Starting countdown timer with ${_remainingSeconds.value} seconds");
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds.value > 60) {
+      if (_remainingSeconds.value > 0) {
         _remainingSeconds.value--;
         print("Countdown: ${_remainingSeconds.value} seconds remaining");
 
@@ -131,8 +131,8 @@ class AudioCallController extends GetxController {
           _playBeepSound();
           update(); // Update UI for color change
         }
-      } else if (_remainingSeconds.value == 60) {
-        print("Call time limit reached, ending call...");
+      } else if (_remainingSeconds.value == 0) {
+        print("Call time limit reached (0s), ending call...");
         _timer?.cancel();
         _endCallSession();
       }

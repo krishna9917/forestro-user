@@ -74,13 +74,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       }
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 60) {
+      if (_remainingSeconds > 0) {
         _remainingSeconds--;
         _remainingSecondsNotifier.value = _remainingSeconds;
         if (_remainingSeconds == 120 && !_isBeeping) {
           playBeepSound();
         }
-      } else if (_remainingSeconds == 60 && !isSessionEnded) {
+      } else if (_remainingSeconds == 0 && !isSessionEnded) {
         endChatSession();
         _timer.cancel();
       }
