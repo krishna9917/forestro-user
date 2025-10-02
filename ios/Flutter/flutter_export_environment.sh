@@ -1,9 +1,9 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=E:\FlutterSdk\flutter"
-export "FLUTTER_APPLICATION_PATH=E:\freelancing\foreastro_user"
+export "FLUTTER_ROOT=/Users/krishna/config_assets/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/krishna/AndroidStudioProjects/astrology/forestro-user"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib\main.dart"
+export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"

@@ -61,7 +61,9 @@ class PreviewChatScreen extends StatelessWidget {
           );
         },
         onMessageItemPressed: (context, message, defaultAction) {
+          print("CLICK---->IMage");
           if (message.type == ZIMMessageType.image) {
+            print("CLICK---->IMage");
             Get.to(
               PreviewScreen(
                 isImage: true,

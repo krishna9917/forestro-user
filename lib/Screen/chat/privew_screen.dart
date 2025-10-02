@@ -94,7 +94,7 @@ class PreviewScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100)),
                 child: IconButton(
                   onPressed: () {
-                    // navigateme.pop();
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.arrow_back_ios_rounded),
                 ),

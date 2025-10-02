@@ -18,6 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zim/zego_zim.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:foreastro/Screen/chat/privew_screen.dart';
+import 'package:foreastro/model/profile_model.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatScreen extends StatefulWidget {
   final String id;
@@ -58,6 +61,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    _ensureMicPermission();
     chatzegocloud();
     sessionController.newSession(RequestType.Chat);
     startTime = DateTime.now();
@@ -85,6 +89,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         _timer.cancel();
       }
     });
+  }
+
+  Future<void> _ensureMicPermission() async {
+    try {
+      final status = await Permission.microphone.status;
+      if (!status.isGranted) {
+        await Permission.microphone.request();
+      }
+    } catch (_) {}
   }
 
   Future<void> chatzegocloud() async {
@@ -274,23 +287,43 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: Stack(
         children: [
           ZIMKitMessageListPage(
-              key: ValueKey('chat-${widget.id}'),
-              conversationType: ZIMConversationType.peer,
-              conversationID: widget.id,
-              showPickFileButton: false,
-              showMoreButton: false,
-              theme: ThemeData(),
-              inputDecoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(0),
-              ),
+            key: ValueKey('chat-${widget.id}'),
+            conversationType: ZIMConversationType.peer,
+            conversationID: widget.id,
+              showPickMediaButton: true,
+            showPickFileButton: false,
+            showMoreButton: false,
+              showRecordButton: true,
+            theme: ThemeData(),
+            inputDecoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.all(0),
             ),
+            onMessageItemPressed: (context, message, defaultAction) {
+              if (message.type == ZIMMessageType.image) {
+                Get.to(
+                  PreviewScreen(
+                    isImage: true,
+                    certification: Certifications(
+                      certificate: message.imageContent!.fileDownloadUrl,
+                      certificateId: DateTime.now().microsecondsSinceEpoch,
+                      fileSize: message.imageContent!.fileSize.toString(),
+                    ),
+                  ),
+                );
+                return;
+              }
+              // Fallback to default behavior for non-image messages
+              defaultAction.call();
+            },
+          ),
           SafeArea(
             child: Align(
               alignment: Alignment.topRight,
               child: Container(
                 margin: const EdgeInsets.only(top: 10, right: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [
