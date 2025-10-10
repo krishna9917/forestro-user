@@ -48,6 +48,7 @@ class _MainScreenState extends State<MainScreen> {
             TextFormField(
                 controller: _userNameController,
                 cursorColor: const Color(0xff424242),
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   enabledBorder: _commonBorder,
                   focusedBorder: _commonBorder,
@@ -62,6 +63,7 @@ class _MainScreenState extends State<MainScreen> {
             TextFormField(
                 controller: _userIdController,
                 cursorColor: const Color(0xff424242),
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   enabledBorder: _commonBorder,
                   focusedBorder: _commonBorder,

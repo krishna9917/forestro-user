@@ -47,6 +47,7 @@ class _SearchPageState extends State<SearchPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
+              textCapitalization: TextCapitalization.words,
               onChanged: (query) {
                 final filtered =
                     astroController.astroDataList.where((astrologer) {

@@ -384,6 +384,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             InputBox(
                               title: "Name",
                               controller: name,
+                              // Capitalize words for name input
                               hintText: widget.profileData!.name,
                               validator: (inp) {
                                 if (inp!.isEmpty) {

@@ -122,6 +122,7 @@ class InputBox extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
+          textCapitalization: TextCapitalization.words,
           validator: validator,
           readOnly: readOnly,
           decoration: InputDecoration(

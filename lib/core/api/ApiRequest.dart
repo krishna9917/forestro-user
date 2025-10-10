@@ -10,7 +10,7 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 
 Logger logger = Logger();
-String apiUrl = "https://foreastro.technovaedge.in/api";
+String apiUrl = "https://foreastro.com/api";
 // String apiUrl = "https://foreastro.com/api";
 const String tosteError = "Something Went Wrong!";
 
@@ -98,7 +98,7 @@ class ApiRequest {
               time: DateTime.now(),
               error: "RETRY Response, Method : $method");
           apiUrl = apiUrl.replaceFirst(
-              "https://foreastro.technovaedge.in", "https://foreastro.com");
+              "https://foreastro.com", "https://foreastro.com");
           // Removed auto-logout logic in retry branch as well
           return data;
         } on DioException catch (retryError) {

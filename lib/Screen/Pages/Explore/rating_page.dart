@@ -129,6 +129,7 @@ class _RatingPageState extends State<RatingPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: reviewcomment,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
