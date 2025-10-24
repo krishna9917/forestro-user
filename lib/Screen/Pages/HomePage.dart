@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     paymentController.setSelectedAmount(100); // Set the recharge amount
     Get.dialog(
       const RechargeDialog(
-        customAmount: 1,
+        customAmount: 9,
         customTitle: "Recharge now of",
         customDescription: "and instantly get",
       ),

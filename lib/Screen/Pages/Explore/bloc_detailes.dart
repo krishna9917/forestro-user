@@ -91,7 +91,12 @@ class _BlocDetailesState extends State<BlocDetailes> {
                   if (description != null)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: HtmlWidget(description!),
+                      child: HtmlWidget(description!,
+                          textStyle: GoogleFonts.inter(
+                            fontSize: 16,
+                            color: Colors.black87,
+                            height: 1.5,
+                          )),
                     ),
                 ],
               ),
