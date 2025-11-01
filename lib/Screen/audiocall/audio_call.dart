@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:foreastro/controler/audio_call_controller.dart';
 import 'package:foreastro/Screen/Pages/WalletPage.dart';
@@ -7,6 +9,7 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:foreastro/constants/zego_keys.dart';
 
 import '../../Utils/Quick.dart';
+import 'package:foreastro/controler/soket_controler.dart';
 
 class AudioCall extends StatefulWidget {
   const AudioCall(
@@ -30,6 +33,7 @@ class AudioCall extends StatefulWidget {
 class _AudioCallState extends State<AudioCall> {
   late AudioCallController _audioCallController;
   bool _isDisposed = false;
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -48,7 +52,7 @@ class _AudioCallState extends State<AudioCall> {
     } else {
       _audioCallController = Get.put(AudioCallController());
     }
-    
+
     // Only initialize if not already initialized
     if (!_audioCallController.isInitialized) {
       _audioCallController.initializeCall(
@@ -89,89 +93,107 @@ class _AudioCallState extends State<AudioCall> {
         // If call is ended or disconnecting, show proper UI
         if (_audioCallController.isCallEnded ||
             _audioCallController.isDisconnecting) {
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  _audioCallController.isDisconnecting
-                      ? "Ending call..."
-                      : "Call ended",
-                  style: const TextStyle(
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    _audioCallController.isDisconnecting
+                        ? "Ending call..."
+                        : "Call ended",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return SafeArea(
+          top: true,
+          child: Stack(
+            children: [
+              ZegoUIKitPrebuiltCall(
+                key: ValueKey('audio_call_${widget.callID}'),
+                appID: ZegoKeys.appID,
+                appSign: ZegoKeys.appSign,
+                userID: widget.userid,
+                userName: widget.username.split(' ').first,
+                callID: widget.callID,
+                events: ZegoUIKitPrebuiltCallEvents(
+                  onCallEnd: (event, defaultAction) async {
+                    if (_audioCallController.isCallEnded ||
+                        _audioCallController.isDisconnecting) {
+                      print(
+                          "Call already ended or disconnecting, skipping onCallEnd");
+                      return;
+                    }
+
+                    print("Call ended: ${event.toString()}");
+                    // Handle our custom disconnection logic first
+                    _audioCallController.handleZegoHangup();
+
+                    // Execute the default action after a small delay to prevent conflicts
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                      try {
+                        defaultAction();
+                      } catch (e) {
+                        print('Error executing default action: $e');
+                      }
+                    });
+                  },
+                  onError: (error) {
+                    print("Zego error: $error");
+                    // Handle error gracefully
+                    _audioCallController.handleCallError(error.toString());
+                  },
+                  user: ZegoCallUserEvents(
+                    onEnter: (user) {
+                      showToast("${user.name} joined the call");
+                    },
+                    onLeave: (user) {
+                      print("${user.name} left the call");
+                    },
                   ),
                 ),
-              ],
-            ),
-          ),
-        );
-      }
-
-      return SafeArea(
-        top: true,
-        child: Stack(
-          children: [
-            ZegoUIKitPrebuiltCall(
-              key: ValueKey('audio_call_${widget.callID}'),
-              appID: ZegoKeys.appID,
-              appSign: ZegoKeys.appSign,
-              userID: widget.userid,
-              userName: widget.username.split(' ').first,
-              callID: widget.callID,
-              events: ZegoUIKitPrebuiltCallEvents(
-                onCallEnd: (event, defaultAction) async {
-                  if (_audioCallController.isCallEnded ||
-                      _audioCallController.isDisconnecting) {
-                    print(
-                        "Call already ended or disconnecting, skipping onCallEnd");
-                    return;
-                  }
-
-                  print("Call ended: ${event.toString()}");
-                  // Handle our custom disconnection logic first
-                  _audioCallController.handleZegoHangup();
-
-                  // Execute the default action after a small delay to prevent conflicts
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    try {
-                      defaultAction();
-                    } catch (e) {
-                      print('Error executing default action: $e');
-                    }
-                  });
-                },
-                onError: (error) {
-                  print("Zego error: $error");
-                  // Handle error gracefully
-                  _audioCallController.handleCallError(error.toString());
-                },
-                user: ZegoCallUserEvents(
-                  onEnter: (user) {
-                    showToast("${user.name} joined the call");
-                  },
-                  onLeave: (user) {
-                    print("${user.name} left the call");
-                  },
+                config: ZegoUIKitPrebuiltCallConfig.groupVoiceCall(),
+              ),
+              // Countdown timer - using GetBuilder instead of nested Obx
+              _buildCountdownTimer(),
+              Center(child: Image.asset("assets/call_logo.jpg")),
+              // Loading indicator - using GetBuilder instead of nested Obx
+              _buildLoadingIndicator(),
+              Positioned(
+                right: 16,
+                bottom: 32,
+                child: SafeArea(
+                  child: FloatingActionButton.extended(
+                    heroTag: 'add_participant_audio',
+                    onPressed: () {
+                      try {
+                        _showConferenceInviteDialog();
+                      } catch (e) {
+                        print('invite dialog error: $e');
+                      }
+                    },
+                    icon: const Icon(Icons.group_add),
+                    label: const Text('Add'),
+                  ),
                 ),
               ),
-              config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall(),
-            ),
-            // Countdown timer - using GetBuilder instead of nested Obx
-            _buildCountdownTimer(),
-            Center(child: Image.asset("assets/call_logo.jpg")),
-            // Loading indicator - using GetBuilder instead of nested Obx
-            _buildLoadingIndicator(),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
       } catch (e) {
         // If controller is not initialized, show loading screen
         print('Controller not initialized yet: $e');
@@ -244,6 +266,64 @@ class _AudioCallState extends State<AudioCall> {
               child: CircularProgressIndicator(),
             )
           : const SizedBox.shrink(),
+    );
+  }
+
+  void _showConferenceInviteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add participant'),
+          content: TextField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: const InputDecoration(
+              hintText: 'Enter mobile number',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final phone = _phoneController.text.trim();
+                if (phone.length < 6) {
+                  showToast('Enter valid mobile number');
+                  return;
+                }
+                try {
+                  final socketController = Get.find<SocketController>();
+                  print('[invite] emit conferenceInvite (video) ' +
+                      jsonEncode({
+                        'targetMobile': phone,
+                        'callID': widget.callID,
+                      }));
+                  socketController.socket?.emit('conferenceInvite', {
+                    'targetMobile': phone,
+                    'requestType': "audio",
+                    'callID': widget.callID,
+                    'data': {
+                      'communication_id': widget.callID,
+                      'name': widget.username,
+                      'astroData': {
+                        'video_charges_per_min': widget.price,
+                      },
+                    }
+                  });
+                  Navigator.pop(context);
+                  showToast('Invitation sent');
+                } catch (e) {
+                  showToast('Failed to send invite');
+                }
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

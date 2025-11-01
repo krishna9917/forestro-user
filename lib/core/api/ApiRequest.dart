@@ -10,8 +10,8 @@ import 'package:foreastro/Helper/InAppKeys.dart';
 import 'package:foreastro/Screen/Auth/LoginScreen.dart';
 
 Logger logger = Logger();
-String apiUrl = "https://foreastro.com/api";
 // String apiUrl = "https://foreastro.com/api";
+String apiUrl = "https://foreastro.technovaedge.in/api";
 const String tosteError = "Something Went Wrong!";
 
 class ApiMethod {
@@ -42,24 +42,28 @@ class ApiRequest {
     );
   final bool ignoreUnauthorized;
 
-  ApiRequest(this.url, {this.method, this.body, this.ignoreUnauthorized = false});
+  ApiRequest(this.url,
+      {this.method, this.body, this.ignoreUnauthorized = false});
 
   dynamic _freshBody() {
     if (body is FormData) {
       final FormData original = body as FormData;
       final FormData copy = FormData();
       copy.fields.addAll(List<MapEntry<String, String>>.from(original.fields));
-      copy.files.addAll(List<MapEntry<String, MultipartFile>>.from(original.files));
+      copy.files
+          .addAll(List<MapEntry<String, MultipartFile>>.from(original.files));
       return copy;
     }
     return body;
   }
 
   Future<Response> send<T>() async {
-    logger.i(url, time: DateTime.now(), error: body is FormData ? '[FormData]' : body);
+    logger.i(url,
+        time: DateTime.now(), error: body is FormData ? '[FormData]' : body);
     try {
       // Short-circuit when offline to avoid useless network hits
-      final List<ConnectivityResult> connectivity = await Connectivity().checkConnectivity();
+      final List<ConnectivityResult> connectivity =
+          await Connectivity().checkConnectivity();
       if (connectivity.contains(ConnectivityResult.none)) {
         throw const SocketException('No Internet connection');
       }
@@ -79,9 +83,8 @@ class ApiRequest {
       return data;
     } on DioException catch (e) {
       logger.e(e.response?.data, error: e.error, stackTrace: e.stackTrace);
-      final bool isHostLookupError =
-          e.error is SocketException ||
-              (e.message?.toLowerCase().contains('failed host lookup') ?? false);
+      final bool isHostLookupError = e.error is SocketException ||
+          (e.message?.toLowerCase().contains('failed host lookup') ?? false);
       if (isHostLookupError && url.contains("foreastro.technovaedge.in")) {
         final String alternateUrl =
             url.replaceFirst("foreastro.technovaedge.in", "foreastro.com");
@@ -95,8 +98,7 @@ class ApiRequest {
             }),
           );
           logger.f(data.data,
-              time: DateTime.now(),
-              error: "RETRY Response, Method : $method");
+              time: DateTime.now(), error: "RETRY Response, Method : $method");
           apiUrl = apiUrl.replaceFirst(
               "https://foreastro.com", "https://foreastro.com");
           // Removed auto-logout logic in retry branch as well

@@ -74,7 +74,7 @@ ThemeData appTheme = ThemeData(
       backgroundColor: Colors.white,
       elevation: 0.0,
     ),
-    bottomAppBarTheme: const BottomAppBarThemeData(
+    bottomAppBarTheme: const BottomAppBarTheme(
       color: Colors.white,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(

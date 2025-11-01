@@ -37,6 +37,26 @@ class SocketController extends GetxController {
   }
 
   void addSocketListeners() {
+    socket?.on('connect', (_) {
+      print('[socket] connected');
+    });
+    socket?.on('connected', (data) {
+      print('[socket] server acknowledged connection: $data');
+    });
+    socket?.on('connect_error', (e) {
+      print('[socket] connect_error: $e');
+    });
+    socket?.on('reconnect_attempt', (e) {
+      print('[socket] reconnect_attempt');
+    });
+    socket?.on('error', (e) {
+      print('[socket] error: $e');
+      Fluttertoast.showToast(msg: 'Socket error');
+    });
+    socket?.on('apiError', (data) {
+      print('[socket] apiError: $data');
+      Fluttertoast.showToast(msg: 'Server error: ${data.toString()}');
+    });
     socket?.on('request', (data) {
       print("userdata=====$data");
     });
@@ -266,6 +286,105 @@ class SocketController extends GetxController {
       print("liveAstrologers=====$data");
       liveAstrologers.assignAll(List<Map<String, dynamic>>.from(data));
       // update();
+    });
+
+    // Conference results and offline notifications
+    socket?.on('conferenceAccepted', (data) {
+      print('[invite] accepted: $data');
+    });
+    socket?.on('conferenceDeclined', (data) {
+      print('[invite] declined: $data');
+      Fluttertoast.showToast(msg: 'Invite declined');
+    });
+    socket?.on('userOffline', (data) {
+      print('[invite] userOffline: $data');
+      Fluttertoast.showToast(msg: 'User is offline');
+    });
+    socket?.on('apiError', (data) {
+      print('[invite] apiError: $data');
+    });
+    // Conference invitation received (by mobile number)
+    socket?.on('conferenceInvite', (data) async {
+      print('conferenceInvite '+ data['requestType']);
+      try {
+        final String requestType = data['requestType'] ?? 'video';
+        final sessionData = (data is Map) ? (data['data'] ?? {}) : {};
+        final String callID = (data['callID'] ?? sessionData['communication_id']).toString();
+        final String astroName = (sessionData['name'] ?? 'Astrologer').toString();
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Conference invite'),
+            content: Text('Join call with $astroName?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  socket?.emit('conferenceDecline', {
+                    'callID': callID,
+                    'requestType': requestType,
+                  });
+                  Get.back();
+                },
+                child: const Text('Decline'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  socket?.emit('conferenceAccept', {
+                    'callID': callID,
+                    'requestType': requestType,
+                  });
+                  Get.back();
+                  final profileController = Get.find<ProfileList>();
+                  final selfUserId = (profileController.profileDataList.isNotEmpty
+                          ? profileController.profileDataList.first.userId
+                          : null)
+                      ?.toString() ?? 'guest';
+                  final wallet = profileController.profileDataList.isNotEmpty
+                      ? (profileController.profileDataList.first.wallet ?? '0')
+                      : '0';
+                  if (requestType == 'audio') {
+                    final price = sessionData['astroData'] != null
+                        ? sessionData['astroData']['call_charges_per_min']
+                        : null;
+                    final walletAmount = double.tryParse(wallet) ?? 0;
+                    final pricePerMin = double.tryParse(price?.toString() ?? '') ?? 0;
+                    final totalMinutes = pricePerMin > 0
+                        ? (walletAmount / pricePerMin).floorToDouble()
+                        : 0.0;
+                    Get.off(() => AudioCall(
+                          userid: selfUserId,
+                          username: astroName,
+                          callID: callID,
+                          price: price?.toString() ?? '0',
+                          totalMinutes: totalMinutes,
+                        ));
+                  } else {
+                    final price = sessionData['astroData'] != null
+                        ? sessionData['astroData']['video_charges_per_min']
+                        : null;
+                    final walletAmount = double.tryParse(wallet) ?? 0;
+                    final pricePerMin = double.tryParse(price?.toString() ?? '') ?? 0;
+                    final totalMinutes = pricePerMin > 0
+                        ? (walletAmount / pricePerMin).floorToDouble()
+                        : 0.0;
+                    Get.off(() => MyCall(
+                          userid: selfUserId,
+                          username: astroName,
+                          callID: callID,
+                          price: price?.toString() ?? '0',
+                          totalMinutes: totalMinutes,
+                        ));
+                  }
+                },
+                child: const Text('Join'),
+              ),
+            ],
+          ),
+          barrierDismissible: false,
+        );
+      } catch (e) {
+        print('conferenceInvite error: $e');
+      }
     });
   }
 

@@ -30,7 +30,7 @@ def keystoreProperties = new Properties()
 
 android {
     namespace "com.foreastro.foreastrouserside"
-    compileSdkVersion 35
+    compileSdkVersion 36
     ndkVersion flutter.ndkVersion
 
      compileOptions {
@@ -57,7 +57,7 @@ android {
 
     defaultConfig {
         applicationId "com.foreastro.foreastrouserside"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion 35
         versionCode 39
         versionName "1.0.2"

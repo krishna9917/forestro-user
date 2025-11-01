@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:foreastro/constants/zego_keys.dart';
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+import 'package:foreastro/controler/soket_controler.dart';
 
 class MyCall extends StatefulWidget {
   const MyCall(
@@ -204,6 +205,7 @@ class MyCallController extends GetxController {
 
 class _MyCallState extends State<MyCall> {
   late final MyCallController callController;
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -279,11 +281,30 @@ class _MyCallState extends State<MyCall> {
                 // );
               },
             ),
-            config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+            config: ZegoUIKitPrebuiltCallConfig.groupVideoCall()
               ..layout = ZegoLayout.pictureInPicture(
                 isSmallViewDraggable: true,
                 switchLargeOrSmallViewByClick: true,
               ),
+          ),
+          Positioned(
+            right: 16,
+            bottom: 32,
+            child: SafeArea(
+              child: FloatingActionButton.extended(
+                heroTag: 'add_participant_video',
+                onPressed: () {
+                  try {
+                    print('[invite] open dialog (video) callID=${widget.callID}');
+                    _showConferenceInviteDialog("video");
+                  } catch (e) {
+                    print('[invite] dialog error (video): $e');
+                  }
+                },
+                icon: const Icon(Icons.group_add),
+                label: const Text('Add'),
+              ),
+            ),
           ),
           // Countdown badge - show only after loading overlay is hidden
           Obx(() => callController.isLoading.value
@@ -358,6 +379,63 @@ class _MyCallState extends State<MyCall> {
                 )),
         ],
       ),
+    );
+  }
+
+  void _showConferenceInviteDialog(String type) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add participant'),
+          content: TextField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: const InputDecoration(
+              hintText: 'Enter mobile number',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final phone = _phoneController.text.trim();
+                if (phone.length < 6) {
+                  showToast('Enter valid mobile number');
+                  return;
+                }
+                try {
+                  final socketController = Get.find<SocketController>();
+                  print('[invite] emit conferenceInvite (video) ' + jsonEncode({
+                    'targetMobile': phone,
+                    'callID': widget.callID,
+                  }));
+                  socketController.socket?.emit('conferenceInvite', {
+                    'targetMobile': phone,
+                    'requestType': type,
+                    'callID': widget.callID,
+                    'data': {
+                      'communication_id': widget.callID,
+                      'name': widget.username,
+                      'astroData': {
+                        'video_charges_per_min': widget.price,
+                      },
+                    }
+                  });
+                  Navigator.pop(context);
+                  showToast('Invitation sent');
+                } catch (e) {
+                  showToast('Failed to send invite');
+                }
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

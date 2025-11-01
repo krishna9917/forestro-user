@@ -5,15 +5,16 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class SocketService {
   static Future<IO.Socket> initSocket() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    IO.Socket socket = IO.io('http://143.244.130.192:4000/', {
+    IO.Socket socket = IO.io('http://143.244.130.192:4000', {
       'transports': ['websocket'],
       'extraHeaders': {
-        'userId': prefs.getString("user_id").toString(),
+        'userid': prefs.getString("user_id").toString(),
         'type': 'user',
         'token': prefs.getString("token").toString(),
       }
     });
-
+    // Ensure explicit connect
+    socket.connect();
     socket.onConnect((data) => {print("connect")});
     socket.onDisconnect((data) => {print("diconnect")});
     socket.on(
